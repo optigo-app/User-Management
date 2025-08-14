@@ -1,0 +1,55 @@
+.summary-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+  
+    .summary-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .summary-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+  
+      .summary-value {
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
+  
+      .summary-label {
+        color: #666;
+        font-size: 0.85rem;
+      }
+    }
+  
+    .summary-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      background-color: rgba(0, 0, 0, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      svg {
+        font-size: 1.5rem;
+      }
+    }
+  
+    &.blue .summary-icon-wrapper { background-color: rgba(33, 150, 243, 0.15); color: #2196f3; }
+    &.green .summary-icon-wrapper { background-color: rgba(76, 175, 80, 0.15); color: #4caf50; }
+    &.purple .summary-icon-wrapper { background-color: rgba(156, 39, 176, 0.15); color: #9c27b0; }
+    &.orange .summary-icon-wrapper { background-color: rgba(255, 152, 0, 0.15); color: #ff9800; }
+    &.red .summary-icon-wrapper { background-color: rgba(244, 67, 54, 0.15); color: #f44336; }
+  }
+  

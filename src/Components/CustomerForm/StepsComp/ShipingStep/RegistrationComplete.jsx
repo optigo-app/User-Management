@@ -23,25 +23,25 @@ export default function RegistrationComplete({ shippingAddresses }) {
                             icon: <User size={20} color="#2563eb" />,
                             title: "Personal Information",
                             subtitle: "Complete profile details",
-                            stepName: "step2",
+                            stepName: 2,
                         },
                         {
                             icon: <Truck size={20} color="#16a34a" />,
                             title: "Shipping Setup",
                             subtitle: `${shippingAddresses.length} addresses configured`,
-                            stepName: "step3",
+                            stepName: 3,
                         },
                         {
                             icon: <DollarSign size={20} color="#7c3aed" />,
                             title: "Payment Terms",
                             subtitle: "Pricing and payment configured",
-                            stepName: "step4",
+                            stepName: 4,
                         },
                         {
                             icon: <Zap size={20} color="#ea580c" />,
                             title: "Account Ready",
                             subtitle: "Ready for transactions",
-                            stepName: "step5",
+                            stepName: 5,
                         },
                     ]?.map(({ icon, title, subtitle, stepName }, i) => (
                         <Grid size={{ xs: 12, sm: 6 }} key={i}>
@@ -53,7 +53,7 @@ export default function RegistrationComplete({ shippingAddresses }) {
                                 py={1}
                                 bgcolor="#f0fdf4"
                                 borderRadius={2}
-                                sx={{ cursor: 'pointer' }}
+                                sx={{ cursor: 'pointer', border: '1px solid #16a34a36' }}
                                 onClick={() => handleGotoStep(stepName)}
 
                             >
@@ -70,7 +70,8 @@ export default function RegistrationComplete({ shippingAddresses }) {
                     ))}
                 </Grid>
 
-                <Box mt={3} px={2} py={1} borderRadius={2} bgcolor="#f0fdf4">
+                <Box mt={3} px={2} py={1} borderRadius={2} bgcolor="#f0fdf4" border="1px solid #16a34a36">
+
                     <Box display="flex" gap={2} alignItems="center">
                         <Phone size={20} color="#2563eb" />
                         <Box>

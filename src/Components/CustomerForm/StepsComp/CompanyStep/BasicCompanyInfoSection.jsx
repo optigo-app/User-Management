@@ -5,7 +5,6 @@ import { Building2 } from "lucide-react";
 import { FormField, Input, Select, CollapsibleSection } from "../../../Ui";
 
 const BasicCompanyInfoSection = ({ expandedSections, onToggleSection, formData, errors, onUpdate }) => {
-    console.log('fDDDDDrmData: ', formData);
     const [basicCompanyInfo, setBasicCompanyInfo] = useState({
         companyName: "",
         businessType: "",
@@ -59,12 +58,9 @@ const BasicCompanyInfoSection = ({ expandedSections, onToggleSection, formData, 
                                 value={basicCompanyInfo.companyName}
                                 onChange={(e) => handleLocalUpdate("companyName", e.target.value)}
                                 onBlur={handleReduxUpdate}
+                                error={errors?.companyName}
+                                helperText="Company name is required"
                             />
-                            {errors.companyName && (
-                                <FormHelperText sx={{ color: "error.main", mt: 1 }}>
-                                    {errors.companyName}
-                                </FormHelperText>
-                            )}
                         </FormField>
                     </Grid>
                     <Grid item size={{ sm: 12, md: 6 }}>

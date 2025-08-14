@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Chip, Button, Alert } from "@mui/material";
-import { Clock, HelpCircle, Info } from "lucide-react";
+import { Clock, HelpCircle, Info, Settings } from "lucide-react";
 
 export const FormHeader = ({
   currentStepInfo,
@@ -8,7 +8,7 @@ export const FormHeader = ({
   showHelp,
   onToggleHelp,
 }) => {
-  const Icon = currentStepInfo?.icon;
+  const Icon = currentStepInfo?.icon || Settings;
 
   return (
     <Box

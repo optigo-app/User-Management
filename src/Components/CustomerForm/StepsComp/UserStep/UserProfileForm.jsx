@@ -119,12 +119,9 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                                     value={profileData[field.key]}
                                     onChange={(e) => handleLocalUpdate(field.key, e.target.value)}
                                     onBlur={() => handleReduxUpdate(field.key)}
+                                    error={!!errors[field.key]}
+                                    helperText={errors[field.key]}
                                 />
-                                {errors[field.key] && (
-                                    <FormHelperText sx={{ color: "error.main" }}>
-                                        {errors[field.key]}
-                                    </FormHelperText>
-                                )}
                             </FormField>
                         </Grid>
                     ))}
@@ -229,6 +226,8 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                                 value={profileData.mobileNumber}
                                 onChange={(e) => handleLocalUpdate("mobileNumber", e.target.value)}
                                 onBlur={() => handleReduxUpdate("mobileNumber")}
+                                error={!!errors.mobileNumber}
+                                helperText={errors.mobileNumber}
                             />
                         </FormField>
                     </Grid>

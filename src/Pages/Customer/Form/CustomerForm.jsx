@@ -11,6 +11,7 @@ import { steps } from "../../../Components/CustomerForm/Data/constants";
 import { useDispatch, useSelector } from "react-redux";
 // Import the action creators directly
 import { setErrors, nextStep as nextStepAction, prevStep as prevStepAction, goToStep as goToStepAction } from "../../../Redux/customerFormSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const StepComponents = {
@@ -34,9 +35,17 @@ const validateStep = (step, formData) => {
             }
             break;
         case 2:
-            // Example for step 2
             if (!formData.step2?.userEmail) {
                 errors.userEmail = "User Email is required.";
+            }
+            if (!formData.step2?.firstName) {
+                errors.firstName = "First Name is required.";
+            }
+            if (!formData.step2?.lastName) {
+                errors.lastName = "Last Name is required.";
+            }
+            if (!formData.step2?.mobileNumber) {
+                errors.mobileNumber = "Mobile Number is required.";
             }
             break;
         default:
@@ -47,6 +56,7 @@ const validateStep = (step, formData) => {
 
 export default function CustomerForm() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { currentStep, data: formData, errors } = useSelector(
         (state) => state.customerForm
     );
@@ -111,7 +121,7 @@ export default function CustomerForm() {
 
     const handleNextStep = () => {
         const currentStepData = formData[`step${currentStep}`];
-        const validationErrors = validateStep(currentStep, formData); 
+        const validationErrors = validateStep(currentStep, formData);
 
         if (Object.keys(validationErrors).length > 0) {
             dispatch(setErrors(validationErrors));
@@ -137,6 +147,27 @@ export default function CustomerForm() {
             setAnimatingStep(null);
         }, 300);
     };
+
+    const hanldeFinalSubmit = () => {
+        const currentStepData = formData[`step${currentStep}`];
+        const validationErrors = validateStep(currentStep, formData);
+        navigate("/");
+
+        if (Object.keys(validationErrors).length > 0) {
+            dispatch(setErrors(validationErrors));
+        } else {
+            dispatch(setErrors({}));
+            setAnimatingStep(currentStep);
+            setCompletedSteps((prev) => [...new Set([...prev, currentStep])]);
+            setTimeout(() => {
+                if (currentStep < steps.length) {
+                    dispatch(nextStepAction());
+                }
+                setAnimatingStep(null);
+            }, 300);
+        }
+    }
+
 
     // Transition style memoized
     const transitionStyle = useMemo(
@@ -178,26 +209,8 @@ export default function CustomerForm() {
                 background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)",
             }}
         >
-            {/* Prototype Badge */}
-            <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 50 }}>
-                <Paper
-                    sx={{
-                        background: "linear-gradient(to right, #fb923c, #ef4444)",
-                        color: "#fff",
-                        fontWeight: 500,
-                        px: 2,
-                        py: 0.5,
-                        borderBottomLeftRadius: "8px",
-                        boxShadow: 3,
-                    }}
-                >
-                    In Development
-                </Paper>
-            </Box>
-
             <Container sx={{ py: 6 }}>
-                <FormHeaderSection isAutoSaving={isAutoSaving} lastSaved={lastSaved} />
-
+                <FormHeaderSection isAutoSaving={isAutoSaving} lastSaved={lastSaved}/>
                 <Box mt={4}>
                     <Steppers
                         steps={steps}
@@ -224,7 +237,7 @@ export default function CustomerForm() {
                         onPrevious={handlePrevStep}
                         onNext={handleNextStep}
                         onSaveDraft={() => console.log("Saving draft...")}
-                        onComplete={() => console.log("Completing registration...")}
+                        onComplete={hanldeFinalSubmit}
                     />
                 </Box>
 

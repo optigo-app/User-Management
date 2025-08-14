@@ -15,7 +15,9 @@ const BankingComp = ({ formData, errors, onUpdate }) => {
     }]);
 
     useEffect(() => {
-        setAccounts(formData);
+        if (formData?.length > 0) {
+            setAccounts(formData);
+        }
     }, [formData])
 
     const handleUpdate = (updatedAccounts) => {
@@ -66,6 +68,9 @@ const BankingComp = ({ formData, errors, onUpdate }) => {
         }));
         handleUpdate(updatedAccounts);
     };
+
+    console.log('accounts: ', accounts);
+
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>

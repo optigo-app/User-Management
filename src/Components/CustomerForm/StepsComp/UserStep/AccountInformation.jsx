@@ -48,7 +48,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                     label="User Email/ID"
                     required
                     tooltip="This will be used as the primary login credential. Make sure it's a valid email address."
-                    error={!!errors.userEmail}
                 >
                     <InputWithIcon
                         icon={Mail}
@@ -57,8 +56,9 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                         value={accountData.userEmail}
                         onChange={(e) => handleLocalUpdate("userEmail", e.target.value)}
                         onBlur={() => handleReduxUpdate("userEmail")}
+                        error={errors?.userEmail}
+                        helperText="User email is required"
                     />
-                    {errors.userEmail && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.userEmail}</FormHelperText>}
                 </FormField>
             </Grid>
 
@@ -66,7 +66,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                 <FormField
                     label="User Code"
                     tooltip="Unique identifier - leave blank for auto-generation based on name and timestamp"
-                    error={!!errors.userCode}
                 >
                     <div style={{ display: "flex", gap: 8 }}>
                         <Input
@@ -77,7 +76,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                             onBlur={() => handleReduxUpdate("userCode")}
                         />
                     </div>
-                    {errors.userCode && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.userCode}</FormHelperText>}
                 </FormField>
             </Grid>
 
@@ -85,7 +83,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                 <FormField
                     label="Joining Date"
                     tooltip="When this customer account was created"
-                    error={!!errors.joiningDate}
                 >
                     <InputWithIcon
                         icon={Calendar}
@@ -94,7 +91,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                         onChange={(e) => handleLocalUpdate("joiningDate", e.target.value)}
                         onBlur={() => handleReduxUpdate("joiningDate")}
                     />
-                    {errors.joiningDate && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.joiningDate}</FormHelperText>}
                 </FormField>
             </Grid>
 
@@ -102,7 +98,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                 <FormField
                     label="Reference By"
                     tooltip="Person or entity who referred this customer"
-                    error={!!errors.referenceBy}
                 >
                     <InputWithIcon
                         icon={User}
@@ -111,7 +106,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                         onChange={(e) => handleLocalUpdate("referenceBy", e.target.value)}
                         onBlur={() => handleReduxUpdate("referenceBy")}
                     />
-                    {errors.referenceBy && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.referenceBy}</FormHelperText>}
                 </FormField>
             </Grid>
 
@@ -120,14 +114,16 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                     label="Reference User Code"
                     tooltip="Code of the referring user if applicable"
                     error={!!errors.referenceUserCode}
+
                 >
                     <Input
                         placeholder="If applicable"
                         value={accountData.referenceUserCode}
                         onChange={(e) => handleLocalUpdate("referenceUserCode", e.target.value)}
                         onBlur={() => handleReduxUpdate("referenceUserCode")}
+                        error={!!errors.referenceUserCode}
+                        helperText="Reference user code is required"
                     />
-                    {errors.referenceUserCode && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.referenceUserCode}</FormHelperText>}
                 </FormField>
             </Grid>
 
