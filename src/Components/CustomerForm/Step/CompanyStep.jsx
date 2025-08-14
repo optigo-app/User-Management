@@ -1,0 +1,83 @@
+// src/Components/Step/CompanyStep.jsx
+import React from "react"; // No need for useState for companyType
+import { Box } from "@mui/material";
+import { Building2 } from "lucide-react";
+import { CollapsibleSection } from "../../Ui";
+import CompanySelection from "../StepsComp/CompanyStep/ComapnySelection";
+import ExistingCompanySelector from "../StepsComp/CompanyStep/ExistingCompanySelector";
+import BasicCompanyInfoSection from "../StepsComp/CompanyStep/BasicCompanyInfoSection";
+import CompanyAddressSection from "../StepsComp/CompanyStep/CompanyAddressSection";
+import TaxRegistrationSection from "../StepsComp/CompanyStep/TaxRegistrationSection";
+import { useDispatch } from "react-redux";
+import { updateStepData } from "../../../Redux/customerFormSlice";
+
+const CompanyStep = ({ expandedSections, onToggleSection, formData, errors }) => {
+    const dispatch = useDispatch();
+    const companyType = formData.companyType || "new";
+
+    const handleUpdate = (data) => {
+        dispatch(updateStepData({
+            stepName: "step1",
+            formData: data
+        }));
+    };
+
+    const handleCompanyTypeChange = (type) => {
+        dispatch(updateStepData({
+            stepName: "step1",
+            formData: { companyType: type }
+        }));
+    };
+
+    return (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <CollapsibleSection
+                isOpen={expandedSections.companySelection}
+                onToggle={() => onToggleSection("companySelection")}
+                icon={Building2}
+                gradient="linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+                title="Company Selection"
+                subtitle="Choose existing or create new company"
+                fieldCount="2 options"
+            >
+                <CompanySelection 
+                    companyType={companyType} 
+                    onCompanyTypeChange={handleCompanyTypeChange} 
+                />
+                {companyType === "existing" && <ExistingCompanySelector />}
+            </CollapsibleSection>
+
+            {companyType === "new" && (
+                <>
+                    <BasicCompanyInfoSection
+                        expandedSections={expandedSections}
+                        onToggleSection={onToggleSection}
+                        formData={formData}
+                        errors={errors}
+                        onUpdate={handleUpdate}
+                    />
+
+                    <CompanyAddressSection
+                        expandedSections={expandedSections}
+                        onToggleSection={onToggleSection}
+                        formData={formData} 
+                        errors={errors}
+                        onUpdate={handleUpdate}
+
+                    />
+
+                    <TaxRegistrationSection
+                        expandedSections={expandedSections}
+                        onToggleSection={onToggleSection}
+                        formData={formData} 
+                        errors={errors}
+                        onUpdate={handleUpdate}
+
+                    />
+                </>
+            )}
+        </Box>
+    );
+};
+
+export default CompanyStep;

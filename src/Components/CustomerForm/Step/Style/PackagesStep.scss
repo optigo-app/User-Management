@@ -1,0 +1,87 @@
+.packages-step {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .two-column {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  
+  .helper-text {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .input-icon {
+    color: #888;
+    font-size: 0.9rem;
+    margin-right: 4px;
+  }
+  
+  .commission-box {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+  
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+  
+      &.final {
+        color: #16a34a;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .multi-checkbox {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  
+
+  .toggle-button {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    user-select: none;
+    transition: color 0.2s ease;
+  }
+  
+  .toggle-button:hover {
+    color: #7367f0;
+  }
+  
+  .toggle-icon {
+    height: 16px;
+    width: 16px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    transform: rotate(0deg);
+  }
+  
+  .toggle-icon.rotate {
+    transform: rotate(90deg);
+  }
+  
+  .toggle-subtext {
+    font-size: 10px;
+    color: #6b7280;
+    margin-left: 4px;
+    user-select: none;
+  }
+  
