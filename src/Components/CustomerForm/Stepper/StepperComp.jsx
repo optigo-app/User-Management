@@ -22,9 +22,15 @@ export default function Steppers({ steps, currentStep, completedSteps, onStepCli
           const isActive = currentStep === step.id;
           const isCompleted = completedSteps.includes(step.id);
           const isPast = currentStep > step.id;
-
+          const isLastStep = index === steps.length - 1;
           return (
-            <Box key={step.id} sx={{ display: "flex", alignItems: "center", flex: 1 }}>
+            <Box
+              key={step.id}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flex: isLastStep ? "none" : 1,
+              }}>
               {/* Step Circle */}
               <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <ButtonBase

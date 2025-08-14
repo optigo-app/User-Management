@@ -47,7 +47,7 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                 <FormField
                     label="User Email/ID"
                     required
-                    tooltip="This will be used as the primary login credential. Make sure it's a valid email address."
+                    tooltip="Email address of the user"
                 >
                     <InputWithIcon
                         icon={Mail}
@@ -65,7 +65,7 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
             <Grid item size={{ xs: 12, sm: 6, md: 4 }}>
                 <FormField
                     label="User Code"
-                    tooltip="Unique identifier - leave blank for auto-generation based on name and timestamp"
+                    tooltip="Unique code for the user"
                 >
                     <div style={{ display: "flex", gap: 8 }}>
                         <Input

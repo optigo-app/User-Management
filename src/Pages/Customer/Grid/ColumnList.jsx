@@ -1,8 +1,8 @@
-import { CheckCircle, XCircle, LogIn, LogOut, Trash2, BookText } from "lucide-react";
+import { Trash2, BookText } from "lucide-react";
 import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
 import { IconButton } from "@mui/material";
 
-export const getCustomerColumns = (onToggleLogin, onToggleActive, onDeleteUser) => {
+export const getCustomerColumns = ({onToggleLogin, onToggleActive, onDeleteUser}) => {
 	return [
 		{
 			field: "sr",
