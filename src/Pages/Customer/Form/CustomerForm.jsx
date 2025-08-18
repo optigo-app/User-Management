@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setErrors, nextStep as nextStepAction, prevStep as prevStepAction, goToStep as goToStepAction } from "../../../Redux/customerFormSlice";
 import { useNavigate } from "react-router-dom";
 
-
 const StepComponents = {
     1: lazy(() => import("../../../Components/CustomerForm/Step/CompanyStep")),
     2: lazy(() => import("../../../Components/CustomerForm/Step/UserInfoStep")),
@@ -29,7 +28,6 @@ const validateStep = (step, formData) => {
     const errors = {};
     switch (step) {
         case 1:
-            // Correctly access the data for step1
             if (!formData.step1?.companyName) {
                 errors.companyName = "Company Name is required.";
             }
@@ -168,7 +166,6 @@ export default function CustomerForm() {
         }
     }
 
-
     // Transition style memoized
     const transitionStyle = useMemo(
         () => ({
@@ -209,7 +206,7 @@ export default function CustomerForm() {
             }}
         >
             <Container sx={{ py: 6 }}>
-                <FormHeaderSection isAutoSaving={isAutoSaving} lastSaved={lastSaved}/>
+                <FormHeaderSection isAutoSaving={isAutoSaving} lastSaved={lastSaved} />
                 <Box mt={4}>
                     <Steppers
                         steps={steps}

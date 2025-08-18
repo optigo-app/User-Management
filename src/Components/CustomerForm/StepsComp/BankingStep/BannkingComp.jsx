@@ -69,9 +69,6 @@ const BankingComp = ({ formData, errors, onUpdate }) => {
         handleUpdate(updatedAccounts);
     };
 
-    console.log('accounts: ', accounts);
-
-
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
             {accounts?.map((account, index) => (

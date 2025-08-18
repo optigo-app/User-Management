@@ -59,6 +59,10 @@ export default function CustomerGrid() {
         setData(prev => prev.filter(item => item.id !== row.id));
     };
 
+    const onEditUser = (row) => {
+        navigate(`/customer-register`);
+    }
+
     // Pre-lowercase data for faster filtering
     const preprocessedData = data?.map((item) => {
         const lowered = {};
@@ -114,7 +118,7 @@ export default function CustomerGrid() {
     }, [filteredData]);
 
     const columns = getCustomerColumns({
-        onToggleLogin, onToggleActive, onDeleteUser,
+        onToggleLogin, onToggleActive, onDeleteUser, onEditUser
     });
 
     return (

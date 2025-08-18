@@ -1,8 +1,8 @@
-import { Trash2, BookText } from "lucide-react";
+import { Trash2, BookText, Pencil } from "lucide-react";
 import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
 import { IconButton } from "@mui/material";
 
-export const getCustomerColumns = ({onToggleLogin, onToggleActive, onDeleteUser}) => {
+export const getCustomerColumns = ({ onToggleLogin, onToggleActive, onDeleteUser, onEditUser }) => {
 	return [
 		{
 			field: "sr",
@@ -133,6 +133,20 @@ export const getCustomerColumns = ({onToggleLogin, onToggleActive, onDeleteUser}
 						inactiveColor="#f44336"
 					/>
 				</div>
+			),
+		},
+		{
+			field: "edit",
+			headerName: "Edit",
+			width: 70,
+			pinned: 'right',
+			renderCell: (params) => (
+				<IconButton onClick={() => onEditUser(params.row)}>
+					<Pencil 
+						size={18}
+						color="gray"
+					/>
+				</IconButton>
 			),
 		},
 		{
