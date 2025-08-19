@@ -9,6 +9,7 @@ export function useCustomerActions(setData, updateFilter) {
   const [dialogState, setDialogState] = useState({ open: false, selectedRow: null });
   const [dialogPurityState, setDialogPurityState] = useState({ open: false, selectedRow: null });
   const [dialogSynchronizeState, setDialogSynchronizeState] = useState({ open: false, selectedRow: null });
+  const [showSummary, setShowSummary] = useState(false);
 
   const handleAdd = useCallback(() => {
     const formattedData = formatCustomer({});
@@ -74,6 +75,10 @@ export function useCustomerActions(setData, updateFilter) {
     updateFilter("globalSearch", searchText);
   }, [updateFilter]);
 
+  const handleShowSummary = useCallback(() => {
+    setShowSummary(!showSummary);
+  }, [showSummary]);
+
 
   return {
     handleAdd,
@@ -88,6 +93,8 @@ export function useCustomerActions(setData, updateFilter) {
     handleCloseSynchronizeDialog,
     onPolicyApply,
     onSearch,
+    handleShowSummary,
+    showSummary,
     dialogState,
     setDialogState,
     dialogPurityState,

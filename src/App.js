@@ -9,7 +9,7 @@ const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
 export default function App() {
   return (
     <Box sx={{ position: "relative" }}>
-      <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 50 }}>
+      {/* <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 50 }}>
         <Paper
           sx={{
             background: "linear-gradient(to right, #fb923c, #ef4444)",
@@ -23,7 +23,7 @@ export default function App() {
         >
           In Development
         </Paper>
-      </Box>
+      </Box> */}
 
       <Suspense fallback={<CenteredCircularLoader />}>
         <Routes>

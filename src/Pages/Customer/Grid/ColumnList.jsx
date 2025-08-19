@@ -2,6 +2,7 @@ import { Trash2, BookText, Pencil, CirclePlus, Settings } from "lucide-react";
 import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
 import { Button, IconButton, Typography } from "@mui/material";
 import { formatDate } from "../../../Utils/globalFuc";
+import FieldPopover from "../../../Common/FieldPopover";
 
 export const getCustomerColumns = ({ onToggleLogin, onToggleActive, handleDelete, onEditUser, onPolicyRatio, onSynchronize, onPolicyApply }) => {
 	return [
@@ -31,6 +32,30 @@ export const getCustomerColumns = ({ onToggleLogin, onToggleActive, handleDelete
 			field: "company",
 			headerName: "Company",
 			width: 180,
+			renderCell: (params) => (
+				<FieldPopover
+					label="Company"
+					value={params.row.company}
+					details={{
+						"Company Type": params.row.companyType,
+						"Enterprise Type": params.row.enterpriseType,
+						"Address": params.row.address,
+						"GST": params.row.gstNumber,
+						"Tax Type": params.row.taxType,
+						"Tax Scheme": params.row.taxScheme,
+					}}
+					action={
+						<Button
+							variant="contained"
+							color="primary"
+							size="small"
+							onClick={() => onEditUser(params?.row)}
+						>
+							Edit
+						</Button>
+					}
+				/>
+			),
 		},
 		{
 			field: "representative",

@@ -2,24 +2,21 @@ import React, {
   useState,
   useMemo,
   useEffect,
-  useCallback,
   memo,
   lazy,
   Suspense,
 } from "react";
 import initialData from "../../../Data/empData.json";
 import { getCustomerColumns } from "./ColumnList";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography, FormControlLabel, Switch } from "@mui/material";
 import CustomerSummary from "../../../Components/CustomerForm/Grid/Summary/CustomerSummary";
 import { useDebounceFilters } from "../../../hooks/useDebounceFilters";
 import { useNavigate } from "react-router-dom";
-import { formatCustomer } from "../../../hooks/useCustomerFormat";
 import ConfirmationDialog from "../../../Common/ConfirmationDialog/ConfirmationDialog";
 import PurityRatioModal from "../../../Components/CustomerForm/Grid/Modal/PurityRatioModal";
 import CenteredCircularLoader from "../../../Common/Loder/CustomLoder";
 import { useCustomerActions } from "../../../hooks/useCustomerActions";
 import { useCustomerData } from "../../../hooks/useCustomerData";
-import { Plus } from "lucide-react";
 
 // Lazy imports
 const CustomerDataGrid = lazy(() =>
@@ -40,7 +37,6 @@ function CustomerGrid() {
     pageSize: 20,
   });
   const pageSizeOptions = [20, 25, 50, 100];
-
   const {
     filters,
     debouncedFilters,
@@ -63,6 +59,8 @@ function CustomerGrid() {
     handleCloseSynchronizeDialog,
     onPolicyApply,
     onSearch,
+    handleShowSummary,
+    showSummary,
     dialogState,
     dialogPurityState,
     setDialogPurityState,
@@ -101,14 +99,28 @@ function CustomerGrid() {
 
   return (
     <Box sx={{ width: "100%", height: "100vh", px: 2, bgcolor: "#fff" }}>
-      <Box sx={{ py: 2, borderBottom: "1px solid #ddd" }}>
-        <Typography sx={{ fontSize: "24px", fontWeight: "bold" }} variant="h2">
-          Customer Management
-        </Typography>
-        <Typography sx={{ fontSize: "14px" }} variant="body1">
-          Manage customer data, policies, and account information across your
-          business operations.
-        </Typography>
+      <Box sx={{ py: 2, borderBottom: "1px solid #ddd", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box>
+          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }} variant="h2">
+            Customer Management
+          </Typography>
+          <Typography sx={{ fontSize: "14px" }} variant="body1">
+            Manage customer data, policies, and account information across your
+            business operations.
+          </Typography>
+        </Box>
+        <Box>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showSummary}
+                onChange={handleShowSummary}
+                color="primary"
+              />
+            }
+            label={showSummary ? "Hide Summary" : "Show Summary"}
+          />
+        </Box>
       </Box>
       <Box sx={{ mb: 2 }}>
         <Suspense fallback={<CenteredCircularLoader />}>
@@ -123,7 +135,7 @@ function CustomerGrid() {
           />
         </Suspense>
       </Box>
-      <Suspense fallback={<CenteredCircularLoader />}>
+      {/* <Suspense fallback={<CenteredCircularLoader />}>
         <Box sx={{ mb: 2 }}>
           <FilterBar
             filtersConfig={filtersConfig}
@@ -134,10 +146,12 @@ function CustomerGrid() {
             addIcon={<Plus size={18} />}
             isFiltering={isFiltering} />
         </Box>
-      </Suspense>
-      <Box sx={{ mb: 2 }}>
-        <CustomerSummary summary={summaryData} />
-      </Box>
+      </Suspense> */}
+      {showSummary && (
+        <Box sx={{ mb: 2 }}>
+          <CustomerSummary summary={summaryData} />
+        </Box>
+      )}
       <Suspense fallback={<CenteredCircularLoader />}>
         <CustomerDataGrid
           deliveryData={filteredCustomerData}
@@ -146,6 +160,7 @@ function CustomerGrid() {
           setPaginationModel={setPaginationModel}
           pageSizeOptions={pageSizeOptions}
           loading={isFiltering}
+          showSummary={showSummary}
         />
       </Suspense>
       <ConfirmationDialog

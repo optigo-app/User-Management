@@ -35,7 +35,6 @@ const LoaderContainer = styled(Box)(() => ({
 
 const StyledCircle = styled("circle")({
   fill: "none",
-  stroke: "#106ee8",
   strokeWidth: 8,
   strokeDasharray: "2, 200",
   strokeDashoffset: 0,
@@ -64,7 +63,13 @@ function CustomCircularLoader({ size }) {
       viewBox="25 25 50 50"
       sx={{ width: size, height: size }}
     >
-      <StyledCircle cx="50" cy="50" r="20" />
+      <defs>
+        <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="rgba(115, 103, 240, 0.7)" />
+          <stop offset="100%" stopColor="#7367f0" />
+        </linearGradient>
+      </defs>
+      <StyledCircle cx="50" cy="50" r="20" stroke="url(#loaderGradient)" />
     </LoaderContainer>
   );
 }

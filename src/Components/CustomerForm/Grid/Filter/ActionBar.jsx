@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Button, IconButton, TextField, Tooltip } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, IconButton, TextField, ToggleButton, ToggleButtonGroup, Tooltip, useTheme } from "@mui/material";
 import {
   Plus,
   FileSpreadsheet,
@@ -20,6 +20,9 @@ const ActionBar = ({
   onSearch,
   onArchive,
 }) => {
+  const theme = useTheme();
+  const [status, setStatus] = useState("all");
+
   return (
     <Box className="action-bar">
       {/* Left: Primary Actions */}
@@ -48,6 +51,22 @@ const ActionBar = ({
         >
           Lead List
         </Button>
+        <ToggleButtonGroup
+          value={status}
+          exclusive
+          size="small"
+          onChange={(e, val) => setStatus(val)}
+          sx={{
+            ".Mui-selected": {
+              background: theme.palette.primary.primaryGradient,
+              color: "#fff",
+
+            },
+          }}
+        >
+          <ToggleButton value="active">Active</ToggleButton>
+          <ToggleButton value="inactive">Inactive</ToggleButton>
+        </ToggleButtonGroup>
       </Box>
 
       {/* Right: Search + Icon buttons */}

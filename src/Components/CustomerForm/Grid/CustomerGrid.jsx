@@ -1,7 +1,7 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
-const CustomerDataGrid = ({ deliveryData,columns, paginationModel, setPaginationModel, pageSizeOptions }) => {
+const CustomerDataGrid = ({showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions }) => {
 	return (
 		<DataGrid
 			getRowId={(row) => row.id}
@@ -21,7 +21,7 @@ const CustomerDataGrid = ({ deliveryData,columns, paginationModel, setPagination
 			checkboxSelection={true}
 			density="standard"
 			sx={{
-				height: "calc(100vh - 290px)",
+				height: `calc(100vh - ${showSummary ? "290px" : "177px"})`,
 				boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
 				'& .MuiDataGrid-columnHeaderTitle': {
 					fontWeight: 'bold',
