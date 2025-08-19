@@ -32,10 +32,16 @@ const customerFormSlice = createSlice({
       state.currentStep = action.payload;
     },
     resetForm: () => initialState,
+    setFormData: (state, action) => {
+      state.data = { ...state.data, ...action.payload };
+    },
+    setStep: (state, action) => {
+      state.currentStep = action.payload;
+    },
   },
 });
 
-export const { updateStepData, setErrors, nextStep, prevStep, goToStep, resetForm } =
+export const { updateStepData, setErrors, nextStep, prevStep, goToStep, resetForm, setFormData, setStep } =
   customerFormSlice.actions;
 
 export default customerFormSlice.reducer;

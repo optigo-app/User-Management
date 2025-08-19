@@ -1,13 +1,14 @@
 import { Box, Paper } from "@mui/material";
-import CustomerForm from "./Pages/Customer/Form/CustomerForm";
-import CustomerGrid from "./Pages/Customer/Grid/CustomerGrid";
 import { Routes, Route } from "react-router-dom";
+import React, { Suspense, lazy } from "react";
+import CenteredCircularLoader from "./Common/Loder/CustomLoder";
+
+const CustomerForm = lazy(() => import("./Pages/Customer/Form/CustomerForm"));
+const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
 
 export default function App() {
   return (
     <Box sx={{ position: "relative" }}>
-
-      {/* Prototype Badge */}
       <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 50 }}>
         <Paper
           sx={{
@@ -24,10 +25,12 @@ export default function App() {
         </Paper>
       </Box>
 
-      <Routes>
-        <Route path="/customer-register" element={<CustomerForm />} />
-        <Route path="/" element={<CustomerGrid />} />
-      </Routes>
+      <Suspense fallback={<CenteredCircularLoader />}>
+        <Routes>
+          <Route path="/customer-register" element={<CustomerForm />} />
+          <Route path="/" element={<CustomerGrid />} />
+        </Routes>
+      </Suspense>
     </Box>
   );
 }

@@ -16,7 +16,7 @@ const BankingStep = ({ expandedSections, onToggleSection, formData, errors }) =>
         }));
     };
 
-    const accounts = formData?.accounts || [];
+    const accounts = formData?.bankAccounts || [];
     const fieldCountText = `${accounts?.length || 0} account${accounts?.length !== 1 ? 's' : ''}`;
 
 

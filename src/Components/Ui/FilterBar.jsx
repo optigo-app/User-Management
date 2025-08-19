@@ -21,7 +21,6 @@ const FilterBar = ({
     filters = {},
     onFilterChange = () => { },
     onClearAll = () => { },
-    onAdd = () => { },
     isFiltering = false,
 }) => {
     const [showMore, setShowMore] = useState(false);
@@ -51,15 +50,7 @@ const FilterBar = ({
                 borderBottom: "1px solid #ddd",
             }}
         >
-            <Button
-                variant="contained"
-                color="primary"
-                startIcon={<Plus size={18} />}
-                onClick={onAdd}
-            >
-                Add
-            </Button>
-            {visibleFilters.map(({ key, label, type, options }) => (
+            {visibleFilters?.map(({ key, label, type, options }) => (
                 <Box key={key} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <TextField
                         select={type === "select"}
@@ -67,7 +58,7 @@ const FilterBar = ({
                         value={filters[key] || ""}
                         onChange={(e) => handleChange(key, e.target.value)}
                         size="small"
-                        sx={{ 
+                        sx={{
                             minWidth: 220,
                             '& .MuiOutlinedInput-root': {
                                 transition: 'border-color 0.2s ease',

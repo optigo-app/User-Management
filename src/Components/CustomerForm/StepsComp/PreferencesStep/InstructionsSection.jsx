@@ -3,7 +3,6 @@ import { Box, Grid, FormHelperText } from "@mui/material";
 import { FormField, Textarea } from "../../../Ui";
 
 const InstructionsSection = ({ formData, errors, onUpdate }) => {
-    console.log('formData: ', formData);
     const [instructions, setInstructions] = useState({
         officeInstructions: "",
         userInstructions: "",

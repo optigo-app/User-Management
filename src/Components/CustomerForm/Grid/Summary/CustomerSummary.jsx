@@ -10,7 +10,7 @@ export default function CustomerSummary({ summary }) {
                 <SummaryCard value={summary.totalCustomers} label="Total Customers" icon={<Users />} color="blue" />
             </Grid>
             <Grid size={{xs:12, sm:4, md:2}}>
-                <SummaryCard value={summary.activeUsers} label="Active Users" icon={<Users />} color="green" />
+                <SummaryCard value={summary.activeUsers} label="Active Customers" icon={<Users />} color="green" />
             </Grid>
             <Grid size={{xs:12, sm:4, md:2}}>
                 <SummaryCard value={summary.avgPurity} label="Avg Purity" icon={<TrendingUp />} color="purple" />
@@ -22,7 +22,7 @@ export default function CustomerSummary({ summary }) {
                 <SummaryCard value={summary.policyDueSoon} label="Policy Due Soon" icon={<Clock />} color="orange" />
             </Grid>
             <Grid size={{xs:12, sm:4, md:2}}>
-                <SummaryCard value={summary.inactiveUsers} label="Inactive Users" icon={<XCircle />} color="red" />
+                <SummaryCard value={summary.inactiveUsers} label="Inactive Customers" icon={<XCircle />} color="red" />
             </Grid>
         </Grid>
     );

@@ -5,7 +5,7 @@ import { Badge } from "./Badge";
 export const CollapsibleSection = ({ isOpen, onToggle, icon, gradient, title, subtitle, fieldCount, children }) => {
     return (
         <div style={{
-            border: '2px solid #e5e7eb',
+            border: '1px solid #e5e7eb',
             borderRadius: '12px',
             backgroundColor: 'white',
             transition: 'all 0.2s',

@@ -1,0 +1,45 @@
+.purity-modal__title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .purity-modal__close {
+    margin-left: auto;
+  }
+  
+  .purity-modal__content {
+    background: #fafafa;
+  }
+  
+  .purity-modal__inputBox {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+  
+  .purity-modal__table {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+  
+    th {
+      font-weight: 600;
+      background: #f1f1f1;
+    }
+  
+    td {
+      padding: 0.5rem;
+      vertical-align: middle;
+    }
+  
+    input {
+      max-width: 90px;
+      height: 15px;
+      font-size: 14px;
+    }
+  }
+  

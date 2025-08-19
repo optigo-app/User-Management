@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Box, Checkbox, Collapse, Divider, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography, useTheme } from "@mui/material";
+import { Box, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import { FormField, InputWithIcon, OptionGrid, Select } from "../../../Ui";
-import { ChevronRight, DollarSign, Percent } from "lucide-react";
+import {DollarSign, Percent } from "lucide-react";
 
 const initialBrokerageConfig = {
     assignBroker: "",
@@ -12,23 +12,19 @@ const initialBrokerageConfig = {
 };
 
 export default function BrokerageComp({ formData, errors, onUpdate }) {
-    const theme = useTheme();
     const [brokerageConfig, setBrokerageConfig] = useState(initialBrokerageConfig);
-    const [showCommissionCalculation, setShowCommissionCalculation] = useState(false);
 
     useEffect(() => {
         setBrokerageConfig(formData);
     }, [])
 
-    const handleBlur = (e) => {
-        const { id, value } = e.target;
-        const updatedConfig = { ...brokerageConfig, [id]: value };
+    const handleBlur = (key, value) => {
+        const updatedConfig = { ...brokerageConfig, [key]: value };
         onUpdate(updatedConfig);
     };
 
-    const handleBrokerageChange = (e) => {
-        const { id, value } = e.target;
-        setBrokerageConfig(prev => ({ ...prev, [id]: value }));
+    const handleBrokerageChange = (key, value) => {
+        setBrokerageConfig(prev => ({ ...prev, [key]: value }));
     };
 
     const handleCommissionStructureChange = (e) => {
@@ -61,18 +57,6 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
         { id: "total", label: "Total Amount", icon: "💰" },
     ];
 
-    const calculateCommission = () => {
-        const { commissionStructure, fixedAmount, percentageRate } = brokerageConfig;
-        const transactionAmount = 1000;
-        if (commissionStructure === "fixed") {
-            return `$${parseFloat(fixedAmount || "0").toFixed(2)}`;
-        } else if (commissionStructure === "percentage") {
-            const calculatedValue = (transactionAmount * parseFloat(percentageRate || "0")) / 100;
-            return `$${calculatedValue.toFixed(2)}`;
-        }
-        return "$0.00";
-    };
-
     return (
         <Grid container rowSpacing={0} columnSpacing={2}>
             <Grid size={{ xs: 12 }}>
@@ -80,22 +64,22 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
                     <Select
                         id="assignBroker"
                         placeholder="Choose broker"
-                        value={brokerageConfig.assignBroker || ""}
-                        onChange={handleBrokerageChange}
-                        onBlur={handleBlur}
-                    >
-                        <option value="john">John Smith</option>
-                        <option value="sarah">Sarah Johnson</option>
-                        <option value="jenis">Jenis</option>
-                        <option value="shivam">Shivam</option>
-                    </Select>
+                        value={formData.assignBroker || ""}
+                        onChange={(e) => handleBrokerageChange("assignBroker", e.target.value)}
+                        options={[
+                            { value: "john", label: "John Smith" },
+                            { value: "sarah", label: "Sarah Johnson" },
+                            { value: "jenis", label: "Jenis" },
+                            { value: "shivam", label: "Shivam" },
+                        ]}
+                    />
                 </FormField>
             </Grid>
             <Grid size={{ xs: 12 }}>
                 <Box>
                     <FormField label="Commission Type" tooltip="Select the type of commission calculation">
                         <RadioGroup
-                            value={brokerageConfig.commissionStructure}
+                            value={brokerageConfig.commissionStructure || "fixed"}
                             onChange={handleCommissionStructureChange}
                         >
                             <Grid container spacing={2}>
@@ -173,8 +157,8 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
                         placeholder="0.00"
                         disabled={brokerageConfig.commissionStructure !== "fixed"}
                         value={brokerageConfig.fixedAmount || ""}
-                        onChange={handleBrokerageChange}
-                        onBlur={handleBlur}
+                        onChange={(e) => handleBrokerageChange("fixedAmount", e.target.value)}
+                        onBlur={(e) => handleBlur("fixedAmount", e.target.value)}
                     />
                 </FormField>
             </Grid>
@@ -187,103 +171,10 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
                         placeholder="0.00"
                         disabled={brokerageConfig.commissionStructure !== "percentage"}
                         value={brokerageConfig.percentageRate || ""}
-                        onChange={handleBrokerageChange}
-                        onBlur={handleBlur}
+                        onChange={(e) => handleBrokerageChange("percentageRate", e.target.value)}
+                        onBlur={(e) => handleBlur("percentageRate", e.target.value)}
                     />
                 </FormField>
-            </Grid>
-            <Grid item xs={12}>
-                <Box>
-                    <button
-                        type="button"
-                        onClick={() => setShowCommissionCalculation(!showCommissionCalculation)}
-                        className="toggle-button"
-                        style={{ marginBottom: '15px' }}
-                    >
-                        <ChevronRight
-                            className={`toggle-icon ${showCommissionCalculation ? "rotate" : ""}`}
-                        />
-                        <span>Commission Calculation</span>
-                        <span className="toggle-subtext">
-                            (Click to {showCommissionCalculation ? "hide" : "show"})
-                        </span>
-                    </button>
-                    <Collapse in={showCommissionCalculation}>
-                        <Box
-                            sx={{
-                                mt: 1,
-                                p: 2,
-                                bgcolor: theme.palette.action.hover,
-                                borderRadius: 1,
-                                fontSize: "0.875rem",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    mb: 1,
-                                }}
-                            >
-                                <Typography variant="body2">Transaction Amount:</Typography>
-                                <Typography variant="body2" fontWeight="medium">$1,000.00</Typography>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    mb: 1,
-                                    textTransform: "capitalize",
-                                }}
-                            >
-                                <Typography variant="body2">Commission Structure:</Typography>
-                                <Typography variant="body2" fontWeight="medium">{brokerageConfig.commissionStructure}</Typography>
-                            </Box>
-                            {brokerageConfig.commissionStructure === "fixed" && (
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        mb: 1,
-                                    }}
-                                >
-                                    <Typography variant="body2">Fixed Amount:</Typography>
-                                    <Typography variant="body2" fontWeight="medium">
-                                        ${brokerageConfig.fixedAmount || "0.00"}
-                                    </Typography>
-                                </Box>
-                            )}
-                            {brokerageConfig.commissionStructure === "percentage" && (
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        mb: 1,
-                                    }}
-                                >
-                                    <Typography variant="body2">Commission Rate:</Typography>
-                                    <Typography variant="body2" fontWeight="medium">
-                                        {brokerageConfig.percentageRate || "0"}%
-                                    </Typography>
-                                </Box>
-                            )}
-                            <Divider sx={{ my: 1 }} />
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    color: theme.palette.success.main,
-                                    fontWeight: "medium",
-                                }}
-                            >
-                                <Typography variant="body2">Final Commission:</Typography>
-                                <Typography variant="body2">
-                                    {calculateCommission()}
-                                </Typography>
-                            </Box>
-                        </Box>
-                    </Collapse>
-                </Box>
             </Grid>
             <Grid item xs={12}>
                 <FormField label="Commission Applicable On" tooltip="Select transaction components for commission calculation">
