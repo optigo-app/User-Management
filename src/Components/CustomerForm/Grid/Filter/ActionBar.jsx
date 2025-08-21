@@ -37,37 +37,33 @@ const ActionBar = ({
           Add
         </Button>
 
-        <Button
+        {/* <Button
           variant="outlined"
           startIcon={<UserPlus size={18} />}
           onClick={onLead}
         >
           New Lead
-        </Button>
+        </Button> */}
 
-        <Button
+        {/* <Button
           variant="outlined"
           startIcon={<Users size={18} />}
           onClick={onLeadList}
         >
           Lead List
-        </Button>
-        {/* <ToggleButtonGroup
+        </Button> */}
+        <Box className="cust_toogleBtn">
+        <ToggleButtonGroup
           value={custActive}
           exclusive
           size="small"
           onChange={onChangeCustStatus}
-          sx={{
-            ".Mui-selected": {
-              background: theme.palette.primary.primaryGradient,
-              color: "#fff",
-
-            },
-          }}
+         className="toggle-group"
         >
-          <ToggleButton value="active">Active</ToggleButton>
-          <ToggleButton value="inactive">Inactive</ToggleButton>
-        </ToggleButtonGroup> */}
+          <ToggleButton className="toggle-button" value="customer">Customer</ToggleButton>
+          <ToggleButton className="toggle-button" value="lead">Lead</ToggleButton>
+        </ToggleButtonGroup>
+        </Box>
       </Box>
 
       {/* Right: Search + Icon buttons */}

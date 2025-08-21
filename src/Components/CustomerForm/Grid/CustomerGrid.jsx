@@ -1,12 +1,13 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
-const CustomerDataGrid = ({showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions }) => {
+const CustomerDataGrid = ({showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide }) => {
 	return (
 		<DataGrid
 			getRowId={(row) => row.id}
 			rows={deliveryData}
-			columns={columns}
+			columns={columns.map((col) => ({ ...col,  flex: isWide ? 1 : undefined,}))}
+			columnAutoWidth={true}
 			pageSize={paginationModel.pageSize}
 			onPageSizeChange={(newPageSize) => setPaginationModel({ ...paginationModel, pageSize: newPageSize })}
 			paginationModel={paginationModel}

@@ -43,20 +43,19 @@ const theme = createTheme({
                 },
                 input: {
                     fontFamily: '"Poppins", sans-serif',
-                    color: '#6B7280',
+                    color: '#000000DE', 
                 },
                 select: {
                     fontFamily: '"Poppins", sans-serif',
-                    color: '#6B7280',
+                    color: '#000000DE',
                 },
                 textarea: {
                     fontFamily: '"Poppins", sans-serif',
-                    color: '#6B7280',
-
+                    color: '#000000DE',
                 },
                 'input::placeholder': {
                     fontFamily: '"Poppins", sans-serif',
-                    color: '#6B7280',
+                    color: '#6b7280a6',
                 },
                 label: {
                     color: '#6B7280',

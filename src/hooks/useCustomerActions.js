@@ -12,13 +12,25 @@ export function useCustomerActions(setData, updateFilter) {
   const [dialogPurityState, setDialogPurityState] = useState({ open: false, selectedRow: null });
   const [dialogSynchronizeState, setDialogSynchronizeState] = useState({ open: false, selectedRow: null });
   const [dialogArchiveState, setDialogArchiveState] = useState({ open: false, selectedRow: null });
+  const [dialogAllSynchroze, setDialogAllSynchronize] = useState({ open: false, selectedRow: null })
+  const [drawerleadOpen, setDrawerLeadOpen] = useState({ open: false, selectedRow: null });
   const [showSummary, setShowSummary] = useState(false);
-  const [custActive, setCustActive] = useState(false);
+  const [custActive, setCustActive] = useState("customer");
 
   const handleAdd = useCallback(() => {
+    debugger
     const formattedData = formatCustomer({});
-    navigate("/customer-register", { state: { data: formattedData, step: 1 } });
-  }, [navigate]);
+    if (custActive == "customer") {
+      navigate("/customer-register", { state: { data: formattedData, step: 1 } });
+    }
+    else {
+      setDrawerLeadOpen({ open: true, selectedRow: null });
+    }
+  }, [custActive]);
+
+  const handleCloseLeadDrawer = useCallback(() => {
+    setDrawerLeadOpen(false);
+  }, []);
 
   const onToggleLogin = useCallback((row) => {
     setData((prev) =>
@@ -56,9 +68,14 @@ export function useCustomerActions(setData, updateFilter) {
   }, []);
 
   const onEditUser = useCallback((row) => {
-    const formattedData = formatCustomer(row);
-    navigate(`/customer-register`, { state: { data: formattedData, step: 1 } });
-  }, [navigate]);
+    if (custActive == "customer") {
+      const formattedData = formatCustomer(row);
+      navigate(`/customer-register`, { state: { data: formattedData, step: 1 } });
+    }
+    else {
+      setDrawerLeadOpen({ open: true, selectedRow: row });
+    }
+  }, [navigate, custActive]);
 
   const onPolicyRatio = useCallback((row) => {
     setDialogPurityState({ open: true, selectedRow: row });
@@ -93,6 +110,15 @@ export function useCustomerActions(setData, updateFilter) {
     setDialogArchiveState({ open: false, selectedRow: null });
   }, []);
 
+  const handleSynchronize = useCallback((row) => {
+    setDialogAllSynchronize({ open: true, selectedRow: row });
+  }, []);
+
+  const handleCloseSynchronize = useCallback(() => {
+    setDialogAllSynchronize({ open: false, selectedRow: null });
+  }, []);
+
+
   const onChangeCustStatus = useCallback(e => setCustActive(e.target.value), []);
 
   const handleExcel = useCallback((data) => {
@@ -120,7 +146,8 @@ export function useCustomerActions(setData, updateFilter) {
     onEditUser,
     onPolicyRatio,
     onSynchronize,
-    handleCloseSynchronizeDialog,
+    handleSynchronize,
+    handleCloseSynchronize,
     onPolicyApply,
     onSearch,
     handleShowSummary,
@@ -130,8 +157,11 @@ export function useCustomerActions(setData, updateFilter) {
     dialogState,
     dialogPurityState,
     custActive,
+    drawerleadOpen,
+    handleCloseLeadDrawer,
     dialogSynchronizeState,
     dialogArchiveState,
+    dialogAllSynchroze,
     setDialogState,
     setDialogPurityState,
     setDialogSynchronizeState,
