@@ -1,36 +1,65 @@
-import { Box, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import React, { Suspense, lazy } from "react";
 import CenteredCircularLoader from "./Common/Loder/CustomLoder";
+import CustomerForm from "./Pages/Customer/Form/CustomerForm";
+import { Toaster } from "react-hot-toast";
 
-const CustomerForm = lazy(() => import("./Pages/Customer/Form/CustomerForm"));
+// Lazy load only CustomerGrid
 const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
 
 export default function App() {
   return (
     <Box sx={{ position: "relative" }}>
-      {/* <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 50 }}>
-        <Paper
-          sx={{
-            background: "linear-gradient(to right, #fb923c, #ef4444)",
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            borderRadius: "8px",
+            padding: "5px 10px",
             color: "#fff",
             fontWeight: 500,
-            px: 2,
-            py: 0.5,
-            borderBottomLeftRadius: "8px",
-            boxShadow: 3,
-          }}
-        >
-          In Development
-        </Paper>
-      </Box> */}
+          },
+          success: {
+            style: {
+              background: "#22c55e",
+              boxShadow: "0 4px 12px rgba(34, 197, 94, 0.6)",
+            },
+          },
+          error: {
+            style: {
+              background: "#ef4444",
+              boxShadow: "0 4px 12px rgba(239, 68, 68, 0.6)",
+            },
+          },
+          loading: {
+            style: {
+              background: "#3b82f6",
+              boxShadow: "0 4px 12px rgba(59, 130, 246, 0.6)",
+            },
+          },
+          blank: {
+            style: {
+              background: "#eab308",
+              boxShadow: "0 4px 12px rgba(234, 179, 8, 0.6)",
+              color: "#000",
+            },
+          },
+        }}
+      />
+      <Routes>
+        <Route path="/customer-register" element={<CustomerForm />} />
 
-      <Suspense fallback={<CenteredCircularLoader />}>
-        <Routes>
-          <Route path="/customer-register" element={<CustomerForm />} />
-          <Route path="/" element={<CustomerGrid />} />
-        </Routes>
-      </Suspense>
+        {/* Lazy-loaded route */}
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<CenteredCircularLoader />}>
+              <CustomerGrid />
+            </Suspense>
+          }
+        />
+      </Routes>
     </Box>
   );
 }

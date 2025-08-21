@@ -12,6 +12,7 @@ import {
 import "./ActionBar.scss";
 
 const ActionBar = ({
+  custActive,
   onAdd,
   onLead,
   onExcel,
@@ -19,9 +20,9 @@ const ActionBar = ({
   onLeadList,
   onSearch,
   onArchive,
+  onChangeCustStatus,
 }) => {
   const theme = useTheme();
-  const [status, setStatus] = useState("all");
 
   return (
     <Box className="action-bar">
@@ -51,11 +52,11 @@ const ActionBar = ({
         >
           Lead List
         </Button>
-        <ToggleButtonGroup
-          value={status}
+        {/* <ToggleButtonGroup
+          value={custActive}
           exclusive
           size="small"
-          onChange={(e, val) => setStatus(val)}
+          onChange={onChangeCustStatus}
           sx={{
             ".Mui-selected": {
               background: theme.palette.primary.primaryGradient,
@@ -66,7 +67,7 @@ const ActionBar = ({
         >
           <ToggleButton value="active">Active</ToggleButton>
           <ToggleButton value="inactive">Inactive</ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> */}
       </Box>
 
       {/* Right: Search + Icon buttons */}

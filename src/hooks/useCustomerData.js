@@ -15,7 +15,6 @@ export function useCustomerData(data, debouncedFilters, hasActiveFilters) {
 
     const filteredCustomerData = useMemo(() => {
         if (!hasActiveFilters) return preprocessedData;
-
         return preprocessedData.filter((item) =>
             Object.entries(debouncedFilters).every(([key, value]) => {
                 if (!value) return true;

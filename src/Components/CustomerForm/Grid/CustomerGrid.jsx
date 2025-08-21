@@ -28,6 +28,8 @@ const CustomerDataGrid = ({showSummary, deliveryData, columns, paginationModel, 
 				},
 				"& .MuiDataGrid-row": {
 					alignItems: "center",
+					height: '45px !important',
+					minHeight: '45px !important',
 				},
 				"& .MuiDataGrid-cell": {
 					fontSize: "13px",

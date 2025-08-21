@@ -31,7 +31,8 @@ const filtersConfig = [{ key: "customerName", label: "Customer Name", type: "tex
 
 function CustomerGrid() {
   const navigate = useNavigate();
-  const [data, setData] = useState(initialData);
+  const custData = useMemo(() => initialData, []);
+  const [data, setData] = useState(custData);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 20,
@@ -60,13 +61,18 @@ function CustomerGrid() {
     onPolicyApply,
     onSearch,
     handleShowSummary,
+    handleExcel,
+    handleArchive,
     showSummary,
     dialogState,
     dialogPurityState,
+    custActive,
     setDialogPurityState,
     dialogSynchronizeState,
+    dialogArchiveState,
+    handleCloseArchiveDialog,
+    onChangeCustStatus,
   } = useCustomerActions(setData, updateFilter);
-
 
   const { filteredCustomerData, summaryData } =
     useCustomerData(data, debouncedFilters, hasActiveFilters);
@@ -80,7 +86,6 @@ function CustomerGrid() {
     handleExcel: () => navigate("/excel"),
     handleSynchronize: () => navigate("/synchronize"),
     handleLeadList: () => navigate("/lead-list"),
-    handleArchive: () => navigate("/archive"),
   };
 
   const columns = useMemo(
@@ -96,6 +101,8 @@ function CustomerGrid() {
       }),
     [onToggleLogin, onToggleActive, handleDelete, onEditUser, onPolicyRatio, onSynchronize, onPolicyApply]
   );
+
+  console.log('djskdjsjjsjdjsjk')
 
   return (
     <Box sx={{ width: "100%", height: "100vh", px: 2, bgcolor: "#fff" }}>
@@ -125,13 +132,15 @@ function CustomerGrid() {
       <Box sx={{ mb: 2 }}>
         <Suspense fallback={<CenteredCircularLoader />}>
           <ActionBar
+            custActive={custActive}
             onAdd={handleAdd}
             onLead={navHandlers.handleLead}
-            onExcel={navHandlers.handleExcel}
+            onExcel={() => handleExcel(filteredCustomerData)}
             onSynchronize={navHandlers.handleSynchronize}
             onLeadList={navHandlers.handleLeadList}
             onSearch={onSearch}
-            onArchive={navHandlers.handleArchive}
+            onArchive={handleArchive}
+            onChangeCustStatus={onChangeCustStatus}
           />
         </Suspense>
       </Box>
@@ -179,6 +188,16 @@ function CustomerGrid() {
         confirmLabel="Synchronize"
         content="Are you sure you want to Synchronize this customer?"
       />
+      <ConfirmationDialog
+        open={dialogArchiveState.open}
+        onClose={handleCloseArchiveDialog}
+        onConfirm={() => { }}
+        title="Confirm"
+        cancelLabel="Cancel"
+        confirmLabel="Archive"
+        content="Are you sure you want to Archive this customer?"
+      />
+
       <PurityRatioModal
         open={dialogPurityState?.open}
         onClose={() =>

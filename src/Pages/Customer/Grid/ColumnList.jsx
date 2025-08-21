@@ -44,16 +44,7 @@ export const getCustomerColumns = ({ onToggleLogin, onToggleActive, handleDelete
 						"Tax Type": params.row.taxType,
 						"Tax Scheme": params.row.taxScheme,
 					}}
-					action={
-						<Button
-							variant="contained"
-							color="primary"
-							size="small"
-							onClick={() => onEditUser(params?.row)}
-						>
-							Edit
-						</Button>
-					}
+					onEdit={() => onEditUser(params?.row)}
 				/>
 			),
 		},

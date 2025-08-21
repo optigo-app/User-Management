@@ -103,7 +103,6 @@ export default function CustomerForm() {
 
   // ✅ Restore state if redirected
   useEffect(() => {
-    debugger
     if (location.state) {
       dispatch(setFormData(location.state.data));
       dispatch(setStep(location.state.step));

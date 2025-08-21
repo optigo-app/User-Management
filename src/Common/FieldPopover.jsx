@@ -11,7 +11,7 @@ const FieldPopover = ({ label, value, details, onEdit }) => {
 
     const handleEdit = () => {
         handleClose();
-        if (onEdit) onEdit(); // Call parent edit callback
+        if (onEdit) onEdit();
         else alert(`Edit ${label}`);
     };
 

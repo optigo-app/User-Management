@@ -1,5 +1,7 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import { formatCustomer } from "./useCustomerFormat";
 
 export function useCustomerActions(setData, updateFilter) {
@@ -9,7 +11,9 @@ export function useCustomerActions(setData, updateFilter) {
   const [dialogState, setDialogState] = useState({ open: false, selectedRow: null });
   const [dialogPurityState, setDialogPurityState] = useState({ open: false, selectedRow: null });
   const [dialogSynchronizeState, setDialogSynchronizeState] = useState({ open: false, selectedRow: null });
+  const [dialogArchiveState, setDialogArchiveState] = useState({ open: false, selectedRow: null });
   const [showSummary, setShowSummary] = useState(false);
+  const [custActive, setCustActive] = useState(false);
 
   const handleAdd = useCallback(() => {
     const formattedData = formatCustomer({});
@@ -24,13 +28,15 @@ export function useCustomerActions(setData, updateFilter) {
     );
   }, [setData]);
 
-  const onToggleActive = useCallback((row) => {
-    setData((prev) =>
-      prev.map((item) =>
-        item.id === row.id ? { ...item, active: !row.active } : item
-      )
-    );
-  }, [setData]);
+  const onToggleActive = useCallback(row => {
+    setData(prev => {
+      const index = prev.findIndex(item => item.id === row.id);
+      if (index === -1) return prev;
+      const newData = [...prev];
+      newData[index] = { ...newData[index], active: !newData[index].active };
+      return newData;
+    });
+  }, []);
 
   const onDeleteUser = useCallback(() => {
     if (dialogState.selectedRow) {
@@ -51,7 +57,7 @@ export function useCustomerActions(setData, updateFilter) {
 
   const onEditUser = useCallback((row) => {
     const formattedData = formatCustomer(row);
-    navigate(`/customer-register`, { state: { data: formattedData, step: 1 }});
+    navigate(`/customer-register`, { state: { data: formattedData, step: 1 } });
   }, [navigate]);
 
   const onPolicyRatio = useCallback((row) => {
@@ -76,9 +82,33 @@ export function useCustomerActions(setData, updateFilter) {
   }, [updateFilter]);
 
   const handleShowSummary = useCallback(() => {
-    setShowSummary(!showSummary);
-  }, [showSummary]);
+    setShowSummary(prev => !prev);
+  }, []);
 
+  const handleArchive = useCallback((row) => {
+    setDialogArchiveState({ open: true, selectedRow: row });
+  }, []);
+
+  const handleCloseArchiveDialog = useCallback(() => {
+    setDialogArchiveState({ open: false, selectedRow: null });
+  }, []);
+
+  const onChangeCustStatus = useCallback(e => setCustActive(e.target.value), []);
+
+  const handleExcel = useCallback((data) => {
+    if (!data || data.length === 0) {
+      alert("No data to export");
+      return;
+    }
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Customers");
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+    saveAs(blob, `customers_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  }, []);
 
   return {
     handleAdd,
@@ -94,12 +124,18 @@ export function useCustomerActions(setData, updateFilter) {
     onPolicyApply,
     onSearch,
     handleShowSummary,
+    handleExcel,
+    handleArchive,
     showSummary,
     dialogState,
-    setDialogState,
     dialogPurityState,
-    setDialogPurityState,
+    custActive,
     dialogSynchronizeState,
+    dialogArchiveState,
+    setDialogState,
+    setDialogPurityState,
     setDialogSynchronizeState,
+    handleCloseArchiveDialog,
+    onChangeCustStatus,
   };
 }

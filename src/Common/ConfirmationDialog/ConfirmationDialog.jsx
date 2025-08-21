@@ -4,8 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Divider } from '@mui/material';
-import { Button } from '../../Components/Ui';
+import { Button, Divider } from '@mui/material';
 
 const ConfirmationDialog = ({ open, onClose, confirmLabel, cancelLabel, onConfirm, title, content }) => {
   return (
@@ -24,10 +23,10 @@ const ConfirmationDialog = ({ open, onClose, confirmLabel, cancelLabel, onConfir
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button className='for_DialogBtn' variant='outline' size='md' onClick={onClose} autoFocus fullWidth>
+        <Button className='for_DialogBtn' variant='outlined' size='md' onClick={onClose}>
           {cancelLabel ?? "Cancel"}
         </Button>
-        <Button className='for_DialogBtn' variant='primary' size='md' onClick={onConfirm} autoFocus fullWidth>
+        <Button autoFocus  className='for_DialogBtn' variant='contained' size='md' onClick={onConfirm} >
           {confirmLabel ?? "Remove"}
         </Button>
       </DialogActions>
