@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { Box, Button, IconButton, TextField, ToggleButton, ToggleButtonGroup, Tooltip, useTheme } from "@mui/material";
+import React from "react";
+import { Box, Button, IconButton, ToggleButton, ToggleButtonGroup, Tooltip, useTheme } from "@mui/material";
 import {
   Plus,
   FileSpreadsheet,
   RefreshCw,
-  Users,
   Search,
   Archive,
-  UserPlus,
+  Maximize,
+  Minimize,
 } from "lucide-react";
 import "./ActionBar.scss";
 
 const ActionBar = ({
   custActive,
+  showSummary,
   onAdd,
   onLead,
   onExcel,
@@ -21,9 +22,8 @@ const ActionBar = ({
   onSearch,
   onArchive,
   onChangeCustStatus,
+  handleShowSummary,
 }) => {
-  const theme = useTheme();
-
   return (
     <Box className="action-bar">
       {/* Left: Primary Actions */}
@@ -53,16 +53,16 @@ const ActionBar = ({
           Lead List
         </Button> */}
         <Box className="cust_toogleBtn">
-        <ToggleButtonGroup
-          value={custActive}
-          exclusive
-          size="small"
-          onChange={onChangeCustStatus}
-         className="toggle-group"
-        >
-          <ToggleButton className="toggle-button" value="customer">Customer</ToggleButton>
-          <ToggleButton className="toggle-button" value="lead">Lead</ToggleButton>
-        </ToggleButtonGroup>
+          <ToggleButtonGroup
+            value={custActive}
+            exclusive
+            size="small"
+            onChange={onChangeCustStatus}
+            className="toggle-group"
+          >
+            <ToggleButton className="toggle-button" value="customer">Customer</ToggleButton>
+            <ToggleButton className="toggle-button" value="lead">Lead</ToggleButton>
+          </ToggleButtonGroup>
         </Box>
       </Box>
 
@@ -92,6 +92,11 @@ const ActionBar = ({
         <Tooltip title="Archive">
           <IconButton className="icon-btn archive" onClick={onArchive}>
             <Archive size={20} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={showSummary ? "Hide Summary" : "Show Summary"} placement="top">
+          <IconButton className="icon-btn expand" onClick={handleShowSummary}>
+            {showSummary ? <Minimize size={20} /> : <Maximize size={20} />}
           </IconButton>
         </Tooltip>
       </Box>

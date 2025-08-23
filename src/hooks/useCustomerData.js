@@ -58,8 +58,8 @@ export function useCustomerAndLeadData(
       const avgPurity =
         totalCustomers > 0
           ? (
-              data.reduce((sum, c) => sum + (c.purity || 0), 0) / totalCustomers
-            ).toFixed(1) + "%"
+            data.reduce((sum, c) => sum + (c.purity || 0), 0) / totalCustomers
+          ).toFixed(1) + "%"
           : "0%";
       const premiumPackage =
         data?.filter((c) => c.package === "premium").length ?? 0;
@@ -83,6 +83,8 @@ export function useCustomerAndLeadData(
       const rejectedLeads = data?.filter((l) => l.Reject === true).length ?? 0;
       const premiumLeads =
         data?.filter((l) => l.eCatalogPackage === "Premium").length ?? 0;
+      const standardLeads =
+        data?.filter((l) => l.eCatalogPackage === "Standard").length ?? 0;
       const activeCities = new Set(data?.map((l) => l.city)).size ?? 0;
 
       return {
@@ -90,6 +92,7 @@ export function useCustomerAndLeadData(
         verifiedLeads,
         rejectedLeads,
         premiumLeads,
+        standardLeads,
         activeCities,
       };
     }

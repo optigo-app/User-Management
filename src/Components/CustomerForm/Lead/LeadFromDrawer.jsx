@@ -83,6 +83,8 @@ const LeadFromDrawer = ({ open, editData, onClose }) => {
                 companyAddress: "",
                 mobiles: [""],
             });
+        }else{
+            onClose();
         }
     };
 

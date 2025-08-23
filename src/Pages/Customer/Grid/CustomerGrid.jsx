@@ -9,18 +9,16 @@ import React, {
 import initialData from "../../../Data/empData.json";
 import initialLeadData from "../../../Data/leadData.json";
 import { getCustomerColumns } from "./ColumnList";
-import { Box, Typography, FormControlLabel, Switch, useMediaQuery } from "@mui/material";
-import CustomerSummary from "../../../Components/CustomerForm/Grid/Summary/CustomerSummary";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useDebounceFilters } from "../../../hooks/useDebounceFilters";
-import { useNavigate } from "react-router-dom";
 import ConfirmationDialog from "../../../Common/ConfirmationDialog/ConfirmationDialog";
 import PurityRatioModal from "../../../Components/CustomerForm/Grid/Modal/PurityRatioModal";
 import CenteredCircularLoader from "../../../Common/Loder/CustomLoder";
 import { useCustomerActions } from "../../../hooks/useCustomerActions";
-import { useCustomerAndLeadData, useCustomerData } from "../../../hooks/useCustomerData";
+import { useCustomerAndLeadData } from "../../../hooks/useCustomerData";
 import { getLeadColumns } from "./LeadList";
-import { useLeadActions } from "../../../hooks/useLeadActions";
 import LeadFromDrawer from "../../../Components/CustomerForm/Lead/LeadFromDrawer";
+import CustomerSummaryConfig from "../../../Components/CustomerForm/Grid/Summary/CustomerSummaryConfig";
 
 // Lazy imports
 const CustomerDataGrid = lazy(() =>
@@ -42,7 +40,6 @@ function CustomerGrid() {
     pageSize: 20,
   });
   const pageSizeOptions = [20, 25, 50, 100];
-  const isWide = useMediaQuery("(min-width:2425px)");
   const {
     filters,
     debouncedFilters,
@@ -82,6 +79,7 @@ function CustomerGrid() {
     setDialogSynchronizeState,
     handleCloseArchiveDialog,
     onChangeCustStatus,
+    handleMakeLeadToCustomer,
   } = useCustomerActions(setData, updateFilter);
 
   useEffect(() => {
@@ -122,10 +120,12 @@ function CustomerGrid() {
         onToggleActive,
         onEditUser,
         handleDelete,
+        handleMakeLeadToCustomer,
       }),
-    [onToggleActive, onEditUser, handleDelete]
+    [onToggleActive, onEditUser, handleDelete, handleMakeLeadToCustomer]
   );
 
+  const isWide = useMediaQuery(`(min-width:${(custActive === "customer" ? 2425 : 1910)}px)`);
   console.log('djskdjsjjsjdjsjk', data)
 
   return (
@@ -140,7 +140,7 @@ function CustomerGrid() {
             business operations.
           </Typography>
         </Box>
-        <Box>
+        {/* <Box>
           <FormControlLabel
             control={
               <Switch
@@ -151,18 +151,26 @@ function CustomerGrid() {
             }
             label={showSummary ? "Hide Summary" : "Show Summary"}
           />
-        </Box>
+        </Box> */}
       </Box>
+      <CustomerSummaryConfig
+        showSummary={showSummary}
+        custActive={custActive}
+        summaryData={summaryData}
+      />
+
       <Box sx={{ mb: 2 }}>
         <Suspense fallback={<CenteredCircularLoader />}>
           <ActionBar
             custActive={custActive}
+            showSummary={showSummary}
             onAdd={handleAdd}
             onExcel={() => handleExcel(filteredData)}
             onSynchronize={handleSynchronize}
             onSearch={onSearch}
             onArchive={handleArchive}
             onChangeCustStatus={onChangeCustStatus}
+            handleShowSummary={handleShowSummary}
           />
         </Suspense>
       </Box>
@@ -178,11 +186,6 @@ function CustomerGrid() {
             isFiltering={isFiltering} />
         </Box>
       </Suspense> */}
-      {showSummary && (
-        <Box sx={{ mb: 2 }}>
-          <CustomerSummary summary={summaryData} />
-        </Box>
-      )}
       <Suspense fallback={<CenteredCircularLoader />}>
         <CustomerDataGrid
           deliveryData={filteredData}

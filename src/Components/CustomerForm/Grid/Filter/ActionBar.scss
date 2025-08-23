@@ -20,7 +20,7 @@
       align-items: center;
 
       .toggle-group {
-        background: $primary-gradient;
+        background: #e8e7e7;
         padding: 5px;
         gap: 10px;
         width: 220px;
@@ -38,8 +38,8 @@
           transition: all 0.2s ease-in-out;
 
           &.Mui-selected {
-            background: #fff !important;
-            color: #7367f0 !important;
+            background: #7367f0 !important;
+            color: #fff !important;
             font-weight: 700;
           }
         }

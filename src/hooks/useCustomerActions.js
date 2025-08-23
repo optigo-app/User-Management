@@ -14,7 +14,7 @@ export function useCustomerActions(setData, updateFilter) {
   const [dialogArchiveState, setDialogArchiveState] = useState({ open: false, selectedRow: null });
   const [dialogAllSynchroze, setDialogAllSynchronize] = useState({ open: false, selectedRow: null })
   const [drawerleadOpen, setDrawerLeadOpen] = useState({ open: false, selectedRow: null });
-  const [showSummary, setShowSummary] = useState(false);
+  const [showSummary, setShowSummary] = useState(true);
   const [custActive, setCustActive] = useState("customer");
 
   const handleAdd = useCallback(() => {
@@ -77,16 +77,17 @@ export function useCustomerActions(setData, updateFilter) {
     }
   }, [navigate, custActive]);
 
+  const handleMakeLeadToCustomer = useCallback((row) => {
+    const formattedData = formatCustomer(row);
+    navigate(`/customer-register`, { state: { data: formattedData, step: 1 } });
+  }, [setData]);
+
   const onPolicyRatio = useCallback((row) => {
     setDialogPurityState({ open: true, selectedRow: row });
   }, []);
 
   const onSynchronize = useCallback((row) => {
     setDialogSynchronizeState({ open: true, selectedRow: row });
-  }, []);
-
-  const handleCloseSynchronizeDialog = useCallback(() => {
-    setDialogSynchronizeState({ open: false, selectedRow: null });
   }, []);
 
   const onPolicyApply = useCallback((row) => {
@@ -167,5 +168,6 @@ export function useCustomerActions(setData, updateFilter) {
     setDialogSynchronizeState,
     handleCloseArchiveDialog,
     onChangeCustStatus,
+    handleMakeLeadToCustomer,
   };
 }

@@ -1,12 +1,12 @@
-import React from "react";
+import React, { memo } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
-const CustomerDataGrid = ({showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide }) => {
+const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide }) => {
 	return (
 		<DataGrid
 			getRowId={(row) => row.id}
 			rows={deliveryData}
-			columns={columns.map((col) => ({ ...col,  flex: isWide ? 1 : undefined,}))}
+			columns={columns.map((col) => ({ ...col, flex: isWide ? 1 : undefined, }))}
 			columnAutoWidth={true}
 			pageSize={paginationModel.pageSize}
 			onPageSizeChange={(newPageSize) => setPaginationModel({ ...paginationModel, pageSize: newPageSize })}
@@ -22,7 +22,9 @@ const CustomerDataGrid = ({showSummary, deliveryData, columns, paginationModel, 
 			checkboxSelection={true}
 			density="standard"
 			sx={{
-				height: `calc(100vh - ${showSummary ? "290px" : "177px"})`,
+				height: `calc(100vh - ${showSummary ? "300px" : "169px"})`,
+				transform: "translateY(-10px)",
+				transition: "transform 0.3s ease",
 				boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
 				'& .MuiDataGrid-columnHeaderTitle': {
 					fontWeight: 'bold',
@@ -93,4 +95,5 @@ const CustomerDataGrid = ({showSummary, deliveryData, columns, paginationModel, 
 	);
 };
 
-export default CustomerDataGrid;
+export default memo(CustomerDataGrid);
+

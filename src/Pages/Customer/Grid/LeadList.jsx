@@ -1,9 +1,9 @@
-import { Trash2, Pencil } from "lucide-react";
-import { Button, IconButton } from "@mui/material";
+import { Trash2, Pencil, CirclePlus } from "lucide-react";
+import { IconButton, Tooltip } from "@mui/material";
 import { formatDate } from "../../../Utils/globalFuc";
 import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
 
-export const getLeadColumns = ({ onEditUser, handleDelete, onToggleActive }) => {
+export const getLeadColumns = ({ onEditUser, handleDelete, onToggleActive, handleMakeLeadToCustomer }) => {
     return [
         {
             field: "sr",
@@ -15,8 +15,21 @@ export const getLeadColumns = ({ onEditUser, handleDelete, onToggleActive }) => 
         {
             field: "joiningDate",
             headerName: "Joining Date",
-            width: 130,
-            renderCell: (params) => formatDate(params.row?.joiningDate),
+            width: 140,
+            renderCell: (params) => (
+                <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: 'space-between', width: '100%' }}>
+                    <span>{formatDate(params.row?.joiningDate)}</span>
+                    <Tooltip title={`Transform to Customer`} placement="top">
+                        <IconButton
+                            color="primary"
+                            size="small"
+                            onClick={() => handleMakeLeadToCustomer(params.row)}
+                        >
+                            <CirclePlus size={18} />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            ),
         },
         {
             field: "firstName",
@@ -31,12 +44,12 @@ export const getLeadColumns = ({ onEditUser, handleDelete, onToggleActive }) => 
         {
             field: "company",
             headerName: "Company",
-            width: 200,
+            width: 210,
         },
         {
             field: "userId",
             headerName: "User ID",
-            width: 180,
+            width: 150,
         },
         {
             field: "mobile",
@@ -51,12 +64,12 @@ export const getLeadColumns = ({ onEditUser, handleDelete, onToggleActive }) => 
         {
             field: "country",
             headerName: "Country",
-            width: 127,
+            width: 132,
         },
         {
             field: "city",
             headerName: "City",
-            width: 127,
+            width: 132,
         },
         {
             field: "reference",
