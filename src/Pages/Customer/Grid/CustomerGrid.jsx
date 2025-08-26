@@ -19,6 +19,7 @@ import { useCustomerAndLeadData } from "../../../hooks/useCustomerData";
 import { getLeadColumns } from "./LeadList";
 import LeadFromDrawer from "../../../Components/CustomerForm/Lead/LeadFromDrawer";
 import CustomerSummaryConfig from "../../../Components/CustomerForm/Grid/Summary/CustomerSummaryConfig";
+import Header from "./Header";
 
 // Lazy imports
 const CustomerDataGrid = lazy(() =>
@@ -131,17 +132,7 @@ function CustomerGrid() {
 
   return (
     <Box sx={{ width: "100%", height: "100vh", px: 2, bgcolor: "#fff" }}>
-      <Box sx={{ py: 2, borderBottom: "1px solid #ddd", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Box>
-          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }} variant="h2">
-            Customer Management
-          </Typography>
-          <Typography sx={{ fontSize: "14px" }} variant="body1">
-            Manage customer data, policies, and account information across your
-            business operations.
-          </Typography>
-        </Box>
-      </Box>
+      <Header />
       <CustomerSummaryConfig
         showSummary={showSummary}
         custActive={custActive}

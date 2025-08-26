@@ -1,0 +1,32 @@
+@import "../../../Theme/variable.scss";
+
+.toggle-group-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .toggle-group {
+      background: #e8e7e7a6;
+      padding: 5px;
+      gap: 10px;
+
+      .toggle-button {
+        width: 50%;
+        flex: 1;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        border: none;
+        padding: 12px;
+        line-height: .4rem;
+        text-transform: none;
+        transition: all 0.2s ease-in-out;
+
+        &.Mui-selected {
+          background: $primary-gradient !important;
+          color: #fff !important;
+          font-weight: 700;
+        }
+      }
+    }
+  }

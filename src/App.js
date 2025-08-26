@@ -7,8 +7,9 @@ import { Toaster } from "react-hot-toast";
 
 // Lazy load only CustomerGrid
 const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
+const HomePage = lazy(() => import("./Pages/Home/HomePage"));
 
-export default function App() {
+export default function App() { 
   return (
     <Box sx={{ position: "relative" }}>
       <Toaster
@@ -52,10 +53,18 @@ export default function App() {
 
         {/* Lazy-loaded route */}
         <Route
-          path="/"
+          path="/customers"
           element={
             <Suspense fallback={<CenteredCircularLoader />}>
               <CustomerGrid />
+            </Suspense>
+          }
+        />
+         <Route
+          path="/"
+          element={
+            <Suspense fallback={<CenteredCircularLoader />}>
+              <HomePage />
             </Suspense>
           }
         />
