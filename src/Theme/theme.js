@@ -43,7 +43,7 @@ const theme = createTheme({
                 },
                 input: {
                     fontFamily: '"Poppins", sans-serif',
-                    color: '#000000DE', 
+                    color: '#000000DE',
                 },
                 select: {
                     fontFamily: '"Poppins", sans-serif',
@@ -123,7 +123,7 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     borderRadius: 8,
-                    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.08)',
+                    boxShadow: '0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)',
                 },
             },
         },

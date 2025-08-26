@@ -13,6 +13,7 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    align-items: center;
 
     .cust_toogleBtn {
       display: flex;
@@ -38,12 +39,17 @@
           transition: all 0.2s ease-in-out;
 
           &.Mui-selected {
-            background: #7367f0 !important;
+            background: $primary-gradient !important;
             color: #fff !important;
             font-weight: 700;
           }
         }
       }
+    }
+    .additional-filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
   }
 

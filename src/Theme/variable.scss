@@ -2,4 +2,27 @@ $primary-color: #7367f0;
 $primary-border-color: #7367f0;
 
 $primary-gradient: linear-gradient(270deg, rgba(115, 103, 240, 0.7) 0%, #7367f0 100%);
+$paper-shadow-value: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+
+
+.MuiAutocomplete-popper {
+    .MuiPaper-root {
+        box-shadow: $paper-shadow-value;
+        border-radius: 8px !important;
+
+        .MuiAutocomplete-listbox {
+            .MuiAutocomplete-option {
+                border-radius: 8px !important;
+                margin: 5px 10px !important;
+                font-size: 14px !important;
+
+                &[aria-selected="true"] {
+                    background: #e6e6e6;
+                    color: #000 !important;
+                }
+            }
+        }
+    }
+}
+
 

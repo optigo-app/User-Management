@@ -47,7 +47,8 @@ function CustomerGrid() {
     clearAllFilters,
     isFiltering,
     hasActiveFilters,
-  } = useDebounceFilters({}, 500);
+  } = useDebounceFilters({}, 100);
+  console.log('filters: ', filters);
 
   const {
     handleAdd,
@@ -71,6 +72,7 @@ function CustomerGrid() {
     dialogPurityState,
     custActive,
     drawerleadOpen,
+    selectedRowsData,
     handleCloseLeadDrawer,
     setDialogPurityState,
     dialogAllSynchroze,
@@ -80,6 +82,7 @@ function CustomerGrid() {
     handleCloseArchiveDialog,
     onChangeCustStatus,
     handleMakeLeadToCustomer,
+    setSelectedRowsData,
   } = useCustomerActions(setData, updateFilter);
 
   useEffect(() => {
@@ -94,7 +97,6 @@ function CustomerGrid() {
 
   const { filteredData, summaryData } =
     useCustomerAndLeadData(data, debouncedFilters, hasActiveFilters, custActive);
-
 
   useEffect(() => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
@@ -125,8 +127,7 @@ function CustomerGrid() {
     [onToggleActive, onEditUser, handleDelete, handleMakeLeadToCustomer]
   );
 
-  const isWide = useMediaQuery(`(min-width:${(custActive === "customer" ? 2425 : 1910)}px)`);
-  console.log('djskdjsjjsjdjsjk', data)
+  const isWide = useMediaQuery(`(min-width:${(custActive === "customer" ? 2425 : 1925)}px)`);
 
   return (
     <Box sx={{ width: "100%", height: "100vh", px: 2, bgcolor: "#fff" }}>
@@ -140,18 +141,6 @@ function CustomerGrid() {
             business operations.
           </Typography>
         </Box>
-        {/* <Box>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={showSummary}
-                onChange={handleShowSummary}
-                color="primary"
-              />
-            }
-            label={showSummary ? "Hide Summary" : "Show Summary"}
-          />
-        </Box> */}
       </Box>
       <CustomerSummaryConfig
         showSummary={showSummary}
@@ -164,6 +153,10 @@ function CustomerGrid() {
           <ActionBar
             custActive={custActive}
             showSummary={showSummary}
+            selectedRowsData={selectedRowsData}
+            filters={filters}
+            onFilterChange={updateFilter}
+            onClearAll={clearAllFilters}
             onAdd={handleAdd}
             onExcel={() => handleExcel(filteredData)}
             onSynchronize={handleSynchronize}
@@ -174,18 +167,6 @@ function CustomerGrid() {
           />
         </Suspense>
       </Box>
-      {/* <Suspense fallback={<CenteredCircularLoader />}>
-        <Box sx={{ mb: 2 }}>
-          <FilterBar
-            filtersConfig={filtersConfig}
-            filters={filters}
-            onFilterChange={updateFilter}
-            onClearAll={clearAllFilters}
-            onAdd={handleAdd}
-            addIcon={<Plus size={18} />}
-            isFiltering={isFiltering} />
-        </Box>
-      </Suspense> */}
       <Suspense fallback={<CenteredCircularLoader />}>
         <CustomerDataGrid
           deliveryData={filteredData}
@@ -196,6 +177,7 @@ function CustomerGrid() {
           loading={isFiltering}
           showSummary={showSummary}
           isWide={isWide}
+          setSelectedRowsData={setSelectedRowsData}
         />
       </Suspense>
       <ConfirmationDialog

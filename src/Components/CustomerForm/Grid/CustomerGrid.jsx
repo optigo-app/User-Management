@@ -1,7 +1,20 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
-const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide }) => {
+const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, setSelectedRowsData }) => {
+	const handleRowSelection = useCallback((rowSelectionModel) => {
+		if (!rowSelectionModel) return;
+		let selectedData = [];
+		if (rowSelectionModel.type === "exclude") {
+			selectedData = deliveryData;
+		} else if (rowSelectionModel.type === "include") {
+			selectedData = deliveryData.filter((row) =>
+				rowSelectionModel.ids.has(row.id)
+			);
+		}
+		setSelectedRowsData(selectedData);
+	}, [deliveryData, setSelectedRowsData]);
+
 	return (
 		<DataGrid
 			getRowId={(row) => row.id}
@@ -20,6 +33,7 @@ const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel,
 			loading={false}
 			disableColumnMenu={true}
 			checkboxSelection={true}
+			onRowSelectionModelChange={handleRowSelection}
 			density="standard"
 			sx={{
 				height: `calc(100vh - ${showSummary ? "300px" : "169px"})`,

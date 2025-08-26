@@ -16,6 +16,7 @@ export function useCustomerActions(setData, updateFilter) {
   const [drawerleadOpen, setDrawerLeadOpen] = useState({ open: false, selectedRow: null });
   const [showSummary, setShowSummary] = useState(true);
   const [custActive, setCustActive] = useState("customer");
+  const [selectedRowsData, setSelectedRowsData] = useState([]);
 
   const handleAdd = useCallback(() => {
     debugger
@@ -119,7 +120,6 @@ export function useCustomerActions(setData, updateFilter) {
     setDialogAllSynchronize({ open: false, selectedRow: null });
   }, []);
 
-
   const onChangeCustStatus = useCallback(e => setCustActive(e.target.value), []);
 
   const handleExcel = useCallback((data) => {
@@ -159,6 +159,7 @@ export function useCustomerActions(setData, updateFilter) {
     dialogPurityState,
     custActive,
     drawerleadOpen,
+    selectedRowsData,
     handleCloseLeadDrawer,
     dialogSynchronizeState,
     dialogArchiveState,
@@ -169,5 +170,6 @@ export function useCustomerActions(setData, updateFilter) {
     handleCloseArchiveDialog,
     onChangeCustStatus,
     handleMakeLeadToCustomer,
+    setSelectedRowsData,
   };
 }
