@@ -52,12 +52,6 @@ export function useCustomerAndLeadData(
     if (custActive === "customer") {
       const totalCustomers = data?.length ?? 0;
       const activeUsers = data?.filter((c) => c.status === "active").length ?? 0;
-      const avgPurity =
-        totalCustomers > 0
-          ? (
-            data.reduce((sum, c) => sum + (c.purity || 0), 0) / totalCustomers
-          ).toFixed(1) + "%"
-          : "0%";
       const premiumPackage =
         data?.filter((c) => c.package === "premium").length ?? 0;
       const policyDueSoon =
@@ -66,7 +60,6 @@ export function useCustomerAndLeadData(
       return {
         totalCustomers,
         activeUsers,
-        avgPurity,
         premiumPackage,
         policyDueSoon,
         inactiveUsers,
@@ -79,8 +72,6 @@ export function useCustomerAndLeadData(
       const rejectedLeads = data?.filter((l) => l.Reject === true).length ?? 0;
       const premiumLeads =
         data?.filter((l) => l.eCatalogPackage === "Premium").length ?? 0;
-      const standardLeads =
-        data?.filter((l) => l.eCatalogPackage === "Standard").length ?? 0;
       const activeCities = new Set(data?.map((l) => l.city)).size ?? 0;
 
       return {
@@ -88,7 +79,6 @@ export function useCustomerAndLeadData(
         verifiedLeads,
         rejectedLeads,
         premiumLeads,
-        standardLeads,
         activeCities,
       };
     }

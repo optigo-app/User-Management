@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, FormHelperText } from "@mui/material";
 import { FileText, Truck, Star } from "lucide-react";
-import { FormField, Select, CollapsibleSection, OptionGrid } from "../../Ui";
+import { FormField, Select, CollapsibleSection, OptionGrid, Input } from "../../Ui";
 import { useDispatch } from "react-redux";
 import { updateStepData } from "../../../Redux/customerFormSlice";
 import InstructionsSection from "../StepsComp/PreferencesStep/InstructionsSection";
@@ -33,6 +33,14 @@ const PreferenceStep = ({
     const handleSelectChange = (field, value) => {
         setLocalFormData((prevState) => ({ ...prevState, [field]: value }));
         handleUpdate({ [field]: value });
+    };
+
+    const handleInputChange = (field, value) => {
+        setLocalFormData((prevState) => ({ ...prevState, [field]: value }));
+    };
+
+    const handleReduxUpdate = () => {
+        handleUpdate(localFormData);
     };
 
     const handleOptionGridChange = (option) => {
@@ -88,13 +96,14 @@ const PreferenceStep = ({
                         label="Default Shipping Method"
                         error={!!errors.shippingMethod}
                     >
-                        <Select
-                            options={shippingOptions}
-                            placeholder="Select shipping method"
-                            value={formData.shippingMethod}
-                            onChange={(e) => handleSelectChange("shippingMethod", e.target.value)}
-                        />
-                        {errors.shippingMethod && <Typography sx={{ color: "error.main", mt: 1 }}>{errors.shippingMethod}</Typography>}
+                         <Input
+                                placeholder="Enter company name"
+                                value={formData.shippingOptions}
+                                onChange={(e) => handleInputChange("shippingMethod", e.target.value)}
+                                onBlur={handleReduxUpdate}
+                                error={errors?.shippingMethod}
+                                helperText="Shipping method is required"
+                            />
                     </FormField>
                 </Box>
             </CollapsibleSection>
@@ -104,8 +113,8 @@ const PreferenceStep = ({
                 onToggle={() => onToggleSection("qualityCertification")}
                 icon={Star}
                 gradient="linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
-                title="Quality & Certification"
-                subtitle="Quality assurance and certification preferences"
+                title="Stamping & Hallmarking"
+                subtitle="Stamping & Hallmarking preferences"
                 fieldCount="6 fields"
             >
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>

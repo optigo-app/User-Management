@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FormField, InputWithIcon } from '../../../Ui';
-import { DollarSign } from 'lucide-react';
+import { FormField, Select } from '../../../Ui';
 import { Box, Checkbox, FormControlLabel, Grid, Typography } from '@mui/material';
 
 const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
@@ -16,9 +15,9 @@ const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
         setPricePolicy(formData);
     }, [formData]);
 
-    const handleBlur = (e) => {
-        const { id, value } = e.target;
+    const handleSelectChange = (id, value) => {
         const updatedPolicy = { ...pricePolicy, [id]: value };
+        setPricePolicy(updatedPolicy);
         onUpdate(updatedPolicy);
     };
 
@@ -32,56 +31,67 @@ const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
     return (
         <div>
             <Grid container rowSpacing={0} columnSpacing={2}>
-                <Grid size={{xs:12, sm:6}}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Diamond Price" tooltip="Base price per carat for diamonds">
-                        <InputWithIcon
+                        <Select
                             id="diamondPrice"
-                            icon={DollarSign}
-                            placeholder="0.00"
                             value={pricePolicy.diamondPrice || ""}
-                            onChange={(e) => setPricePolicy(prev => ({ ...prev, diamondPrice: e.target.value }))}
-                            onBlur={handleBlur}
+                            onChange={(value) => handleSelectChange('diamondPrice', value)}
+                            options={[
+                                { label: "$100", value: "100" },
+                                { label: "$200", value: "200" },
+                                { label: "$300", value: "300" },
+                            ]}
+                            placeholder="Select price"
                         />
                     </FormField>
                 </Grid>
-                <Grid size={{xs:12, sm:6}}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Color Stone Price" tooltip="Price per carat for colored gemstones">
-                        <InputWithIcon
+                        <Select
                             id="colorStonePrice"
-                            icon={DollarSign}
-                            placeholder="0.00"
                             value={pricePolicy.colorStonePrice || ""}
-                            onChange={(e) => setPricePolicy(prev => ({ ...prev, colorStonePrice: e.target.value }))}
-                            onBlur={handleBlur}
+                            onChange={(value) => handleSelectChange('colorStonePrice', value)}
+                            options={[
+                                { label: "$50", value: "50" },
+                                { label: "$100", value: "100" },
+                                { label: "$150", value: "150" },
+                            ]}
+                            placeholder="Select price"
                         />
                     </FormField>
                 </Grid>
-                <Grid size={{xs:12, sm:6}}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Labour Charges" tooltip="Manufacturing and crafting charges">
-                        <InputWithIcon
+                        <Select
                             id="labourCharges"
-                            icon={DollarSign}
-                            placeholder="0.00"
                             value={pricePolicy.labourCharges || ""}
-                            onChange={(e) => setPricePolicy(prev => ({ ...prev, labourCharges: e.target.value }))}
-                            onBlur={handleBlur}
+                            onChange={(value) => handleSelectChange('labourCharges', value)}
+                            options={[
+                                { label: "$20", value: "20" },
+                                { label: "$40", value: "40" },
+                                { label: "$60", value: "60" },
+                            ]}
+                            placeholder="Select charges"
                         />
                     </FormField>
                 </Grid>
-                <Grid size={{xs:12, sm:6}}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Setting Charges" tooltip="Stone setting and mounting charges">
-                        <InputWithIcon
+                        <Select
                             id="settingCharges"
-                            icon={DollarSign}
-                            placeholder="0.00"
                             value={pricePolicy.settingCharges || ""}
-                            onChange={(e) => setPricePolicy(prev => ({ ...prev, settingCharges: e.target.value }))}
-                            onBlur={handleBlur}
+                            onChange={(value) => handleSelectChange('settingCharges', value)}
+                            options={[
+                                { label: "$10", value: "10" },
+                                { label: "$20", value: "20" },
+                                { label: "$30", value: "30" },
+                            ]}
+                            placeholder="Select charges"
                         />
                     </FormField>
                 </Grid>
-                <Grid size={{xs:12}}>
-
+                <Grid size={{ xs: 12 }}>
                     <Box
                         display="flex"
                         alignItems="center"
@@ -93,8 +103,8 @@ const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
                     >
                         <FormControlLabel
                             control={
-                                <Checkbox 
-                                    id="excludePremium" 
+                                <Checkbox
+                                    id="excludePremium"
                                     checked={pricePolicy.excludePremium || false}
                                     onChange={handleCheckboxChange}
                                 />

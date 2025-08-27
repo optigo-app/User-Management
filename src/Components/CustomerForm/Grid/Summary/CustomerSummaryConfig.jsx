@@ -9,7 +9,6 @@ const CustomerSummaryConfig = ({ showSummary, custActive, summaryData }) => {
             return [
                 { label: "Total Customers", value: summaryData.totalCustomers, icon: <Users />, color: "blue" },
                 { label: "Active Customers", value: summaryData.activeUsers, icon: <Users />, color: "green" },
-                { label: "Avg Purity", value: summaryData.avgPurity, icon: <TrendingUp />, color: "purple" },
                 { label: "Premium Package", value: summaryData.premiumPackage, icon: <CheckCircle />, color: "green" },
                 { label: "Policy Due Soon", value: summaryData.policyDueSoon, icon: <Clock />, color: "orange" },
                 { label: "Inactive Customers", value: summaryData.inactiveUsers, icon: <XCircle />, color: "red" },
@@ -20,7 +19,6 @@ const CustomerSummaryConfig = ({ showSummary, custActive, summaryData }) => {
                 { label: "Verified Leads", value: summaryData.verifiedLeads, icon: <CheckCircle />, color: "green" },
                 { label: "Rejected Leads", value: summaryData.rejectedLeads, icon: <XCircle />, color: "red" },
                 { label: "Premium Leads", value: summaryData.premiumLeads, icon: <TrendingUp />, color: "purple" },
-                { label: "Standard Leads", value: summaryData.standardLeads, icon: <Clock />, color: "orange" },
                 { label: "Active Cities", value: summaryData.activeCities, icon: <Clock />, color: "orange" },
             ];
         }

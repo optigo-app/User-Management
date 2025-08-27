@@ -25,12 +25,12 @@ export default function TearmsPackage({ formData, errors, onUpdate }) {
     return (
         <Grid container rowSpacing={0} columnSpacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
-                <FormField label="E-Catalog Package" tooltip="Digital catalog access level">
+                <FormField label="Ecat Package" tooltip="Digital catalog access level">
                     <Select
-                        id="eCatalogPackage"
+                        id="eCatPackage"
                         placeholder="Select package level"
-                        value={formData.eCatalogPackage || ""}
-                        onChange={(e) => handleChange("eCatalogPackage", e.target.value)}
+                        value={formData.eCatPackage || ""}
+                        onChange={(e) => handleChange("eCatPackage", e.target.value)}
                         options={[
                             { value: "basic", label: "📦 Basic Package" },
                             { value: "premium", label: "⭐ Premium Package" },
@@ -42,12 +42,12 @@ export default function TearmsPackage({ formData, errors, onUpdate }) {
             </Grid>
 
             <Grid size={{ xs: 12, sm: 6 }}>
-                <FormField label="Select adhoc access" tooltip="Allow one-time catalog purchases">
+                <FormField label="Ecat Adhoc Package" tooltip="Allow one-time catalog purchases">
                     <Select
-                        id="adhocAccess"
+                        id="eCatAdhocPackage"
                         placeholder="Select adhoc access"
-                        value={formData.adhocAccess || ""}
-                        onChange={(e) => handleChange("adhocAccess", e.target.value)}
+                        value={formData.eCatAdhocPackage || ""}
+                        onChange={(e) => handleChange("eCatAdhocPackage", e.target.value)}
                         options={[
                             { value: "enabled", label: "✅ Enabled" },
                             { value: "disabled", label: "❌ Disabled" },
@@ -57,12 +57,12 @@ export default function TearmsPackage({ formData, errors, onUpdate }) {
             </Grid>
 
             <Grid size={{ xs: 12, sm: 6 }}>
-                <FormField label="Select policy duration" tooltip="Duration of the pricing policy">
+                <FormField label="Policy Terms" tooltip="Duration of the pricing policy">
                     <Select
-                        id="policyDuration"
+                        id="eCatPolicyDuration"
                         placeholder="Select policy duration"
-                        value={formData.policyDuration || ""}
-                        onChange={(e) => handleChange("policyDuration", e.target.value)}
+                        value={formData.eCatPolicyDuration || ""}
+                        onChange={(e) => handleChange("eCatPolicyDuration", e.target.value)}
                         options={[
                             { value: "monthly", label: "📅 Monthly (30 days)" },
                             { value: "quarterly", label: "📊 Quarterly (90 days)" },

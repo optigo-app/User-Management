@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import { FormField, InputWithIcon, OptionGrid, Select } from "../../../Ui";
-import {DollarSign, Percent } from "lucide-react";
+import { DollarSign, Percent } from "lucide-react";
 
 const initialBrokerageConfig = {
     assignBroker: "",
@@ -176,17 +176,19 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
                     />
                 </FormField>
             </Grid>
-            <Grid item xs={12}>
-                <FormField label="Commission Applicable On" tooltip="Select transaction components for commission calculation">
-                    <Grid container spacing={2}>
-                        <OptionGrid
-                            options={options}
-                            selected={brokerageConfig.commissionApplicableOn}
-                            onChange={(value) => handleCommissionApplicableChange(value)}
-                        />
-                    </Grid>
-                </FormField>
-            </Grid>
+            {brokerageConfig.commissionStructure === "criteria" && (
+                <Grid item xs={12}>
+                    <FormField label="Commission Applicable On" tooltip="Select transaction components for commission calculation">
+                        <Grid container spacing={2}>
+                            <OptionGrid
+                                options={options}
+                                selected={brokerageConfig.commissionApplicableOn}
+                                onChange={(value) => handleCommissionApplicableChange(value)}
+                            />
+                        </Grid>
+                    </FormField>
+                </Grid>
+            )}
         </Grid>
     );
 }
