@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Grid, FormHelperText } from "@mui/material";
 import { Building2 } from "lucide-react";
 import { FormField, Input, Select, CollapsibleSection } from "../../../Ui";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
+import CustomInput from "../../../Ui/CustomInput";
 
 const BasicCompanyInfoSection = ({ expandedSections, onToggleSection, formData, errors, onUpdate }) => {
     const [basicCompanyInfo, setBasicCompanyInfo] = useState({
@@ -61,6 +63,13 @@ const BasicCompanyInfoSection = ({ expandedSections, onToggleSection, formData, 
                                 error={errors?.companyName}
                                 helperText="Company name is required"
                             />
+                            {/* <CustomInput
+                                placeholder="Enter company name"
+                                value={basicCompanyInfo.companyName}
+                                onChange={(e) => handleLocalUpdate("companyName", e.target.value)}
+                                error={errors?.companyName}
+                                helperText="Company name is required"
+                            /> */}
                         </FormField>
                     </Grid>
                     <Grid item size={{ sm: 12, md: 6 }}>
@@ -76,6 +85,17 @@ const BasicCompanyInfoSection = ({ expandedSections, onToggleSection, formData, 
                                     { value: "sole", label: "Sole Proprietorship" },
                                 ]}
                             />
+                            {/* <CustomAutocomplete
+                                label="Company Type"
+                                options={[
+                                    { value: "pvt", label: "Private Limited Company" },
+                                    { value: "llp", label: "Limited Liability Partnership" },
+                                    { value: "partnership", label: "Partnership Firm" },
+                                    { value: "sole", label: "Sole Proprietorship" },
+                                ]}
+                                value={basicCompanyInfo.companyType}
+                                onChange={(e, newValue) => handleSelectChange("businessType", newValue?.value)}
+                            /> */}
                         </FormField>
                     </Grid>
                     <Grid item size={{ sm: 12, md: 6 }}>

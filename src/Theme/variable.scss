@@ -1,28 +1,84 @@
 $primary-color: #7367f0;
 $primary-border-color: #7367f0;
-
+$button-color-hover: #685dd8;
+$button-Bordercolor: #685dd8;
+$placeholderColor: #808080;
 $primary-gradient: linear-gradient(270deg, rgba(115, 103, 240, 0.7) 0%, #7367f0 100%);
 $paper-shadow-value: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+$transition-duration: 200ms;
+$box-shadow-value: rgba(0, 0, 0, 0.05) 0px 6px 24px, rgba(0, 0, 0, 0.03) 0px 0px 0px 1px;
 
+.textfieldsClass {
+    font-size: 14px;
+    color: $placeholderColor;
 
-.MuiAutocomplete-popper {
-    .MuiPaper-root {
-        box-shadow: $paper-shadow-value;
+    .MuiTypography-root {
+        color: $placeholderColor;
+        font-size: 14px;
+    }
+
+    .MuiOutlinedInput-root {
+        color: $placeholderColor;
         border-radius: 8px !important;
+        padding: 0px 5px !important;
+        font-size: 14px;
+    }
 
-        .MuiAutocomplete-listbox {
-            .MuiAutocomplete-option {
-                border-radius: 8px !important;
-                margin: 5px 10px !important;
-                font-size: 14px !important;
+    .MuiOutlinedInput-root fieldset {
+        border-color: #ccc;
+    }
 
-                &[aria-selected="true"] {
-                    background: #e6e6e6;
-                    color: #000 !important;
-                }
+    .MuiOutlinedInput-root:hover fieldset {
+        border-color: $button-Bordercolor;
+    }
+
+    .MuiOutlinedInput-root.Mui-focused fieldset {
+        border-color: $button-color-hover;
+    }
+
+    .MuiInputBase-input {
+        color: $placeholderColor !important;
+        padding: 7px 5px !important;
+
+        &:not(textarea) {
+            padding: 7px 5px !important;
+        }
+
+        &.MuiInputBase-inputSizeSmall {
+            padding: 7px 5px !important;
+        }
+
+        &.MuiInputBase-inputAdornedStart:not(.MuiAutocomplete-input) {
+            padding-left: 0 !important;
+        }
+
+        &.MuiInputBase-inputAdornedEnd:not(.MuiAutocomplete-input) {
+            padding-right: 0 !important;
+        }
+
+        &:not(.MuiInputBase-readOnly):not([readonly])::placeholder {
+            transition: $transition-duration !important;
+        }
+    }
+
+    .MuiOutlinedInput-root.Mui-focused {
+        box-shadow: $box-shadow-value !important;
+
+        .MuiInputBase-input:not(.MuiInputBase-readOnly):not([readonly])::placeholder {
+            transform: translateX(4px);
+        }
+    }
+
+    .MuiInputAdornment-root {
+        .MuiButtonBase-root {
+            padding: 0px 2px !important;
+            margin-right: 0px;
+
+            .MuiSvgIcon-root {
+                width: 22px;
+                height: 22px;
+                color: $placeholderColor;
             }
         }
     }
 }
-
-
