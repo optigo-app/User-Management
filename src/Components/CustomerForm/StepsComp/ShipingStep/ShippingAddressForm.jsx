@@ -15,6 +15,7 @@ import { FormField, Input, Textarea, Select } from "../../../Ui";
 import CustomInput from "../../../Ui/CustomInput";
 import { CustomTextArea } from "../../../Ui/CustomTextArea";
 import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
+import PhoneInput from "../../../Ui/PhoneInput";
 
 export default function ShippingAddressForm({
     address,
@@ -136,11 +137,12 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="Mobile Number" required>
-                            <CustomInput
-                                type="number"
-                                placeholder="Enter mobile number"
-                                value={address.mobile}
-                                onChange={(e) => setAddress({ ...address, mobile: e.target.value })}
+                            <PhoneInput
+                                countryCode={address.countryCode}
+                                setCountryCode={(code) => setAddress({ ...address, countryCode: code })}
+                                mobileInput={address.mobile}
+                                setMobileInput={(number) => setAddress({ ...address, mobile: number })}
+                                onAddMobile={(code, number) => console.log("Add mobile", code, number)}
                             />
                         </FormField>
                     </Grid>

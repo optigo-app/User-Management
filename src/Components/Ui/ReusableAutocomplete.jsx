@@ -34,7 +34,7 @@ const CustomAutocomplete = ({
             {...props}
             sx={{
                 '& .MuiOutlinedInput-root': {
-                    height: 40,
+                    height: 45,
                 }
             }}
             renderInput={(params) => (

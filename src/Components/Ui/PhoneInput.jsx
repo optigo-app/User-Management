@@ -19,7 +19,6 @@ const PhoneInput = ({
     error = false,
     onlyCountries = null,
 }) => {
-    console.log('error: ', error);
     const [value, setValue] = useState(mobileInput || '');
 
     useEffect(() => {
@@ -51,6 +50,7 @@ const PhoneInput = ({
                         setValue('');
                     }
                 }}
+                onBlur={() => onAddMobile(countryCode, value)}
                 error={error}
                 helperText={error ? "Enter a valid phone number" : ""}
                 variant="outlined"
@@ -62,7 +62,7 @@ const PhoneInput = ({
                         <InputAdornment position="start" className="country-adornment">
                             <FormControl variant="outlined" className="country-select-wrapper">
                                 <Select
-                                    value={countryCode}
+                                    value={countryCode || "+91"}
                                     onChange={handleCountryChange}
                                     className="country-select"
                                     disableUnderline
