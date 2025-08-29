@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Grid, Divider, FormHelperText } from "@mui/material";
 import { Shield, DollarSign } from "lucide-react";
 import { FormField, Input, InputWithIcon, Select, CollapsibleSection } from "../../../Ui";
+import CustomInput from "../../../Ui/CustomInput";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, errors, onUpdate }) => {
   // Local state to hold form data for this section
@@ -68,93 +70,84 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Grid container rowSpacing={0} columnSpacing={2}>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="GST Number" tooltip="Goods and Services Tax registration number" error={!!errors.gstNumber}>
-              <Input
+            <FormField label="GST Number" tooltip="Goods and Services Tax registration number">
+              <CustomInput
                 placeholder="e.g., 22AAAAA0000A1Z5"
                 value={taxData.gstNumber}
                 onChange={(e) => handleLocalUpdate("gstNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.gstNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.gstNumber}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="PAN Number" tooltip="Permanent Account Number" error={!!errors.panNumber}>
-              <Input
+            <FormField label="PAN Number" tooltip="Permanent Account Number" >
+              <CustomInput
                 placeholder="e.g., ABCDE1234F"
                 value={taxData.panNumber}
                 onChange={(e) => handleLocalUpdate("panNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.panNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.panNumber}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="VAT Number" error={!!errors.vatNumber}>
-              <Input
+            <FormField label="VAT Number">
+              <CustomInput
                 placeholder="VAT registration number"
                 value={taxData.vatNumber}
                 onChange={(e) => handleLocalUpdate("vatNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.vatNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.vatNumber}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="Service Tax" error={!!errors.serviceTax}>
-              <Input
+            <FormField label="Service Tax">
+              <CustomInput
                 placeholder="Service tax number"
                 value={taxData.serviceTax}
                 onChange={(e) => handleLocalUpdate("serviceTax", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.serviceTax && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.serviceTax}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="CST Number" error={!!errors.cstNumber}>
-              <Input
+            <FormField label="CST Number">
+              <CustomInput
                 placeholder="Central Sales Tax number"
                 value={taxData.cstNumber}
                 onChange={(e) => handleLocalUpdate("cstNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.cstNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.cstNumber}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="TAN Number" error={!!errors.tanNumber}>
-              <Input
+            <FormField label="TAN Number">
+              <CustomInput
                 placeholder="Tax Deduction Account Number"
                 value={taxData.tanNumber}
                 onChange={(e) => handleLocalUpdate("tanNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.tanNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.tanNumber}</FormHelperText>}
             </FormField>
           </Grid>
         </Grid>
         <Divider sx={{ my: 2 }} />
         <Grid container rowSpacing={0} columnSpacing={2}>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="Credit Limit" tooltip="Maximum credit amount allowed" error={!!errors.creditLimit}>
-              <InputWithIcon
-                icon={DollarSign}
-                type="number"
+            <FormField label="Credit Limit" tooltip="Maximum credit amount allowed">
+              <CustomInput
                 placeholder="0.00"
                 value={taxData.creditLimit}
                 onChange={(e) => handleLocalUpdate("creditLimit", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.creditLimit && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.creditLimit}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="Enterprise Type" error={!!errors.enterpriseType}>
-              <Select
+            <FormField label="Enterprise Type">
+              <CustomAutocomplete
                 placeholder="Select enterprise type"
                 value={taxData.enterpriseType}
-                onChange={(e) => handleSelectChange("enterpriseType", e.target.value)}
+                onChange={(e, newValue) => handleSelectChange("enterpriseType", newValue)}
                 options={[
                   { value: "micro", label: "Micro Enterprise" },
                   { value: "small", label: "Small Enterprise" },
@@ -162,42 +155,38 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
                   { value: "large", label: "Large Enterprise" },
                 ]}
               />
-              {errors.enterpriseType && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.enterpriseType}</FormHelperText>}
             </FormField>
           </Grid>
         </Grid>
         <Grid container rowSpacing={0} columnSpacing={2}>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="CIN Number" error={!!errors.cinNumber}>
-              <Input
+            <FormField label="CIN Number">
+              <CustomInput
                 placeholder="Corporate Identity Number"
                 value={taxData.cinNumber}
                 onChange={(e) => handleLocalUpdate("cinNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.cinNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.cinNumber}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="Aadhaar Number" error={!!errors.aadhaarNumber}>
-              <Input
+            <FormField label="Aadhaar Number">
+              <CustomInput
                 placeholder="12-digit Aadhaar number"
                 value={taxData.aadhaarNumber}
                 onChange={(e) => handleLocalUpdate("aadhaarNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.aadhaarNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.aadhaarNumber}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="MSME Number" error={!!errors.msmeNumber}>
-              <Input
+            <FormField label="MSME Number">
+              <CustomInput
                 placeholder="MSME registration number"
                 value={taxData.msmeNumber}
                 onChange={(e) => handleLocalUpdate("msmeNumber", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors.msmeNumber && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.msmeNumber}</FormHelperText>}
             </FormField>
           </Grid>
         </Grid>

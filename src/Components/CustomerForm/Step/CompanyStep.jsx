@@ -13,7 +13,7 @@ import { updateStepData } from "../../../Redux/customerFormSlice";
 
 const CompanyStep = ({ expandedSections, onToggleSection, formData, errors }) => {
     const dispatch = useDispatch();
-    const companyType = formData.companyType || "new";
+    const businessType = formData.businessType || "new";
 
     const handleUpdate = (data) => {
         dispatch(updateStepData({
@@ -25,7 +25,7 @@ const CompanyStep = ({ expandedSections, onToggleSection, formData, errors }) =>
     const handleCompanyTypeChange = (type) => {
         dispatch(updateStepData({
             stepName: "step1",
-            formData: { companyType: type }
+            formData: { businessType: type }
         }));
     };
 
@@ -41,13 +41,13 @@ const CompanyStep = ({ expandedSections, onToggleSection, formData, errors }) =>
                 fieldCount="2 options"
             >
                 <CompanySelection 
-                    companyType={companyType} 
+                    businessType={businessType} 
                     onCompanyTypeChange={handleCompanyTypeChange} 
                 />
-                {companyType === "existing" && <ExistingCompanySelector />}
+                {businessType === "existing" && <ExistingCompanySelector />}
             </CollapsibleSection>
 
-            {companyType === "new" && (
+            {businessType === "new" && (
                 <>
                     <BasicCompanyInfoSection
                         expandedSections={expandedSections}

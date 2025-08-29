@@ -1,10 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, use, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { formatCustomer } from "./useCustomerFormat";
 
-export function useCustomerActions(setData, updateFilter) {
+export function useCustomerActions(data, setData, updateFilter) {
   const navigate = useNavigate();
 
   // Dialog states
@@ -17,6 +17,19 @@ export function useCustomerActions(setData, updateFilter) {
   const [showSummary, setShowSummary] = useState(true);
   const [custActive, setCustActive] = useState("customer");
   const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+
+  useEffect(() => {
+    let selectedData = [];
+    if (!selectedIds || !data) return;
+    if (selectedIds?.type === "exclude") {
+      selectedData = data;
+    }
+    else if (selectedIds?.type === "include") {
+      selectedData = data?.filter((row) => selectedIds?.ids?.has(row.id));
+    }
+    setSelectedRowsData(selectedData);
+  }, [selectedIds, data]);
 
   const handleAdd = useCallback(() => {
     debugger
@@ -171,5 +184,6 @@ export function useCustomerActions(setData, updateFilter) {
     onChangeCustStatus,
     handleMakeLeadToCustomer,
     setSelectedRowsData,
+    setSelectedIds,
   };
 }

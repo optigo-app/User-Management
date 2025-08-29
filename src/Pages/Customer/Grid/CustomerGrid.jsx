@@ -83,8 +83,9 @@ function CustomerGrid() {
     handleCloseArchiveDialog,
     onChangeCustStatus,
     handleMakeLeadToCustomer,
-    setSelectedRowsData,
-  } = useCustomerActions(setData, updateFilter);
+    setSelectedIds,
+    handleViewDocument,
+  } = useCustomerActions(data, setData, updateFilter);
 
   useEffect(() => {
     if (custActive === "customer") {
@@ -113,8 +114,9 @@ function CustomerGrid() {
         onPolicyRatio,
         onSynchronize,
         onPolicyApply,
+        handleViewDocument,
       }),
-    [onToggleLogin, onToggleActive, handleDelete, onEditUser, onPolicyRatio, onSynchronize, onPolicyApply]
+    [onToggleLogin, onToggleActive, handleDelete, onEditUser, onPolicyRatio, onSynchronize, onPolicyApply, handleViewDocument]
   );
 
   const leadColumns = useMemo(
@@ -168,7 +170,7 @@ function CustomerGrid() {
           loading={isFiltering}
           showSummary={showSummary}
           isWide={isWide}
-          setSelectedRowsData={setSelectedRowsData}
+          setSelectedIds={setSelectedIds}
         />
       </Suspense>
       <ConfirmationDialog

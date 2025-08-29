@@ -4,12 +4,14 @@ import React, { Suspense, lazy } from "react";
 import CenteredCircularLoader from "./Common/Loder/CustomLoder";
 import CustomerForm from "./Pages/Customer/Form/CustomerForm";
 import { Toaster } from "react-hot-toast";
+import FullPageDropMUI from "./Pages/Test/FullPageDropOverlay";
+import PhoneInputDemo from "./Pages/Test/PhoneInputDemo";
 
 // Lazy load only CustomerGrid
 const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
 const HomePage = lazy(() => import("./Pages/Home/HomePage"));
 
-export default function App() { 
+export default function App() {
   return (
     <Box sx={{ position: "relative" }}>
       <Toaster
@@ -50,6 +52,7 @@ export default function App() {
       />
       <Routes>
         <Route path="/customer-register" element={<CustomerForm />} />
+        <Route path="/test" element={<PhoneInputDemo />} />
 
         {/* Lazy-loaded route */}
         <Route
@@ -60,7 +63,7 @@ export default function App() {
             </Suspense>
           }
         />
-         <Route
+        <Route
           path="/"
           element={
             <Suspense fallback={<CenteredCircularLoader />}>

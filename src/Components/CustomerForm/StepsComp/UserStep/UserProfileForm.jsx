@@ -18,6 +18,8 @@ import {
     Textarea,
     SectionDivider,
 } from "../../../Ui";
+import CustomInput from "../../../Ui/CustomInput";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
     const [profileData, setProfileData] = useState({
@@ -113,8 +115,8 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                         { key: "lastName", label: "Last Name", required: true, placeholder: "Doe" },
                     ]?.map((field) => (
                         <Grid key={field.key} size={{xs:12, sm:6, md:4}}>
-                            <FormField label={field.label} required={field.required} error={!!errors[field.key]}>
-                                <Input
+                            <FormField label={field.label} required={field.required}>
+                                <CustomInput
                                     placeholder={field.placeholder}
                                     value={profileData[field.key]}
                                     onChange={(e) => handleLocalUpdate(field.key, e.target.value)}
@@ -138,18 +140,13 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                         { key: "zipCode", label: "Zip/Postal Code", placeholder: "10001" },
                     ].map((field) => (
                         <Grid key={field.key} size={{xs:12, sm:6, md:4}}>
-                            <FormField label={field.label} error={!!errors[field.key]}>
-                                <Input
+                            <FormField label={field.label}>
+                                <CustomInput
                                     placeholder={field.placeholder}
                                     value={profileData[field.key]}
                                     onChange={(e) => handleLocalUpdate(field.key, e.target.value)}
                                     onBlur={() => handleReduxUpdate(field.key)}
                                 />
-                                {errors[field.key] && (
-                                    <FormHelperText sx={{ color: "error.main" }}>
-                                        {errors[field.key]}
-                                    </FormHelperText>
-                                )}
                             </FormField>
                         </Grid>
                     ))}
@@ -158,10 +155,10 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                 <Grid container rowSpacing={0} columnSpacing={2}>
                     <Grid size={{xs:12, sm:6}}>
                         <FormField label="State/Province" error={!!errors.state}>
-                            <Select
+                            <CustomAutocomplete
                                 placeholder="Select state"
                                 value={profileData.state}
-                                onChange={(e) => handleSelectChange("state", e.target.value)}
+                                onChange={(e, newValue) => handleSelectChange("state", newValue)}
                                 options={[
                                     { value: "ca", label: "California" },
                                     { value: "ny", label: "New York" },
@@ -173,10 +170,10 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                     </Grid>
                     <Grid size={{xs:12, sm:6}}>
                         <FormField label="Country" error={!!errors.country}>
-                            <Select
+                            <CustomAutocomplete
                                 placeholder="Select country"
                                 value={profileData.country}
-                                onChange={(e) => handleSelectChange("country", e.target.value)}
+                                onChange={(e, newValue) => handleSelectChange("country", newValue)}
                                 options={[
                                     { value: "us", label: "🇺🇸 United States" },
                                     { value: "in", label: "🇮🇳 India" },
@@ -188,7 +185,7 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                     </Grid>
                 </Grid>
 
-                <FormField label="Full Address" error={!!errors.fullAddress}>
+                <FormField label="Full Address">
                     <Textarea
                         placeholder="Enter complete address"
                         rows={3}
@@ -204,11 +201,11 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                 <SectionDivider icon={Phone} title="Contact Information" />
                 <Grid container rowSpacing={0} columnSpacing={2}>
                     <Grid size={{xs:12, sm:6, md:4}}>
-                        <FormField label="Country Code" error={!!errors.countryCode}>
-                            <Select
+                        <FormField label="Country Code">
+                            <CustomAutocomplete
                                 placeholder="+1"
                                 value={profileData.countryCode}
-                                onChange={(e) => handleSelectChange("countryCode", e.target.value)}
+                                onChange={(e, newValue) => handleSelectChange("countryCode", newValue)}
                                 options={[
                                     { value: "+1", label: "+1 (US/CA)" },
                                     { value: "+91", label: "+91 (India)" },
@@ -219,9 +216,8 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                         </FormField>
                     </Grid>
                     <Grid size={{xs:12, sm:6, md:4}}>
-                        <FormField label="Mobile Number" required error={!!errors.mobileNumber}>
-                            <InputWithIcon
-                                icon={Phone}
+                        <FormField label="Mobile Number" required>
+                            <CustomInput
                                 placeholder="123-456-7890"
                                 value={profileData.mobileNumber}
                                 onChange={(e) => handleLocalUpdate("mobileNumber", e.target.value)}
@@ -233,7 +229,7 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                     </Grid>
                     <Grid size={{xs:12, sm:6, md:4}}>
                         <FormField label="Telephone" error={!!errors.telephone}>
-                            <Input
+                            <CustomInput
                                 placeholder="Optional landline"
                                 value={profileData.telephone}
                                 onChange={(e) => handleLocalUpdate("telephone", e.target.value)}
@@ -250,8 +246,8 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                 <Grid container rowSpacing={0} columnSpacing={2}>
                     <Grid size={{xs:12, sm:6}}>
                         <FormField label="Date of Birth" error={!!errors.dateOfBirth}>
-                            <InputWithIcon
-                                icon={Calendar}
+                            <CustomInput
+                                placeholder="DD-MM-YYYY"
                                 type="date"
                                 value={profileData.dateOfBirth}
                                 onChange={(e) => handleLocalUpdate("dateOfBirth", e.target.value)}
@@ -261,7 +257,7 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                     </Grid>
                     <Grid size={{xs:12, sm:6}}>
                         <FormField label="Marital Status" error={!!errors.maritalStatus}>
-                            <Select
+                            <CustomAutocomplete
                                 placeholder="Select status"
                                 value={profileData.maritalStatus}
                                 onChange={(e) => handleSelectChange("maritalStatus", e.target.value)}
@@ -287,8 +283,8 @@ const UserProfileForm = ({ formData, errors = {}, onUpdate }) => {
                         { key: "profession", label: "Profession", placeholder: "e.g., Business Owner" },
                     ].map((field) => (
                         <Grid key={field.key} size={{xs:12, sm:6, md:4}}>
-                            <FormField label={field.label} error={!!errors[field.key]}>
-                                <Input
+                            <FormField label={field.label}>
+                                <CustomInput
                                     placeholder={field.placeholder}
                                     value={profileData[field.key]}
                                     onChange={(e) => handleLocalUpdate(field.key, e.target.value)}

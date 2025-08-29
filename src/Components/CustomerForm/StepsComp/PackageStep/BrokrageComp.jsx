@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import { FormField, InputWithIcon, OptionGrid, Select } from "../../../Ui";
 import { DollarSign, Percent } from "lucide-react";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
+import CustomInput from "../../../Ui/CustomInput";
 
 const initialBrokerageConfig = {
     assignBroker: "",
@@ -61,11 +63,11 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
         <Grid container rowSpacing={0} columnSpacing={2}>
             <Grid size={{ xs: 12 }}>
                 <FormField label="Assign Broker" tooltip="Select the broker for this customer">
-                    <Select
+                    <CustomAutocomplete
                         id="assignBroker"
                         placeholder="Choose broker"
                         value={formData.assignBroker || ""}
-                        onChange={(e) => handleBrokerageChange("assignBroker", e.target.value)}
+                        onChange={(e, newValue) => handleBrokerageChange("assignBroker", newValue)}
                         options={[
                             { value: "john", label: "John Smith" },
                             { value: "sarah", label: "Sarah Johnson" },
@@ -150,10 +152,9 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
                 <FormField label="Fixed Commission Amount" tooltip="Fixed dollar amount per transaction">
-                    <InputWithIcon
+                    <CustomInput
                         id="fixedAmount"
                         type="number"
-                        icon={DollarSign}
                         placeholder="0.00"
                         disabled={brokerageConfig.commissionStructure !== "fixed"}
                         value={brokerageConfig.fixedAmount || ""}
@@ -164,10 +165,9 @@ export default function BrokerageComp({ formData, errors, onUpdate }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
                 <FormField label="Percentage Commission Rate" tooltip="Percentage rate for commission calculation">
-                    <InputWithIcon
+                    <CustomInput
                         id="percentageRate"
                         type="number"
-                        icon={Percent}
                         placeholder="0.00"
                         disabled={brokerageConfig.commissionStructure !== "percentage"}
                         value={brokerageConfig.percentageRate || ""}

@@ -1,24 +1,29 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import { debounce } from "lodash";
 
-const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, setSelectedRowsData }) => {
-	const handleRowSelection = useCallback((rowSelectionModel) => {
+const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, setSelectedIds }) => {
+	const [tempSelectedIds, setTempSelectedIds] = useState([]);
+	console.log('tempSelectedIds: ', tempSelectedIds);
+	const updateParent = useMemo(
+	  () => debounce((ids) => setSelectedIds(ids), 200),
+	  [setSelectedIds]
+	);
+  
+	const handleRowSelection = useCallback(
+	  (rowSelectionModel) => {
 		if (!rowSelectionModel) return;
-		let selectedData = [];
-		if (rowSelectionModel.type === "exclude") {
-			selectedData = deliveryData;
-		} else if (rowSelectionModel.type === "include") {
-			selectedData = deliveryData.filter((row) =>
-				rowSelectionModel.ids.has(row.id)
-			);
-		}
-		setSelectedRowsData(selectedData);
-	}, [deliveryData, setSelectedRowsData]);
+  
+		setTempSelectedIds(rowSelectionModel);
+		updateParent(rowSelectionModel);  
+	  },
+	  [updateParent]
+	);
 
 	return (
 		<DataGrid
 			getRowId={(row) => row.id}
-			rows={deliveryData}
+			rows={deliveryData || []}
 			columns={columns.map((col) => ({ ...col, flex: isWide ? 1 : undefined, }))}
 			columnAutoWidth={true}
 			pageSize={paginationModel.pageSize}
@@ -29,6 +34,7 @@ const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel,
 			sortModel={paginationModel.sortModel}
 			onSortModelChange={(model) => setPaginationModel({ ...paginationModel, sortModel: model })}
 			disableSelectionOnClick
+			disableRowSelectionOnClick
 			rowHeight={50}
 			loading={false}
 			disableColumnMenu={true}

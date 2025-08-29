@@ -23,6 +23,7 @@ export const OptionGrid = ({
                 display: "flex",
                 alignItems: "center",
                 cursor: "pointer",
+                boxShadow: 1,
                 "&:hover": { bgcolor: "action.hover" },
               }}
               onClick={() => onChange(option.id, !isChecked)}

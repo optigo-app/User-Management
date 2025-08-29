@@ -8,8 +8,6 @@ import {
     Typography,
     Button,
     Chip,
-    Alert,
-    AlertTitle,
     IconButton,
     useTheme,
 } from "@mui/material";
@@ -20,15 +18,18 @@ import {
     FileText,
 } from "lucide-react";
 import "./Style/DocumentsStep.scss";
-import { Badge, CollapsibleSection } from "../../Ui";
+import { Badge, CollapsibleSection, Input } from "../../Ui";
 import DocumentStatus from "../StepsComp/Document/DocumentStatus";
-
+import CustomInput from "../../Ui/CustomInput";
 
 export default function DocumentsStep({ expandedSections, onToggleSection }) {
     const theme = useTheme();
     const [documentFiles, setDocumentFiles] = useState({});
+    const [manualEntries, setManualEntries] = useState({});
+    const [errors, setErrors] = useState({});
     const fileInputRef = useRef(null);
 
+    // File Upload Handling
     const handleFileSelect = (event, documentId) => {
         const files = event.target.files;
         if (!files || files.length === 0) return;
@@ -111,35 +112,57 @@ export default function DocumentsStep({ expandedSections, onToggleSection }) {
         });
     };
 
+    // Manual Input Validation
+    const validateField = (docId, value) => {
+        let error = "";
+        switch (docId) {
+            case "aadhaar":
+                if (!/^\d{12}$/.test(value)) error = "Aadhaar must be 12 digits";
+                break;
+            case "panCard":
+                if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(value)) error = "Invalid PAN format";
+                break;
+            case "passport":
+                if (!/^[A-Z][0-9]{7}$/.test(value)) error = "Invalid Passport number";
+                break;
+            case "driving":
+                if (!/^[A-Z0-9]{10,15}$/.test(value)) error = "Invalid Driving License";
+                break;
+            default:
+                if (!value) error = "This field cannot be empty";
+        }
+        setErrors(prev => ({ ...prev, [docId]: error }));
+        return !error;
+    };
+
     const documents = [
-        { id: "aadhaar", label: "Aadhaar Card", icon: "🆔", required: true, description: "Government issued identity card" },
-        { id: "passport", label: "Passport", icon: "📘", required: false, description: "International travel document" },
-        { id: "driving", label: "Driving License", icon: "🚗", required: false, description: "Valid driving license" },
-        { id: "esic", label: "ESIC Card", icon: "🏥", required: false, description: "Employee State Insurance" },
-        { id: "nationality", label: "Nationality Certificate", icon: "🏛️", required: false, description: "Proof of nationality" },
-        { id: "panCard", label: "PAN Card", icon: "💳", required: true, description: "Permanent Account Number" },
-        { id: "voterCard", label: "Voter ID Card", icon: "🗳️", required: false, description: "Electoral identity card" },
-        { id: "bankStatement", label: "Bank Statement", icon: "🏦", required: false, description: "Recent bank statement" },
+        { id: "aadhaar", label: "Aadhaar Card", required: true, description: "Government issued identity card" },
+        { id: "passport", label: "Passport", required: false, description: "International travel document" },
+        { id: "driving", label: "Driving License", required: false, description: "Valid driving license" },
+        { id: "esic", label: "ESIC Card", required: false, description: "Employee State Insurance" },
+        { id: "nationality", label: "Nationality Certificate", required: false, description: "Proof of nationality" },
+        { id: "panCard", label: "PAN Card", required: true, description: "Permanent Account Number" },
+        { id: "voterCard", label: "Voter ID Card", required: false, description: "Electoral identity card" },
+        { id: "bankStatement", label: "Bank Statement", required: false, description: "Recent bank statement" },
     ];
 
     const otherDocuments = [
-        { id: "customDoc1", label: "Custom Document 1", icon: "📄", required: false, description: "User-defined document" },
-        { id: "customDoc2", label: "Custom Document 2", icon: "🗂️", required: false, description: "User-defined document" }
+        { id: "customDoc1", label: "Custom Document 1", required: false, description: "User-defined document" },
+        { id: "customDoc2", label: "Custom Document 2", required: false, description: "User-defined document" }
     ];
 
-
+    // Render each document card
     const renderDocumentCard = (doc) => {
         const docFile = documentFiles[doc.id];
         const uploadedFiles = docFile?.files || [];
         const canUploadMore = !docFile || uploadedFiles.length < 2;
 
         return (
-            <Grid size={{ sm: 12, md: 6 }}>
-                <Card key={doc.id} className="doc-card">
+            <Grid size={{ xs: 12, sm: 6 }} key={doc.id}>
+                <Card className="doc-card">
                     <CardHeader
                         title={
                             <Box display="flex" alignItems="center" gap={1}>
-                                <span style={{ fontSize: "16px" }}>{doc.icon}</span>
                                 <Typography variant="body1" fontWeight="500" color="primary.title">{doc.label}</Typography>
                                 {doc.required && <Badge variant="destructive" color={theme.palette.primary.contrastText} backgroundColor={theme.palette.primary.error}>
                                     Required
@@ -167,7 +190,7 @@ export default function DocumentsStep({ expandedSections, onToggleSection }) {
                                 </Box>
                                 <Grid container spacing={2} mt={1}>
                                     {uploadedFiles?.map((fileItem) => (
-                                        <Grid size={{ xs: 6, sm: 6 }} key={fileItem.id}>
+                                        <Grid size={{ xs: 12, sm: 6 }} key={fileItem.id}>
                                             <Box className="file-preview">
                                                 {fileItem.filePreview ? (
                                                     <Box className="image-preview">
@@ -198,7 +221,7 @@ export default function DocumentsStep({ expandedSections, onToggleSection }) {
 
                         {canUploadMore && (
                             <Grid container spacing={1} mb={1}>
-                                <Grid size={{ xs: 12, md: 6 }} sm="auto">
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                     <Button
                                         variant="outlined"
                                         size="small"
@@ -214,7 +237,7 @@ export default function DocumentsStep({ expandedSections, onToggleSection }) {
                                         {uploadedFiles.length > 0 ? "Add More Files" : "Upload Files"}
                                     </Button>
                                 </Grid>
-                                <Grid size={{ xs: 12, md: 6 }} sm="auto">
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                     <Button
                                         variant="outlined"
                                         size="small"
@@ -232,6 +255,22 @@ export default function DocumentsStep({ expandedSections, onToggleSection }) {
                                 </Grid>
                             </Grid>
                         )}
+
+                        {/* Manual Entry */}
+                        <Box my={2}>
+                            <Typography variant="body1" fontWeight="500" color="primary.title">Enter Document Number Manually</Typography>
+                            <CustomInput
+                                type="text"
+                                value={manualEntries[doc.id] || ""}
+                                placeholder={`Enter ${doc.label} number`}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setManualEntries(prev => ({ ...prev, [doc.id]: value }));
+                                    validateField(doc.id, value);
+                                }}
+                                className={`manual-input ${errors[doc.id] ? 'error' : ''}`}
+                            />
+                        </Box>
 
                         <DocumentStatus uploadedFiles={uploadedFiles} doc={doc} />
                     </CardContent>
@@ -283,6 +322,7 @@ export default function DocumentsStep({ expandedSections, onToggleSection }) {
                     {documents.filter(doc => !doc.required).map(renderDocumentCard)}
                 </Grid>
             </CollapsibleSection>
+
             <CollapsibleSection
                 isOpen={expandedSections.additionalDocuments}
                 onToggle={() => onToggleSection("additionalDocuments")}

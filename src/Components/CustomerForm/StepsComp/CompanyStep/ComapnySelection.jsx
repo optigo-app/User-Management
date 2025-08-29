@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Building2 } from "lucide-react";
 
-export default function CompanySelection({ companyType, onCompanyTypeChange }) {
+export default function CompanySelection({ businessType, onCompanyTypeChange }) {
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
             <Card variant="outlined" sx={{ border: "2px dashed", borderColor: "grey.300" }}>
@@ -23,7 +23,7 @@ export default function CompanySelection({ companyType, onCompanyTypeChange }) {
                 />
                 <CardContent>
                     <RadioGroup
-                        value={companyType}
+                        value={businessType}
                         onChange={(e) => onCompanyTypeChange(e.target.value)}
                     >
                         <Grid container rowSpacing={0} columnSpacing={2}>
@@ -34,8 +34,8 @@ export default function CompanySelection({ companyType, onCompanyTypeChange }) {
                                         p: 2,
                                         cursor: "pointer",
                                         "&:hover": { bgcolor: "action.hover" },
-                                        border: companyType === "existing" ? "2px solid" : "1px solid",
-                                        borderColor: companyType === "existing" ? "primary.main" : "grey.300",
+                                        border: businessType === "existing" ? "2px solid" : "1px solid",
+                                        borderColor: businessType === "existing" ? "primary.main" : "grey.300",
                                     }}
                                 >
                                     <FormControlLabel
@@ -63,8 +63,8 @@ export default function CompanySelection({ companyType, onCompanyTypeChange }) {
                                         p: 2,
                                         cursor: "pointer",
                                         "&:hover": { bgcolor: "action.hover" },
-                                        border: companyType === "new" ? "2px solid" : "1px solid",
-                                        borderColor: companyType === "new" ? "primary.main" : "grey.300",
+                                        border: businessType === "new" ? "2px solid" : "1px solid",
+                                        borderColor: businessType === "new" ? "primary.main" : "grey.300",
                                     }}
                                 >
                                     <FormControlLabel

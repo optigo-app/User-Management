@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Grid, FormHelperText } from "@mui/material";
 import { Mail, Calendar, User } from "lucide-react";
 import { FormField, Input, InputWithIcon, Select } from "../../../Ui";
+import CustomInput from "../../../Ui/CustomInput";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
     console.log('errors: ', errors);
@@ -49,8 +51,7 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                     required
                     tooltip="Email address of the user"
                 >
-                    <InputWithIcon
-                        icon={Mail}
+                    <CustomInput
                         type="email"
                         placeholder="user@company.com"
                         value={accountData.userEmail}
@@ -68,7 +69,7 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                     tooltip="Unique code for the user"
                 >
                     <div style={{ display: "flex", gap: 8 }}>
-                        <Input
+                        <CustomInput
                             placeholder="AUTO-GENERATED"
                             style={{ flex: 1 }}
                             value={accountData.userCode}
@@ -84,8 +85,8 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                     label="Joining Date"
                     tooltip="When this customer account was created"
                 >
-                    <InputWithIcon
-                        icon={Calendar}
+                    <CustomInput
+                        placeholder="DD-MM-YYYY"
                         type="date"
                         value={accountData.joiningDate}
                         onChange={(e) => handleLocalUpdate("joiningDate", e.target.value)}
@@ -99,8 +100,7 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                     label="Reference By"
                     tooltip="Person or entity who referred this customer"
                 >
-                    <InputWithIcon
-                        icon={User}
+                    <CustomInput
                         placeholder="Enter name or ID"
                         value={accountData.referenceBy}
                         onChange={(e) => handleLocalUpdate("referenceBy", e.target.value)}
@@ -113,10 +113,8 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                 <FormField
                     label="Reference User Code"
                     tooltip="Code of the referring user if applicable"
-                    error={!!errors.referenceUserCode}
-
                 >
-                    <Input
+                    <CustomInput
                         placeholder="If applicable"
                         value={accountData.referenceUserCode}
                         onChange={(e) => handleLocalUpdate("referenceUserCode", e.target.value)}
@@ -131,12 +129,11 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                 <FormField
                     label="Assigned Broker"
                     tooltip="Select a broker to handle this customer's account"
-                    error={!!errors.assignedBroker}
                 >
-                    <Select
+                    <CustomAutocomplete
                         placeholder="Select broker (optional)"
                         value={accountData.assignedBroker}
-                        onChange={(e) => handleSelectChange("assignedBroker", e.target.value)}
+                        onChange={(e, newValue) => handleSelectChange("assignedBroker", newValue)}
                         options={[
                             {
                                 value: "broker1",
@@ -148,7 +145,6 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                             },
                         ]}
                     />
-                    {errors.assignedBroker && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors.assignedBroker}</FormHelperText>}
                 </FormField>
             </Grid>
         </Grid>

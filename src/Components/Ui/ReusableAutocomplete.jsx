@@ -3,7 +3,7 @@ import { Autocomplete, TextField } from "@mui/material";
 
 const CustomAutocomplete = ({
     label = "Select",
-    placeholder = "Search...",
+    placeholder = "Select data...",
     options = [],
     value,
     onChange,
@@ -32,6 +32,11 @@ const CustomAutocomplete = ({
             fullWidth={fullWidth}
             size={size}
             {...props}
+            sx={{
+                '& .MuiOutlinedInput-root': {
+                    height: 40,
+                }
+            }}
             renderInput={(params) => (
                 <TextField
                     {...params}

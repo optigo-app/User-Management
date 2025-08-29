@@ -122,7 +122,9 @@ const ShortcutCustDataUpdate = ({ open, onClose, initialActiveTab = 0, onApply, 
                 id="draggable-dialog-title"
             >
                 <GripVertical size={20} style={{ marginRight: 8 }} />
-                <Typography variant="h6">Shortcut Customer Data Update</Typography>
+                <Typography variant="h6" component="span">
+                    Shortcut Customer Data Update
+                </Typography>
                 <IconButton onClick={onClose} style={{ marginLeft: "auto" }} size="small">
                     <X size={18} />
                 </IconButton>

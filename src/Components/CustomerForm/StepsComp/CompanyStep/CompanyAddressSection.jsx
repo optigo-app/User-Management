@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Grid, FormHelperText } from "@mui/material";
 import { MapPin, Phone } from "lucide-react";
 import { FormField, Input, InputWithIcon, Select, CollapsibleSection } from "../../../Ui";
+import CustomInput from "../../../Ui/CustomInput";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 const CompanyAddressSection = ({ expandedSections, onToggleSection, formData, errors, onUpdate }) => {
   const [addressData, setAddressData] = useState({
@@ -59,42 +61,48 @@ const CompanyAddressSection = ({ expandedSections, onToggleSection, formData, er
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Grid container rowSpacing={0} columnSpacing={2}>
           <Grid item size={{ sm: 12, md: 4 }}>
-            <FormField label="City" error={!!errors?.city}>
-              <Input
+            <FormField label="City">
+              <CustomInput
                 placeholder="City name"
                 value={addressData?.city}
                 onChange={(e) => handleLocalUpdate("city", e.target.value)}
                 onBlur={handleReduxUpdate}
+                // error={errors?.city}
+                // helperText="City name is required"
               />
-              {errors?.city && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.city}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 4 }}>
-            <FormField label="State/Province" error={!!errors?.state}>
-              <Select
+            <FormField label="State/Province">
+              <CustomAutocomplete
+                label="State/Province"
                 placeholder="Select state"
                 value={addressData.state}
-                onChange={(e) => handleSelectChange("state", e.target.value)}
+                onChange={(e, newValue) => handleSelectChange("state", newValue)}
                 options={[
                   { value: "ca", label: "California" },
                   { value: "ny", label: "New York" },
                   { value: "tx", label: "Texas" },
                 ]}
+                // error={!!errors?.state}
+                // helperText="State/Province is required"
               />
-              {errors?.state && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.state}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 4 }}>
-            <FormField label="Country" error={!!errors?.country}>
-              <Select
+            <FormField label="Country">
+              <CustomAutocomplete
+                label="Country"
                 placeholder="Select country"
                 value={addressData.country}
-                onChange={(e) => handleSelectChange("country", e.target.value)}
+                onChange={(e, newValue) => handleSelectChange("country", newValue)}
                 options={[
                   { value: "us", label: "🇺🇸 United States" },
                   { value: "in", label: "🇮🇳 India" },
                   { value: "uk", label: "🇬🇧 United Kingdom" },
                 ]}
+                // error={!!errors?.country}
+                // helperText="Country is required"
               />
               {errors?.country && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.country}</FormHelperText>}
             </FormField>
@@ -102,23 +110,26 @@ const CompanyAddressSection = ({ expandedSections, onToggleSection, formData, er
         </Grid>
         <Grid container rowSpacing={0} columnSpacing={2}>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="Area/District" error={!!errors?.area}>
-              <Input
+            <FormField label="Area/District">
+              <CustomInput
                 placeholder="Area or district"
                 value={addressData.area}
                 onChange={(e) => handleLocalUpdate("area", e.target.value)}
                 onBlur={handleReduxUpdate}
+                // error={!!errors?.area}
+                // helperText="Area/District is required"
               />
-              {errors?.area && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.area}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
-            <FormField label="Postal/Zip Code" error={!!errors?.postalCode}>
-              <Input
+            <FormField label="Postal/Zip Code">
+              <CustomInput
                 placeholder="Postal code"
                 value={addressData.postalCode}
                 onChange={(e) => handleLocalUpdate("postalCode", e.target.value)}
                 onBlur={handleReduxUpdate}
+                // error={!!errors?.postalCode}
+                // helperText="Postal code is required"
               />
               {errors?.postalCode && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.postalCode}</FormHelperText>}
             </FormField>
@@ -126,47 +137,41 @@ const CompanyAddressSection = ({ expandedSections, onToggleSection, formData, er
         </Grid>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <FormField label="Address Line 1" error={!!errors?.addressLine1}>
-            <Input
+            <CustomInput
               placeholder="Street address, building number"
               value={addressData.addressLine1}
               onChange={(e) => handleLocalUpdate("addressLine1", e.target.value)}
               onBlur={handleReduxUpdate}
             />
-            {errors?.addressLine1 && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.addressLine1}</FormHelperText>}
           </FormField>
           <FormField label="Address Line 2" error={!!errors?.addressLine2}>
-            <Input
+            <CustomInput
               placeholder="Apartment, suite, unit, etc. (optional)"
               value={addressData.addressLine2}
               onChange={(e) => handleLocalUpdate("addressLine2", e.target.value)}
               onBlur={handleReduxUpdate}
             />
-            {errors?.addressLine2 && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.addressLine2}</FormHelperText>}
           </FormField>
         </Box>
         <Grid container rowSpacing={0} columnSpacing={2}>
           <Grid item size={{ sm: 12, md: 6 }}>
             <FormField label="Company Mobile" error={!!errors?.mobile}>
-              <InputWithIcon
-                icon={Phone}
-                type="tel"
+              <CustomInput
                 placeholder="Mobile number"
                 value={addressData.mobile}
                 onChange={(e) => handleLocalUpdate("mobile", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors?.mobile && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.mobile}</FormHelperText>}
             </FormField>
           </Grid>
           <Grid item size={{ sm: 12, md: 6 }}>
             <FormField label="Company Telephone" error={!!errors?.telephone}>
-              <Input
+              <CustomInput
                 placeholder="Landline number"
                 value={addressData.telephone}
                 onChange={(e) => handleLocalUpdate("telephone", e.target.value)}
                 onBlur={handleReduxUpdate}
               />
-              {errors?.telephone && <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors?.telephone}</FormHelperText>}
             </FormField>
           </Grid>
         </Grid>

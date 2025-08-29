@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { FormField, Select } from "../../../Ui";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 export default function CurrReginoal({ formData, onUpdate }) {
     const handleChange = (field, value) => {
@@ -14,10 +15,10 @@ export default function CurrReginoal({ formData, onUpdate }) {
         <Grid container rowSpacing={0} columnSpacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
                 <FormField label="Primary Currency" tooltip="Main currency for transactions">
-                    <Select
+                    <CustomAutocomplete
                         placeholder="Select primary currency"
                         value={formData.primaryCurrency || ""}
-                        onChange={(e) => handleChange("primaryCurrency", e.target.value)}
+                        onChange={(e, newValue) => handleChange("primaryCurrency", newValue)}
                         options={[
                             { value: "usd", label: "💵 USD - US Dollar" },
                             { value: "inr", label: "🇮🇳 INR - Indian Rupee" },
@@ -29,10 +30,10 @@ export default function CurrReginoal({ formData, onUpdate }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
                 <FormField label="Secondary Currency" tooltip="Alternative currency for pricing">
-                    <Select
+                    <CustomAutocomplete
                         placeholder="Select secondary currency"
                         value={formData.secondaryCurrency || ""}
-                        onChange={(e) => handleChange("secondaryCurrency", e.target.value)}
+                        onChange={(e, newValue) => handleChange("secondaryCurrency", newValue)}
                         options={[
                             { value: "none", label: "❌ No Secondary Currency" },
                             { value: "usd", label: "💵 USD - US Dollar" },
@@ -43,10 +44,10 @@ export default function CurrReginoal({ formData, onUpdate }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
                 <FormField label="Time Zone" tooltip="Customer's local time zone">
-                    <Select
+                    <CustomAutocomplete
                         placeholder="Select time zone"
                         value={formData.timeZone || ""}
-                        onChange={(e) => handleChange("timeZone", e.target.value)}
+                        onChange={(e, newValue) => handleChange("timeZone", newValue)}
                         options={[
                             { value: "est", label: "🇺🇸 EST - Eastern Time" },
                             { value: "pst", label: "🇺🇸 PST - Pacific Time" },
@@ -58,10 +59,10 @@ export default function CurrReginoal({ formData, onUpdate }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
                 <FormField label="Date Format" tooltip="Preferred date display format">
-                    <Select
+                    <CustomAutocomplete
                         placeholder="Select date format"
                         value={formData.dateFormat || ""}
-                        onChange={(e) => handleChange("dateFormat", e.target.value)}
+                        onChange={(e, newValue) => handleChange("dateFormat", newValue)}
                         options={[
                             { value: "mm/dd/yyyy", label: "📅 MM/DD/YYYY" },
                             { value: "dd/mm/yyyy", label: "📅 DD/MM/YYYY" },

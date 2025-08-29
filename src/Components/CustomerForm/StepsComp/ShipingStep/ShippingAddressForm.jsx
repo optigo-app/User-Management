@@ -12,6 +12,9 @@ import {
 } from "@mui/material";
 import { Edit, Check } from "lucide-react";
 import { FormField, Input, Textarea, Select } from "../../../Ui";
+import CustomInput from "../../../Ui/CustomInput";
+import { CustomTextArea } from "../../../Ui/CustomTextArea";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 export default function ShippingAddressForm({
     address,
@@ -41,7 +44,7 @@ export default function ShippingAddressForm({
                 <Grid container rowSpacing={0} columnSpacing={2}>
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="First Name" required>
-                            <Input
+                            <CustomInput
                                 placeholder="John"
                                 value={address.firstName}
                                 onChange={(e) => setAddress({ ...address, firstName: e.target.value })}
@@ -50,7 +53,7 @@ export default function ShippingAddressForm({
                     </Grid>
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="Last Name" required>
-                            <Input
+                            <CustomInput
                                 placeholder="Doe"
                                 value={address.lastName}
                                 onChange={(e) => setAddress({ ...address, lastName: e.target.value })}
@@ -60,7 +63,7 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 12 }}>
                         <FormField label="Full Address" required>
-                            <Textarea
+                            <CustomTextArea
                                 rows={3}
                                 placeholder="Enter complete address including street, building number, etc."
                                 value={address.address}
@@ -71,9 +74,9 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="Country" required>
-                            <Select
+                            <CustomAutocomplete
                                 value={address.country}
-                                onChange={(e) => setAddress({ ...address, country: e.target.value })}
+                                onChange={(e, newValue) => setAddress({ ...address, country: newValue })}
                                 placeholder="Select country"
                                 options={[
                                     { value: "us", label: "🇺🇸 United States" },
@@ -87,9 +90,9 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="State/Province" required>
-                            <Select
+                            <CustomAutocomplete
                                 value={address.state}
-                                onChange={(e) => setAddress({ ...address, state: e.target.value })}
+                                onChange={(e, newValue) => setAddress({ ...address, state: newValue })}
                                 placeholder="Select state"
                                 options={[
                                     { value: "ca", label: "California" },
@@ -103,7 +106,7 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="City" required>
-                            <Input
+                            <CustomInput
                                 placeholder="New York"
                                 value={address.city}
                                 onChange={(e) => setAddress({ ...address, city: e.target.value })}
@@ -113,7 +116,7 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="Area/District">
-                            <Input
+                            <CustomInput
                                 placeholder="Manhattan"
                                 value={address.area || ""}
                                 onChange={(e) => setAddress({ ...address, area: e.target.value })}
@@ -123,7 +126,7 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="Zip/Postal Code" required>
-                            <Input
+                            <CustomInput
                                 placeholder="10001"
                                 value={address.zipCode}
                                 onChange={(e) => setAddress({ ...address, zipCode: e.target.value })}
@@ -133,7 +136,7 @@ export default function ShippingAddressForm({
 
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="Mobile Number" required>
-                            <Input
+                            <CustomInput
                                 type="number"
                                 placeholder="Enter mobile number"
                                 value={address.mobile}

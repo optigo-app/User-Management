@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Grid, FormHelperText } from "@mui/material";
 import { FormField, Textarea } from "../../../Ui";
+import { CustomTextArea } from "../../../Ui/CustomTextArea";
 
 const InstructionsSection = ({ formData, errors, onUpdate }) => {
     const [instructions, setInstructions] = useState({
@@ -43,7 +44,7 @@ const InstructionsSection = ({ formData, errors, onUpdate }) => {
                         tooltip="Instructions for office staff"
                         error={!!errors?.officeInstructions}
                     >
-                        <Textarea
+                        <CustomTextArea
                             id="officeInstructions"
                             placeholder="Special handling instructions for office staff..."
                             rows={3}
@@ -61,7 +62,7 @@ const InstructionsSection = ({ formData, errors, onUpdate }) => {
                         tooltip="Instructions for system users"
                         error={!!errors?.userInstructions}
                     >
-                        <Textarea
+                        <CustomTextArea
                             id="userInstructions"
                             placeholder="Guidelines for system users..."
                             rows={3}
@@ -79,7 +80,7 @@ const InstructionsSection = ({ formData, errors, onUpdate }) => {
                         tooltip="Instructions visible to customer"
                         error={!!errors?.customerInstructions}
                     >
-                        <Textarea
+                        <CustomTextArea
                             id="customerInstructions"
                             placeholder="Information to display to customer..."
                             rows={3}
@@ -97,7 +98,7 @@ const InstructionsSection = ({ formData, errors, onUpdate }) => {
                         tooltip="Instructions for administrators"
                         error={!!errors?.adminInstructions}
                     >
-                        <Textarea
+                        <CustomTextArea
                             id="adminInstructions"
                             placeholder="Administrative notes and instructions..."
                             rows={3}
@@ -115,7 +116,7 @@ const InstructionsSection = ({ formData, errors, onUpdate }) => {
                         tooltip="Any other important information"
                         error={!!errors?.otherInstructions}
                     >
-                        <Textarea
+                        <CustomTextArea
                             id="otherInstructions"
                             placeholder="Additional notes, special requirements, or important information..."
                             rows={4}

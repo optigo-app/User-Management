@@ -1,0 +1,63 @@
+.phone-input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+
+    .phone-number-field {
+        .MuiInputBase-root {
+            height: 45px;
+            padding: 0;
+        }
+
+        input {
+            padding-left: 10px;
+        }
+    }
+
+    .country-adornment {
+        height: 100%;
+        margin: 0;
+        padding: 0 10px;
+        border-right: 1px solid #ccc;
+        box-shadow: none;
+        display: flex;
+        align-items: center;
+
+        .country-select-wrapper {
+            width: 80px;
+
+            .country-select {
+                .MuiOutlinedInput-notchedOutline {
+                    border: none;
+                }
+
+                .selected-country-value {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    height: 100%;
+                    padding: 0;
+
+                    .flag-icon {
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .MuiMenu-paper {
+        max-height: 250px !important;
+    }
+
+    .MuiMenuItem-root {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .flag-icon {
+            font-size: 1.25rem;
+        }
+    }
+}

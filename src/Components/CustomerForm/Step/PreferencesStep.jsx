@@ -5,6 +5,8 @@ import { FormField, Select, CollapsibleSection, OptionGrid, Input } from "../../
 import { useDispatch } from "react-redux";
 import { updateStepData } from "../../../Redux/customerFormSlice";
 import InstructionsSection from "../StepsComp/PreferencesStep/InstructionsSection";
+import CustomInput from "../../Ui/CustomInput";
+import CustomAutocomplete from "../../Ui/ReusableAutocomplete";
 
 const PreferenceStep = ({
     expandedSections,
@@ -96,14 +98,14 @@ const PreferenceStep = ({
                         label="Default Shipping Method"
                         error={!!errors.shippingMethod}
                     >
-                         <Input
-                                placeholder="Enter company name"
-                                value={formData.shippingOptions}
-                                onChange={(e) => handleInputChange("shippingMethod", e.target.value)}
-                                onBlur={handleReduxUpdate}
-                                error={errors?.shippingMethod}
-                                helperText="Shipping method is required"
-                            />
+                        <CustomInput
+                            placeholder="Enter company name"
+                            value={formData.shippingOptions}
+                            onChange={(e) => handleInputChange("shippingMethod", e.target.value)}
+                            onBlur={handleReduxUpdate}
+                            error={errors?.shippingMethod}
+                            helperText="Shipping method is required"
+                        />
                     </FormField>
                 </Box>
             </CollapsibleSection>
@@ -129,13 +131,12 @@ const PreferenceStep = ({
                         label="Preferred Certification"
                         error={!!errors.preferredCertification}
                     >
-                        <Select
+                        <CustomAutocomplete
                             options={shippingOptions}
                             placeholder="Select certification authority"
                             value={localFormData.preferredCertification}
-                            onChange={(e) => handleSelectChange("preferredCertification", e.target.value)}
+                            onChange={(e, newValue) => handleSelectChange("preferredCertification", newValue)}
                         />
-                        {errors.preferredCertification && <Typography sx={{ color: "error.main", mt: 1 }}>{errors.preferredCertification}</Typography>}
                     </FormField>
                 </Box>
             </CollapsibleSection>

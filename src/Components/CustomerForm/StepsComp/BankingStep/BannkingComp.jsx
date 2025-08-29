@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Grid, Box, Typography, IconButton, Button, Radio, Divider, FormHelperText } from "@mui/material";
 import { CreditCard, Shield, Trash2, PlusCircle } from "lucide-react";
 import { FormField, Input, Select } from "../../../Ui";
+import CustomInput from "../../../Ui/CustomInput";
+import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 const BankingComp = ({ formData, errors, onUpdate }) => {
     const [accounts, setAccounts] = useState([{
@@ -108,33 +110,27 @@ const BankingComp = ({ formData, errors, onUpdate }) => {
                     <Grid container rowSpacing={0} columnSpacing={2}>
                         <Grid item size={{ xs: 12, sm: 6 }}>
                             <FormField label="Bank Name" required error={!!errors?.[`bankName${index}`]}>
-                                <Input
+                                <CustomInput
                                     placeholder="e.g., Chase Bank"
                                     value={account.bankName}
                                     onChange={(e) => setAccounts((prev) => prev.map((acc, i) => (i === index ? { ...acc, bankName: e.target.value } : acc)))}
                                     onBlur={(e) => handleInputBlur(index, "bankName", e.target.value)}
                                 />
-                                {errors?.[`bankName${index}`] && (
-                                    <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors[`bankName${index}`]}</FormHelperText>
-                                )}
                             </FormField>
                         </Grid>
                         <Grid item size={{ xs: 12, sm: 6 }}>
                             <FormField label="Branch Name" required error={!!errors?.[`branchName${index}`]}>
-                                <Input
+                                <CustomInput
                                     placeholder="e.g., Downtown Branch"
                                     value={account.branchName}
                                     onChange={(e) => setAccounts((prev) => prev.map((acc, i) => (i === index ? { ...acc, branchName: e.target.value } : acc)))}
                                     onBlur={(e) => handleInputBlur(index, "branchName", e.target.value)}
                                 />
-                                {errors?.[`branchName${index}`] && (
-                                    <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors[`branchName${index}`]}</FormHelperText>
-                                )}
                             </FormField>
                         </Grid>
                         <Grid item size={{ xs: 12, sm: 6 }}>
                             <FormField label="Account Holder Name" required error={!!errors?.[`holderName${index}`]}>
-                                <Input
+                                <CustomInput
                                     placeholder="Full name on account"
                                     value={account.holderName}
                                     onChange={(e) => setAccounts((prev) => prev.map((acc, i) => (i === index ? { ...acc, holderName: e.target.value } : acc)))}
@@ -147,7 +143,7 @@ const BankingComp = ({ formData, errors, onUpdate }) => {
                         </Grid>
                         <Grid item size={{ xs: 12, sm: 6 }}>
                             <FormField label="Account Type" error={!!errors?.[`accountType${index}`]}>
-                                <Select
+                                <CustomAutocomplete
                                     placeholder="Select account type"
                                     options={[
                                         { value: "savings", label: "💰 Savings Account" },
@@ -156,38 +152,29 @@ const BankingComp = ({ formData, errors, onUpdate }) => {
                                         { value: "od", label: "📊 Overdraft Account" },
                                     ]}
                                     value={account.accountType}
-                                    onChange={(e) => handleSelectChange(index, "accountType", e.target.value)}
+                                    onChange={(e, newValue) => handleSelectChange(index, "accountType", newValue)}
                                 />
-                                {errors?.[`accountType${index}`] && (
-                                    <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors[`accountType${index}`]}</FormHelperText>
-                                )}
                             </FormField>
                         </Grid>
                         <Grid item size={{ xs: 12, sm: 6 }}>
                             <FormField label="Account Number" required error={!!errors?.[`accountNumber${index}`]}>
-                                <Input
+                                <CustomInput
                                     type="password"
                                     placeholder="Enter account number"
                                     value={account.accountNumber}
                                     onChange={(e) => setAccounts((prev) => prev.map((acc, i) => (i === index ? { ...acc, accountNumber: e.target.value } : acc)))}
                                     onBlur={(e) => handleInputBlur(index, "accountNumber", e.target.value)}
                                 />
-                                {errors?.[`accountNumber${index}`] && (
-                                    <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors[`accountNumber${index}`]}</FormHelperText>
-                                )}
                             </FormField>
                         </Grid>
                         <Grid item size={{ xs: 12, sm: 6 }}>
                             <FormField label="IFSC/Routing Code" required error={!!errors?.[`ifscCode${index}`]}>
-                                <Input
+                                <CustomInput
                                     placeholder="e.g., CHASE0001234"
                                     value={account.ifscCode}
                                     onChange={(e) => setAccounts((prev) => prev.map((acc, i) => (i === index ? { ...acc, ifscCode: e.target.value } : acc)))}
                                     onBlur={(e) => handleInputBlur(index, "ifscCode", e.target.value)}
                                 />
-                                {errors?.[`ifscCode${index}`] && (
-                                    <FormHelperText sx={{ color: "error.main", mt: 1 }}>{errors[`ifscCode${index}`]}</FormHelperText>
-                                )}
                             </FormField>
                         </Grid>
                     </Grid>

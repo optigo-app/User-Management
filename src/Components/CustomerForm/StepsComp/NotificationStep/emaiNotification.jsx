@@ -1,73 +1,97 @@
-import React, { memo } from 'react'
-import { Badge, CollapsibleSection, Input } from '../../../Ui';
-import { Box, IconButton, Typography } from '@mui/material';
-import { Mail, Plus } from 'lucide-react';
+import React from "react";
+import { Box, Button, Chip, IconButton, Typography } from "@mui/material";
+import { Mail, X, CheckCircle, Plus } from "lucide-react";
+import { CollapsibleSection, Input } from "../../../Ui";
+import CustomInput from "../../../Ui/CustomInput";
 
-const EmaiNotification = ({ expandedSections, onToggleSection, emailAlerts, onAddEmail, onRemoveEmail, emailInput, setEmailInput, emailHover, setEmailHover, inputStyle, iconButtonStyle }) => {
-  return (
-    <div>
+const EmaiNotification = ({
+    expandedSections,
+    onToggleSection,
+    emailAlerts,
+    emailInput,
+    setEmailInput,
+    onAddEmail,
+    onRemoveEmail,
+    inputStyle,
+    iconButtonStyle,
+    handleVerify,
+    error,
+}) => {
+    return (
         <CollapsibleSection
-                isOpen={expandedSections.emailNotifications}
-                onToggle={() => onToggleSection("emailNotifications")}
-                icon={Mail}
-                gradient="linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)"
-                title="Email Notifications"
-                subtitle="Multiple email addresses for notifications"
-                fieldCount={`${emailAlerts.length} emails`}
-            >
-                <Box>
-                    <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
-                        {emailAlerts.map((email, index) => (
-                            <Badge
-                                key={index}
-                                variant="destructive"
-                                icon={<Mail size={14} />}
-                                iconPosition="start"
-                                closeIcon={true}
-                                onClose={() => onRemoveEmail(index)}
-                                sx={{ fontSize: 12 }}
-                            >
-                                {email}
-                            </Badge>
-                        ))}
-                    </Box>
-                    <Box display="flex" gap={1}>
-                        <Input
-                            placeholder="Enter email address (e.g., user@company.com)"
-                            sx={inputStyle}
-                            size="small"
-                            value={emailInput}
-                            onChange={(e) => setEmailInput(e.target.value)}
-                            onKeyPress={(e) => {
-                                if (e.key === "Enter") {
-                                    const val = e.currentTarget.value.trim();
-                                    if (val && val.includes("@")) {
-                                        onAddEmail(val);
-                                        e.currentTarget.value = "";
-                                    }
-                                }
-                            }}
-                        />
-                        <IconButton
-                            sx={emailHover ? { ...iconButtonStyle, backgroundColor: "#f3f4f6" } : iconButtonStyle}
-                            onMouseEnter={() => setEmailHover(true)}
-                            onMouseLeave={() => setEmailHover(false)}
-                            onClick={() => {
-                                if (emailInput.trim() && emailInput.includes("@")) {
-                                    onAddEmail(emailInput.trim());
-                                }
+            isOpen={expandedSections.emailNotifications}
+            onToggle={() => onToggleSection("emailNotifications")}
+            icon={Mail}
+            gradient="linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)"
+            title="Email Notifications"
+            subtitle="Multiple email addresses for notifications"
+            fieldCount={`${emailAlerts.length} emails`}
+        >
+            <Box>
+                <Box display="flex" flexDirection="column" gap={1} mb={2}>
+                    {emailAlerts.map((item, index) => (
+                        <Box
+                            key={index}
+                            display="flex"
+                            alignItems="center"
+                            gap={1}
+                            sx={{
+                                border: "1px solid #e5e7eb",
+                                borderRadius: 1,
+                                p: 1,
+                                justifyContent: "space-between",
+                                flexWrap: "wrap",
                             }}
                         >
-                            <Plus size={18} />
-                        </IconButton>
-                    </Box>
-                    <Typography variant="caption" color="text.secondary">
-                        Press Enter or click + to add email addresses
-                    </Typography>
-                </Box>
-            </CollapsibleSection>
-    </div>
-  )
-}
+                            <Chip
+                                label={item.email}
+                                icon={<Mail size={14} />}
+                                onDelete={() => onRemoveEmail(index)}
+                                deleteIcon={<X size={14} />}
+                                variant="outlined"
+                                color={item.isVerified ? "success" : "default"}
+                            />
 
-export default EmaiNotification
+                            {item.isVerified ? (
+                                <Box display="flex" alignItems="center" gap={0.5}>
+                                    <CheckCircle size={16} color="green" />
+                                    <Typography variant="body2" color="green">
+                                        Verified
+                                    </Typography>
+                                </Box>
+                            ) : (
+                                <Button
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => handleVerify("email", index)}
+                                >
+                                    Verify
+                                </Button>
+                            )}
+                        </Box>
+                    ))}
+                </Box>
+
+                <Box display="flex" gap={1}>
+                    <CustomInput
+                        placeholder="Enter email address"
+                        sx={inputStyle}
+                        size="small"
+                        value={emailInput}
+                        onChange={(e) => setEmailInput(e.target.value)}
+                        onKeyPress={(e) => {
+                            if (e.key === "Enter") onAddEmail(emailInput);
+                        }}
+                        error={error ? true : false}
+                        helperText={error}
+                    />
+                    <IconButton sx={iconButtonStyle} onClick={() => onAddEmail(emailInput)}>
+                        <Plus size={18} />
+                    </IconButton>
+                </Box>
+            </Box>
+        </CollapsibleSection>
+    );
+};
+
+export default EmaiNotification;

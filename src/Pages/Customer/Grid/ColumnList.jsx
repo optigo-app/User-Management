@@ -3,8 +3,9 @@ import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
 import { Button, IconButton, Typography } from "@mui/material";
 import { formatDate } from "../../../Utils/globalFuc";
 import FieldPopover from "../../../Common/FieldPopover";
+import DocumentCell from "../../../Common/DocumentPopover";
 
-export const getCustomerColumns = ({ onToggleLogin, onToggleActive, handleDelete, onEditUser, onPolicyRatio, onSynchronize, onPolicyApply }) => {
+export const getCustomerColumns = ({ onToggleLogin, onToggleActive, handleDelete, onEditUser, onPolicyRatio, onSynchronize, onPolicyApply, handleViewDocument }) => {
 	return [
 		{
 			field: "sr",
@@ -47,6 +48,11 @@ export const getCustomerColumns = ({ onToggleLogin, onToggleActive, handleDelete
 					onEdit={() => onEditUser(params?.row)}
 				/>
 			),
+		},
+		{
+			field: "companyType",
+			headerName: "Company Type",
+			width: 130,
 		},
 		{
 			field: "representative",
@@ -129,14 +135,7 @@ export const getCustomerColumns = ({ onToggleLogin, onToggleActive, handleDelete
 			field: "document",
 			headerName: "Document",
 			width: 80,
-			renderCell: (params) => (
-				<IconButton>
-					<BookText
-						size={18}
-						color="gray"
-					/>
-				</IconButton>
-			),
+			renderCell: (params) => <DocumentCell row={params.row} />,
 		},
 		{
 			field: "sync",

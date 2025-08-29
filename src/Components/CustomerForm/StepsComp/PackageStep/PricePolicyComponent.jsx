@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FormField, Select } from '../../../Ui';
 import { Box, Checkbox, FormControlLabel, Grid, Typography } from '@mui/material';
+import CustomAutocomplete from '../../../Ui/ReusableAutocomplete';
 
 const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
     const [pricePolicy, setPricePolicy] = useState({
@@ -33,10 +34,10 @@ const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
             <Grid container rowSpacing={0} columnSpacing={2}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Diamond Price" tooltip="Base price per carat for diamonds">
-                        <Select
+                        <CustomAutocomplete
                             id="diamondPrice"
                             value={pricePolicy.diamondPrice || ""}
-                            onChange={(value) => handleSelectChange('diamondPrice', value)}
+                            onChange={(e, newValue) => handleSelectChange('diamondPrice', newValue)}
                             options={[
                                 { label: "$100", value: "100" },
                                 { label: "$200", value: "200" },
@@ -48,10 +49,10 @@ const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Color Stone Price" tooltip="Price per carat for colored gemstones">
-                        <Select
+                        <CustomAutocomplete
                             id="colorStonePrice"
                             value={pricePolicy.colorStonePrice || ""}
-                            onChange={(value) => handleSelectChange('colorStonePrice', value)}
+                            onChange={(e, newValue) => handleSelectChange('colorStonePrice', newValue)}
                             options={[
                                 { label: "$50", value: "50" },
                                 { label: "$100", value: "100" },
@@ -63,10 +64,10 @@ const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Labour Charges" tooltip="Manufacturing and crafting charges">
-                        <Select
+                        <CustomAutocomplete
                             id="labourCharges"
                             value={pricePolicy.labourCharges || ""}
-                            onChange={(value) => handleSelectChange('labourCharges', value)}
+                            onChange={(e, newValue) => handleSelectChange('labourCharges', newValue)}
                             options={[
                                 { label: "$20", value: "20" },
                                 { label: "$40", value: "40" },
@@ -78,10 +79,10 @@ const PricePolicyComponent = ({ formData, errors, onUpdate }) => {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     <FormField label="Setting Charges" tooltip="Stone setting and mounting charges">
-                        <Select
+                        <CustomAutocomplete
                             id="settingCharges"
                             value={pricePolicy.settingCharges || ""}
-                            onChange={(value) => handleSelectChange('settingCharges', value)}
+                            onChange={(e, newValue) => handleSelectChange('settingCharges', newValue)}
                             options={[
                                 { label: "$10", value: "10" },
                                 { label: "$20", value: "20" },
