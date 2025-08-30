@@ -1,29 +1,74 @@
-import React, { useState } from "react";
-import { Box, Button, IconButton, ListItemIcon, Menu, MenuItem, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from "@mui/material";
-import {
-  Plus,
-  FileSpreadsheet,
-  RefreshCw,
-  Search,
-  Archive,
-  Maximize,
-  Minimize,
-  Filter,
-  MoreVertical,
-} from "lucide-react";
-import * as Icons from "lucide-react";
+import React, { memo, useState } from "react";
 import "./ActionBar.scss";
-import FilterAutocomplete from "../../../../Common/FilterAutocomplete";
+import { Box, Button, IconButton, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import { Plus, Search, FileSpreadsheet, RefreshCw, Archive, Maximize, Minimize, Filter, IdCard } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import ActionMenu from "./ActionMenu";
 import AdvancedFilterDialog from "./AdvancedFilterDialog";
+import FilterAutocomplete from "../../../../Common/FilterAutocomplete";
 import ShortcutCustDataUpdate from "../Modal/ShortcutCustDataUpdate";
 
-const menuItems = [
-  { label: "Update Price Policy", icon: "DollarSign", color: "#4caf50" }, // green
-  { label: "Update Customer Type", icon: "Users", color: "#2196f3" },      // blue
-  { label: "Update Sales Rep", icon: "User", color: "#ff9800" },           // orange
-  { label: "Update Adhoc", icon: "PlusSquare", color: "#9c27b0" },         // purple
-  { label: "Customer Status", icon: "Info", color: "#f44336" },            // red
-];
+const customerTabconfig = [
+  {
+    label: "Update Price Policy",
+    fields: [
+      { name: "Diamond Price", type: "text" },
+      { name: "ColorStone/misc/service Price", type: "text" },
+      { name: "Labour Price", type: "text" },
+      { name: "Setting/Secondary Metal Price", type: "text" },
+      { name: "Payment Due Days", type: "date" },
+      { name: "Policy Due Date", type: "date" },
+      { name: "Discount", type: "text" },
+      { name: "Web Discount", type: "text" },
+    ],
+  },
+  {
+    label: "Update Customer Type",
+    fields: [
+      { name: "Customer Type", type: "select", options: [{ id: 1, labelname: "Retail" }, { id: 2, labelname: "Wholesale" }] },
+    ],
+  },
+  {
+    label: "Update Sales Rep",
+    fields: [
+      { name: "Reference By", type: "text" },
+      { name: "Reference User Code", type: "text" },
+    ],
+  },
+  {
+    label: "Update Adhoc",
+    fields: [
+      { name: "Adhoc Package", type: "select", options: [{ id: 1, labelname: "Package A" }, { id: 2, labelname: "Package B" }] },
+    ],
+  },
+  {
+    label: "Update Status",
+    fields: [
+      { name: "Customer Status", type: "select", options: ["Active", "Inactive"] },
+    ],
+  },
+]
+
+const employerTabConfig = [
+  {
+    label: "Update Designation",
+    fields: [
+      { name: "Designation", type: "select", options: [{ id: 1, labelname: "Manager" }, { id: 2, labelname: "Lead" }] },
+    ],
+  },
+  {
+    label: "Update Department",
+    fields: [
+      { name: "Department", type: "select", options: [{ id: 1, labelname: "HR" }, { id: 2, labelname: "IT" }] },
+    ],
+  },
+  {
+    label: "Update Status",
+    fields: [
+      { name: "Status", type: "select", options: ["Active", "Inactive"] },
+    ],
+  },
+]
 
 const ActionBar = ({
   custActive,
@@ -36,25 +81,21 @@ const ActionBar = ({
   onArchive,
   onChangeCustStatus,
   handleShowSummary,
-  showFilters,
-  setShowFilters,
   filters,
   onFilterChange,
-  onClearAll,
+  menuItems = [],
+  filterConfig = [],
 }) => {
-  const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState(null);
   const [openShortcutDialog, setOpenShortcutDialog] = useState(false);
   const [activeShortcutTab, setActiveShortcutTab] = useState(0);
+  const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const open = Boolean(anchorEl);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
 
   const handleMenuItemClick = (label) => {
     const index = menuItems.findIndex((item) => item.label === label);
@@ -62,115 +103,67 @@ const ActionBar = ({
       setActiveShortcutTab(index);
       setOpenShortcutDialog(true);
     }
-    handleClose();
+    handleMenuClose();
   };
 
-
-  const [filterOptions, setFilterOptions] = useState({
-    ecatNames: [{
-      id: 1,
-      labelname: "Intelligent Frozen Chicken",
-      displayorder: 1,
-      isdelete: false,
-      masterid: 2
-    }, {
-      id: 2,
-      labelname: "Rustic Cotton Cheese",
-      displayorder: 2,
-      isdelete: false,
-      masterid: 2
-    }],
-    users: [{
-      id: 1,
-      labelname: "Miss Timmy Murazik",
-      displayorder: 1,
-      isdelete: false,
-      masterid: 2
-    }, {
-      id: 2,
-      labelname: "Wesley Bradtke I",
-      displayorder: 2,
-      isdelete: false,
-      masterid: 2
-    }],
-    notifications: [{
-      id: 1,
-      labelname: "Notification 1",
-      displayorder: 1,
-      isdelete: false,
-      masterid: 2
-    }, {
-      id: 2,
-      labelname: "Notification 2",
-      displayorder: 2,
-      isdelete: false,
-      masterid: 2
-    }],
-  });
+  const shortCuttabConfig = location.pathname === "/customers" ? customerTabconfig : employerTabConfig;
 
   return (
     <Box className="action-bar">
       <Box className="action-left">
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Plus size={18} />}
-          onClick={onAdd}
-        >
+        <Button variant="contained" color="primary" startIcon={<Plus size={18} />} onClick={onAdd}>
           Add
         </Button>
 
-        <Box className="cust_toogleBtn">
-          <ToggleButtonGroup
-            value={custActive}
-            exclusive
-            size="small"
-            onChange={onChangeCustStatus}
-            className="toggle-group"
+        {location.pathname === "/customers" && (
+          <Box className="cust_toogleBtn">
+            <ToggleButtonGroup className="toggle-group" value={custActive} exclusive size="small" onChange={onChangeCustStatus}>
+              <ToggleButton className="toggle-button" value="customer">Customer</ToggleButton>
+              <ToggleButton className="toggle-button" value="lead">Lead</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        )}
+
+        {location.pathname === "/employer" && (
+          <Button
+            variant="outlined"
+            startIcon={<IdCard size={20} />}
+            size="medium"
           >
-            <ToggleButton className="toggle-button" value="customer">Customer</ToggleButton>
-            <ToggleButton className="toggle-button" value="lead">Lead</ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
+            ID Card
+          </Button>
+        )}
 
         <Box className="additional-filters">
-          <FilterAutocomplete
-            label="Status"
-            options={["Active", "Deactive"]}
-            value={filters?.status}
-            minWidth={150}
-            onChange={(val) => onFilterChange("status", val)}
-          />
-          <FilterAutocomplete
-            label="Ecat Name"
-            options={filterOptions?.ecatNames}
-            value={filters?.ecatName}
-            onChange={(val) => onFilterChange("ecatName", val)}
-          />
-          <FilterAutocomplete
-            label="Users"
-            options={filterOptions?.users}
-            value={filters?.users}
-            onChange={(val) => onFilterChange("users", val)}
-          />
-          <FilterAutocomplete
-            label="Notifications"
-            options={filterOptions?.notifications}
-            value={filters?.notification}
-            onChange={(val) => onFilterChange("notification", val)}
-          />
-          {selectedRowsData?.length > 0 && (
-            <Button
-              variant="contained"
-              endIcon={<MoreVertical size={20} />}
-              onClick={handleClick}
-            >
+          {filterConfig.map((filter) =>
+            filter.type === "text" ? (
+              <div className="location-box" key={filter.label}>
+                <input
+                  type="text"
+                  placeholder={filter.label}
+                  onChange={(e) => onFilterChange(filter.key, e.target.value)}
+                />
+              </div>
+            ) : (
+              <FilterAutocomplete
+                key={filter.label}
+                label={filter.label}
+                options={filter.options}
+                value={filters?.[filter.key]}
+                minWidth={filter.minWidth || 200}
+                onChange={(val) => onFilterChange(filter.key, val)}
+              />
+            )
+          )}
+
+          {selectedRowsData?.length > 0 && menuItems.length > 0 && (
+            <Button variant="contained" endIcon={<Plus size={20} />} onClick={handleMenuClick}>
               Actions
             </Button>
           )}
+
           <Tooltip title="More Filters">
             <IconButton onClick={() => setOpenFilterDrawer(!openFilterDrawer)}>
-
               <Filter size={20} />
             </IconButton>
           </Tooltip>
@@ -180,68 +173,55 @@ const ActionBar = ({
       <Box className="action-right">
         <div className="search-box">
           <Search size={18} className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search..."
-            onChange={(e) => onSearch?.(e.target.value)}
-          />
+          <input type="text" placeholder="Search..." onChange={(e) => onSearch?.(e.target.value)} />
         </div>
 
         <Tooltip title="Export to Excel">
-          <IconButton className="icon-btn excel" onClick={onExcel}>
+          <IconButton onClick={onExcel} className="icon-btn excel">
             <FileSpreadsheet size={20} />
           </IconButton>
         </Tooltip>
 
         <Tooltip title="Synchronize">
-          <IconButton className="icon-btn sync" onClick={onSynchronize}>
+          <IconButton onClick={onSynchronize} className="icon-btn sync">
             <RefreshCw size={20} />
           </IconButton>
         </Tooltip>
 
-
         <Tooltip title="Archive">
-          <IconButton className="icon-btn archive" onClick={onArchive}>
+          <IconButton onClick={onArchive} className="icon-btn archive">
             <Archive size={20} />
           </IconButton>
         </Tooltip>
 
-        <Tooltip title={showSummary ? "Hide Summary" : "Show Summary"} placement="top">
-          <IconButton className="icon-btn expand" onClick={handleShowSummary}>
+        <Tooltip title={showSummary ? "Hide Summary" : "Show Summary"}>
+          <IconButton onClick={handleShowSummary}>
             {showSummary ? <Minimize size={20} /> : <Maximize size={20} />}
           </IconButton>
         </Tooltip>
       </Box>
+
       <AdvancedFilterDialog
         open={openFilterDrawer}
         onClose={() => setOpenFilterDrawer(false)}
+        filtersList={filterConfig}
+        criteriaOptions={filterConfig.reduce((acc, f) => ({ ...acc, [f.label]: f.options }), {})}
+        onApply={(values) => console.log("Filters applied:", values)}
       />
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {menuItems?.map(({ label, icon, color }) => {
-          const IconComponent = Icons[icon];
-          return (
-            <MenuItem key={label} onClick={() => handleMenuItemClick(label)}>
-              <ListItemIcon sx={{ minWidth: '24px !important' }}>
-                <IconComponent size={18} color={color} />
-              </ListItemIcon>
-              <Typography variant="body2">{label}</Typography>
-            </MenuItem>
-          );
-        })}
-      </Menu>
+
+      <ActionMenu anchorEl={anchorEl} open={open} onClose={handleMenuClose} menuItems={menuItems} onItemClick={handleMenuItemClick} />
+
       <ShortcutCustDataUpdate
         open={openShortcutDialog}
         onClose={() => setOpenShortcutDialog(false)}
         initialActiveTab={activeShortcutTab}
-        onApply={(activeTabLabel, activeTabData) => {
-          console.log("Active Tab:", activeTabLabel);
-          console.log("Data to send:", activeTabData);
-          setOpenShortcutDialog(false);
-        }}
+        onApply={(tabLabel, data) => console.log(tabLabel, data)}
+        tabsConfig={shortCuttabConfig}
       />
+
 
     </Box>
   );
 };
 
-export default ActionBar;
+export default memo(ActionBar);

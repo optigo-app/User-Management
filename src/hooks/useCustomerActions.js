@@ -64,6 +64,22 @@ export function useCustomerActions(data, setData, updateFilter) {
     });
   }, []);
 
+  const onToggleSupport = useCallback((row) => {
+    setData((prev) =>
+      prev.map((item) =>
+        item.id === row.id ? { ...item, support: !row.support } : item
+      )
+    );
+  }, [setData]);
+
+  const onToggleRoaming = useCallback((row) => {
+    setData((prev) =>
+      prev.map((item) =>
+        item.id === row.id ? { ...item, roaming: !row.roaming } : item
+      )
+    );
+  }, [setData]);
+
   const onDeleteUser = useCallback(() => {
     if (dialogState.selectedRow) {
       setData((prev) =>
@@ -154,6 +170,8 @@ export function useCustomerActions(data, setData, updateFilter) {
     handleAdd,
     onToggleLogin,
     onToggleActive,
+    onToggleSupport,
+    onToggleRoaming,
     onDeleteUser,
     handleDelete,
     handleCloseDialog,

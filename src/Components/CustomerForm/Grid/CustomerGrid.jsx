@@ -4,7 +4,6 @@ import { debounce } from "lodash";
 
 const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, setSelectedIds }) => {
 	const [tempSelectedIds, setTempSelectedIds] = useState([]);
-	console.log('tempSelectedIds: ', tempSelectedIds);
 	const updateParent = useMemo(
 	  () => debounce((ids) => setSelectedIds(ids), 200),
 	  [setSelectedIds]

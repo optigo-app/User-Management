@@ -8,8 +8,9 @@ import React, {
 } from "react";
 import initialData from "../../../Data/empData.json";
 import initialLeadData from "../../../Data/leadData.json";
+import initialEmployerData from "../../../Data/employerData.json";
 import { getCustomerColumns } from "./ColumnList";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { useDebounceFilters } from "../../../hooks/useDebounceFilters";
 import ConfirmationDialog from "../../../Common/ConfirmationDialog/ConfirmationDialog";
 import PurityRatioModal from "../../../Components/CustomerForm/Grid/Modal/PurityRatioModal";
@@ -20,19 +21,51 @@ import { getLeadColumns } from "./LeadList";
 import LeadFromDrawer from "../../../Components/CustomerForm/Lead/LeadFromDrawer";
 import CustomerSummaryConfig from "../../../Components/CustomerForm/Grid/Summary/CustomerSummaryConfig";
 import Header from "./Header";
+import { useLocation } from "react-router-dom";
+import { getEmployeeColumns } from "../../Employer/Grid/EmpList";
 
 // Lazy imports
 const CustomerDataGrid = lazy(() =>
   import("../../../Components/CustomerForm/Grid/CustomerGrid")
 );
-const FilterBar = lazy(() => import("../../../Components/Ui/FilterBar"));
 const ActionBar = lazy(() =>
   import("../../../Components/CustomerForm/Grid/Filter/ActionBar")
 );
 
-const filtersConfig = [{ key: "customerName", label: "Customer Name", type: "text", alwaysVisible: true }, { key: "company", label: "Company", type: "text", alwaysVisible: true }, { key: "countryCode", label: "Country", type: "select", options: [{ value: "KY", label: "Cayman Islands" }, { value: "US", label: "United States" },], alwaysVisible: true, }, { key: "policy", label: "Policy", type: "text", alwaysVisible: true }, { key: "state", label: "State", type: "text", alwaysVisible: true }, { key: "city", label: "City", type: "text", alwaysVisible: true },];
+// menu items for customers
+const customerMenuItems = [
+  { label: "Update Price Policy", icon: "DollarSign", color: "#4caf50" },
+  { label: "Update Customer Type", icon: "Users", color: "#2196f3" },
+  { label: "Update Sales Rep", icon: "User", color: "#ff9800" },
+  { label: "Update Adhoc", icon: "PlusSquare", color: "#9c27b0" },
+  { label: "Customer Status", icon: "Info", color: "#f44336" },
+];
+
+// filters for customers
+const customerFilterConfig = [
+  { key: "status", label: "Status", type: "select", options: ["Active", "Deactive"] },
+  { key: "ecatName", label: "Ecat Name", type: "select", options: [{ id: 1, labelname: "Intelligent Frozen Chicken" }, { id: 2, labelname: "Rustic Cotton Cheese" }] },
+  { key: "users", label: "Users", type: "select", options: [{ id: 1, labelname: "Miss Timmy Murazik" }, { id: 2, labelname: "Wesley Bradtke I" }] },
+  { key: "notification", label: "Notifications", type: "select", options: [{ id: 1, labelname: "Notification 1" }, { id: 2, labelname: "Notification 2" }] },
+];
+
+const employerMenuItems = [
+  { label: "Update Designation", icon: "UserCheck", color: "#3b82f6" },
+  { label: "Update Department", icon: "Layers", color: "#ff9800" },
+  { label: "Update Status", icon: "Info", color: "#f44336" },
+];
+
+const employerFilterConfig = [
+  { key: "designation", label: "Designation", type: "select", options: [{ id: 1, labelname: "Designation 1" }, { id: 2, labelname: "Designation 2" }] },
+  { key: "department", label: "Department", type: "select", options: [{ id: 1, labelname: "Dept 1" }, { id: 2, labelname: "Dept 2" }] },
+  { key: "location", label: "Location", type: "text" },
+  { key: "status", label: "Status", type: "select", options: ["Active", "Deactive"] },
+  { key: "roamingStatus", label: "Roaming Status", type: "select", options: ["Roaming on", "Roaming off"] },
+];
+
 
 function CustomerGrid() {
+  const location = useLocation();
   const custData = useMemo(() => initialData, []);
   const leadData = useMemo(() => initialLeadData, []);
   const [data, setData] = useState(custData);
@@ -49,12 +82,13 @@ function CustomerGrid() {
     isFiltering,
     hasActiveFilters,
   } = useDebounceFilters({}, 100);
-  console.log('filters: ', filters);
 
   const {
     handleAdd,
     onToggleLogin,
     onToggleActive,
+    onToggleSupport,
+    onToggleRoaming,
     onDeleteUser,
     handleDelete,
     handleCloseDialog,
@@ -94,8 +128,10 @@ function CustomerGrid() {
     if (custActive === "lead") {
       setData(leadData);
     }
-  }, [custActive]);
-
+    if (location?.pathname === "/employer") {
+      setData(initialEmployerData);
+    }
+  }, [custActive, location]);
 
   const { filteredData, summaryData } =
     useCustomerAndLeadData(data, debouncedFilters, hasActiveFilters, custActive);
@@ -130,7 +166,34 @@ function CustomerGrid() {
     [onToggleActive, onEditUser, handleDelete, handleMakeLeadToCustomer]
   );
 
+  const employerColumns = useMemo(
+    () =>
+      getEmployeeColumns({
+        onToggleActive,
+        onToggleLogin,
+        onToggleSupport,
+        onToggleRoaming,
+        onEditUser,
+        handleDelete,
+        handleMakeLeadToCustomer,
+      }),
+    [onToggleActive, onToggleLogin, onToggleSupport, onToggleRoaming, onEditUser, handleDelete, handleMakeLeadToCustomer]
+  );
+
   const isWide = useMediaQuery(`(min-width:${(custActive === "customer" ? 2425 : 1925)}px)`);
+  const columnsData = (() => {
+    if (location?.pathname === "/customers") {
+      return custActive === "customer" ? columns : leadColumns;
+    } else if (location?.pathname === "/employer") {
+      return employerColumns;
+    } else {
+      return columns;
+    }
+  })();
+
+  const menuItems = location?.pathname === "/customers" ? customerMenuItems : employerMenuItems;
+  const filterConfig = location?.pathname === "/employer" ? employerFilterConfig : customerFilterConfig;
+
 
   return (
     <Box sx={{ width: "100%", height: "100vh", px: 2, bgcolor: "#fff" }}>
@@ -145,11 +208,8 @@ function CustomerGrid() {
         <Suspense fallback={<CenteredCircularLoader />}>
           <ActionBar
             custActive={custActive}
-            showSummary={showSummary}
+            showSummary={false}
             selectedRowsData={selectedRowsData}
-            filters={filters}
-            onFilterChange={updateFilter}
-            onClearAll={clearAllFilters}
             onAdd={handleAdd}
             onExcel={() => handleExcel(filteredData)}
             onSynchronize={handleSynchronize}
@@ -157,13 +217,17 @@ function CustomerGrid() {
             onArchive={handleArchive}
             onChangeCustStatus={onChangeCustStatus}
             handleShowSummary={handleShowSummary}
+            filters={filters}
+            onFilterChange={updateFilter}
+            menuItems={menuItems}
+            filterConfig={filterConfig}
           />
         </Suspense>
       </Box>
       <Suspense fallback={<CenteredCircularLoader />}>
         <CustomerDataGrid
           deliveryData={filteredData}
-          columns={custActive === "customer" ? columns : leadColumns}
+          columns={columnsData}
           paginationModel={paginationModel}
           setPaginationModel={setPaginationModel}
           pageSizeOptions={pageSizeOptions}
@@ -178,7 +242,7 @@ function CustomerGrid() {
         onClose={handleCloseDialog}
         onConfirm={onDeleteUser}
         title="Confirm"
-        content="Are you sure you want to remove this customer?"
+        content={`Are you sure you want to remove this ${location.pathname === "/customers" ? custActive : "employee"}?`}
       />
       <ConfirmationDialog
         open={dialogSynchronizeState.open}

@@ -129,9 +129,47 @@
 
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { User, Truck, Factory, Briefcase, UserRound } from "lucide-react"; // lucide icons
+import { Truck, Factory, Briefcase, UserRound } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const path = location.pathname.toLowerCase();
+
+    // Common header content
+    const headerData = {
+        "/customers": {
+            title: "Customer",
+            subtitle: "Manage customer data, policies, and account information across your business operations."
+        },
+        "/suppliers": {
+            title: "Supplier",
+            subtitle: "Track suppliers, contracts, and procurement processes efficiently."
+        },
+        "/manufactorys": {
+            title: "Manufactory",
+            subtitle: "Manage production units, resources, and manufacturing details."
+        },
+        "/employer": {
+            title: "Employer",
+            subtitle: "Handle employee records, payroll, and organizational hierarchy."
+        }
+    };
+
+    // Navigation buttons config
+    const navButtons = [
+        { path: "/customers", label: "Customer", icon: <UserRound size={20} /> },
+        { path: "/suppliers", label: "Supplier", icon: <Truck size={20} /> },
+        { path: "/manufactorys", label: "Manufactory", icon: <Factory size={20} /> },
+        { path: "/employer", label: "Employer", icon: <Briefcase size={20} /> }
+    ];
+
+    const current = headerData[path] || {
+        title: "Dashboard",
+        subtitle: "Overview of your business operations."
+    };
+
     return (
         <Box
             sx={{
@@ -145,53 +183,39 @@ const Header = () => {
             {/* Left Section */}
             <Box>
                 <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-                    Customer Management
+                    {current.title}
                 </Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                    Manage customer data, policies, and account information across your
-                    business operations.
+                    {current.subtitle}
                 </Typography>
             </Box>
 
-            {/* Right Section - Buttons with Lucide Icons */}
+            {/* Right Section - Dynamic Buttons */}
             <Box sx={{ display: "flex", gap: 2 }}>
-                <Button
-                    variant="text"
-                    startIcon={<UserRound size={20} />}
-                    sx={{ textTransform: "none", background: 'transparent !important', boxShadow: 'none', fontSize: '16.5px', textTransform: "captalize" }}
-                >
-                    Customer
-                </Button>
-
-                <Button
-                    variant="text"
-                    startIcon={<Truck size={20} />}
-                    sx={{ textTransform: "none", background: 'transparent !important', boxShadow: 'none', fontSize: '16.5px', textTransform: "captalize", color: "#000000de" }}
-                >
-                    Supplier
-                </Button>
-
-                <Button
-                    variant="text"
-                    startIcon={<Factory size={20} />}
-                    sx={{ textTransform: "none", background: 'transparent !important', boxShadow: 'none', fontSize: '16.5px', textTransform: "captalize", color: "#000000de" }}
-                >
-                    Manufactory
-                </Button>
-
-                <Button
-                    variant="text"
-                    startIcon={<Briefcase size={20} />}
-                    sx={{ textTransform: "none", background: 'transparent !important', boxShadow: 'none', fontSize: '16.5px', textTransform: "captalize", color: "#000000de" }}
-                >
-                    Employer
-                </Button>
+                {navButtons.map((btn) => (
+                    <Button
+                        key={btn.path}
+                        variant="text"
+                        startIcon={btn.icon}
+                        onClick={() => navigate(btn.path)}
+                        sx={{
+                            textTransform: "capitalize",
+                            background: "transparent !important",
+                            boxShadow: "none",
+                            fontSize: "16.5px",
+                            color: path === btn.path ? "primary.main" : "#000000de",
+                        }}
+                    >
+                        {btn.label}
+                    </Button>
+                ))}
             </Box>
         </Box>
     );
 };
 
 export default Header;
+
 
 
 // import React, { useState } from "react";

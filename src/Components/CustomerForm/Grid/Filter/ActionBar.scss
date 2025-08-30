@@ -4,7 +4,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0px;
+  padding: 12px 0;
   border-bottom: 1px solid #e0e0e0;
   gap: 12px;
   flex-wrap: wrap;
@@ -30,11 +30,10 @@
           width: 50%;
           flex: 1;
           font-size: 14px;
-          border: 1px solid #ddd;
           border-radius: 8px;
           border: none;
           padding: 12px;
-          line-height: .4rem;
+          line-height: 0.4rem;
           text-transform: none;
           transition: all 0.2s ease-in-out;
 
@@ -46,10 +45,35 @@
         }
       }
     }
+
     .additional-filters {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+    }
+
+    .location-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      input {
+        padding: 6px 10px 6px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.2s ease;
+        font-size: 14px;
+        min-width: 160px;
+        width: 160px;
+        height: 38px;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 10px;
+        color: #666;
+      }
     }
   }
 
@@ -72,6 +96,7 @@
         transition: 0.2s ease;
         font-size: 14px;
         min-width: 200px;
+        height: 38px;
       }
 
       .search-icon {
