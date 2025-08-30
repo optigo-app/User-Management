@@ -6,7 +6,6 @@ import CustomInput from "../../../Ui/CustomInput";
 import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
 const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
-    console.log('errors: ', errors);
     const [accountData, setAccountData] = useState({
         userEmail: "",
         userCode: "",

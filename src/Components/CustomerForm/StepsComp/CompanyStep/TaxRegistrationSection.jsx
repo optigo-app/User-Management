@@ -69,7 +69,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Grid container rowSpacing={0} columnSpacing={2}>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="GST Number" tooltip="Goods and Services Tax registration number">
               <CustomInput
                 placeholder="e.g., 22AAAAA0000A1Z5"
@@ -79,7 +79,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="PAN Number" tooltip="Permanent Account Number" >
               <CustomInput
                 placeholder="e.g., ABCDE1234F"
@@ -89,7 +89,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="VAT Number">
               <CustomInput
                 placeholder="VAT registration number"
@@ -99,7 +99,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="Service Tax">
               <CustomInput
                 placeholder="Service tax number"
@@ -109,7 +109,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="CST Number">
               <CustomInput
                 placeholder="Central Sales Tax number"
@@ -119,7 +119,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="TAN Number">
               <CustomInput
                 placeholder="Tax Deduction Account Number"
@@ -132,7 +132,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
         </Grid>
         <Divider sx={{ my: 2 }} />
         <Grid container rowSpacing={0} columnSpacing={2}>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="Credit Limit" tooltip="Maximum credit amount allowed">
               <CustomInput
                 placeholder="0.00"
@@ -142,7 +142,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="Enterprise Type">
               <CustomAutocomplete
                 placeholder="Select enterprise type"
@@ -159,7 +159,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
           </Grid>
         </Grid>
         <Grid container rowSpacing={0} columnSpacing={2}>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="CIN Number">
               <CustomInput
                 placeholder="Corporate Identity Number"
@@ -169,7 +169,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="Aadhaar Number">
               <CustomInput
                 placeholder="12-digit Aadhaar number"
@@ -179,7 +179,7 @@ const TaxRegistrationSection = ({ expandedSections, onToggleSection, formData, e
               />
             </FormField>
           </Grid>
-          <Grid item size={{ sm: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 6 }}>
             <FormField label="MSME Number">
               <CustomInput
                 placeholder="MSME registration number"

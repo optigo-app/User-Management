@@ -39,23 +39,23 @@ const theme = createTheme({
         MuiCssBaseline: {
             styleOverrides: {
                 body: {
-                    fontFamily: '"Poppins", sans-serif',
+                    fontFamily: '"Poppins", sans-serif !important',
                 },
                 input: {
-                    fontFamily: '"Poppins", sans-serif',
+                    fontFamily: '"Poppins", sans-serif !important',
                     color: '#000000DE',
                     fontSize: '14px !important',
                 },
                 select: {
-                    fontFamily: '"Poppins", sans-serif',
+                    fontFamily: '"Poppins", sans-serif !important',
                     color: '#000000DE',
                 },
                 textarea: {
-                    fontFamily: '"Poppins", sans-serif',
+                    fontFamily: '"Poppins", sans-serif !important',
                     color: '#000000DE',
                 },
                 'input::placeholder': {
-                    fontFamily: '"Poppins", sans-serif',
+                    fontFamily: '"Poppins", sans-serif !important',
                     color: '#6b7280a6',
                 },
                 label: {

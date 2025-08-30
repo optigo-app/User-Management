@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useCallback, useMemo, useRef, useEffect } from "react";
 import "./ActionBar.scss";
 import { Box, Button, IconButton, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
 import { Plus, Search, FileSpreadsheet, RefreshCw, Archive, Maximize, Minimize, Filter, IdCard } from "lucide-react";
@@ -70,19 +70,46 @@ const employerTabConfig = [
   },
 ]
 
+// Memoize the filter inputs to prevent unnecessary re-renders
+const FilterInput = memo(({ filter, value, onChange }) => {
+  if (filter.type === "text") {
+    return (
+      <div className="location-box" key={filter.label}>
+        <input
+          type="text"
+          placeholder={filter.label}
+          value={value || ''}
+          onChange={(e) => onChange(filter.key, e.target.value)}
+        />
+      </div>
+    );
+  }
+  
+  return (
+    <FilterAutocomplete
+      key={filter.label}
+      label={filter.label}
+      options={filter.options || []}
+      value={value}
+      minWidth={filter.minWidth || 200}
+      onChange={(val) => onChange(filter.key, val)}
+    />
+  );
+});
+
 const ActionBar = ({
   custActive,
   showSummary,
-  selectedRowsData,
+  selectedIds = [],
   onAdd,
   onExcel,
   onSynchronize,
-  onSearch,
+  onSearch: propOnSearch,
   onArchive,
   onChangeCustStatus,
   handleShowSummary,
-  filters,
-  onFilterChange,
+  filters = {},
+  onFilterChange: propOnFilterChange,
   menuItems = [],
   filterConfig = [],
 }) => {
@@ -93,18 +120,66 @@ const ActionBar = ({
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
 
   const open = Boolean(anchorEl);
+  
+  // Memoize handlers
+  const handleMenuClick = useCallback((event) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+  
+  const handleMenuClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
 
-  const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
-
-  const handleMenuItemClick = (label) => {
+  const handleMenuItemClick = useCallback((label) => {
     const index = menuItems.findIndex((item) => item.label === label);
     if (index >= 0) {
       setActiveShortcutTab(index);
       setOpenShortcutDialog(true);
     }
     handleMenuClose();
-  };
+  }, [menuItems, handleMenuClose]);
+
+  // Memoize the search handler with debouncing
+  const [searchTerm, setSearchTerm] = useState('');
+  const searchTimeoutRef = useRef();
+  
+  const handleSearch = useCallback((value) => {
+    setSearchTerm(value);
+    
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    
+    searchTimeoutRef.current = setTimeout(() => {
+      propOnSearch?.(value);
+    }, 300);
+  }, [propOnSearch]);
+  
+  // Memoize filter change handler
+  const handleFilterChange = useCallback((key, value) => {
+    propOnFilterChange?.(key, value);
+  }, [propOnFilterChange]);
+  
+  // Memoize filter inputs
+  const filterInputs = useMemo(() => {
+    return filterConfig.map(filter => (
+      <FilterInput 
+        key={filter.key}
+        filter={filter}
+        value={filters[filter.key]}
+        onChange={handleFilterChange}
+      />
+    ));
+  }, [filterConfig, filters, handleFilterChange]);
+  
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const shortCuttabConfig = location.pathname === "/customers" ? customerTabconfig : employerTabConfig;
 
@@ -135,28 +210,9 @@ const ActionBar = ({
         )}
 
         <Box className="additional-filters">
-          {filterConfig.map((filter) =>
-            filter.type === "text" ? (
-              <div className="location-box" key={filter.label}>
-                <input
-                  type="text"
-                  placeholder={filter.label}
-                  onChange={(e) => onFilterChange(filter.key, e.target.value)}
-                />
-              </div>
-            ) : (
-              <FilterAutocomplete
-                key={filter.label}
-                label={filter.label}
-                options={filter.options}
-                value={filters?.[filter.key]}
-                minWidth={filter.minWidth || 200}
-                onChange={(val) => onFilterChange(filter.key, val)}
-              />
-            )
-          )}
+          {filterInputs}
 
-          {selectedRowsData?.length > 0 && menuItems.length > 0 && (
+          {selectedIds?.length > 0 && menuItems.length > 0 && (
             <Button variant="contained" endIcon={<Plus size={20} />} onClick={handleMenuClick}>
               Actions
             </Button>
@@ -173,7 +229,12 @@ const ActionBar = ({
       <Box className="action-right">
         <div className="search-box">
           <Search size={18} className="search-icon" />
-          <input type="text" placeholder="Search..." onChange={(e) => onSearch?.(e.target.value)} />
+          <input 
+            type="text" 
+            placeholder="Search..." 
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)} 
+          />
         </div>
 
         <Tooltip title="Export to Excel">
@@ -224,4 +285,35 @@ const ActionBar = ({
   );
 };
 
-export default memo(ActionBar);
+// Only re-render if props change
+const areEqual = (prevProps, nextProps) => {
+  // Compare primitive props
+  if (
+    prevProps.custActive !== nextProps.custActive ||
+    prevProps.showSummary !== nextProps.showSummary ||
+    prevProps.selectedIds?.length !== nextProps.selectedIds?.length ||
+    prevProps.menuItems?.length !== nextProps.menuItems?.length ||
+    prevProps.filterConfig?.length !== nextProps.filterConfig?.length
+  ) {
+    return false;
+  }
+  
+  // Compare filters
+  const prevFilters = prevProps.filters || {};
+  const nextFilters = nextProps.filters || {};
+  
+  const filterKeys = new Set([
+    ...Object.keys(prevFilters),
+    ...Object.keys(nextFilters)
+  ]);
+  
+  for (const key of filterKeys) {
+    if (JSON.stringify(prevFilters[key]) !== JSON.stringify(nextFilters[key])) {
+      return false;
+    }
+  }
+  
+  return true;
+};
+
+export default memo(ActionBar, areEqual);

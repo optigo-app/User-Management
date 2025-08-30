@@ -1,0 +1,275 @@
+.id-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.id-card {
+  width: 400px;
+  height: 250px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 
+              0 10px 20px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.id-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2980b9, #1abc9c);
+}
+
+.id-card-content {
+  padding: 16px !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.company-logo {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.company-info {
+  flex: 1;
+}
+
+.company-name {
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  margin-bottom: 4px !important;
+}
+
+.company-address {
+  color: #7f8c8d !important;
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+
+.header-divider {
+  margin: 8px 0 !important;
+  background-color: rgba(52, 152, 219, 0.2) !important;
+}
+
+.employee-section {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  align-items: center;
+}
+
+.employee-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.employee-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.employee-name {
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  font-size: 16px !important;
+  margin-bottom: 2px !important;
+}
+
+.employee-position {
+  color: #3498db !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.joining-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+  color: #7f8c8d;
+}
+
+.joining-info svg {
+  color: #3498db;
+}
+
+.employee-id {
+  background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  color: #2c3e50 !important;
+  align-self: flex-start;
+  border: 1px solid rgba(189, 195, 199, 0.5);
+}
+
+.qr-section {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.qr-code {
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 8px;
+  border: 2px solid #ecf0f1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-label {
+  font-weight: 600 !important;
+  color: #34495e !important;
+  font-size: 10px !important;
+}
+
+.footer-divider {
+  margin: 8px 0 !important;
+  background-color: rgba(52, 152, 219, 0.2) !important;
+}
+
+.card-footer {
+  margin-top: auto;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #7f8c8d;
+}
+
+.contact-item svg {
+  color: #3498db;
+}
+
+.contact-item .MuiTypography-caption {
+  font-size: 10px !important;
+  font-weight: 500 !important;
+}
+
+.card-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.action-button {
+  min-width: 120px !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+}
+
+.print-button {
+  border-color: #3498db !important;
+  color: #3498db !important;
+  background: rgba(52, 152, 219, 0.05) !important;
+}
+
+.print-button:hover {
+  background: rgba(52, 152, 219, 0.1) !important;
+  border-color: #2980b9 !important;
+}
+
+.continue-button {
+  background: linear-gradient(135deg, #3498db, #2980b9) !important;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3) !important;
+}
+
+.continue-button:hover {
+  background: linear-gradient(135deg, #2980b9, #1f5f8b) !important;
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .id-card {
+    width: 350px;
+    height: 220px;
+  }
+  
+  .id-card-content {
+    padding: 12px !important;
+  }
+  
+  .avatar {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .employee-name {
+    font-size: 14px !important;
+  }
+  
+  .company-name {
+    font-size: 12px !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .id-card-container {
+    background: none;
+    padding: 0;
+  }
+  
+  .card-actions {
+    display: none;
+  }
+  
+  .id-card {
+    box-shadow: none !important;
+    border: 2px solid #2c3e50;
+  }
+}

@@ -4,12 +4,12 @@ import React, { Suspense, lazy } from "react";
 import CenteredCircularLoader from "./Common/Loder/CustomLoder";
 import CustomerForm from "./Pages/Customer/Form/CustomerForm";
 import { Toaster } from "react-hot-toast";
-import PhoneInputDemo from "./Pages/Test/PhoneInputDemo";
 import NotFound from "./Common/NotFound";
 
-// Lazy load only CustomerGrid
+// Lazy load components
 const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
 const HomePage = lazy(() => import("./Pages/Home/HomePage"));
+const EmployerForm = lazy(() => import("./Pages/Employer/Form/EmployerForm"));
 
 export default function App() {
   return (
@@ -52,7 +52,7 @@ export default function App() {
       />
       <Routes>
         <Route path="/customer-register" element={<CustomerForm />} />
-        <Route path="/test" element={<PhoneInputDemo />} />
+        <Route path="/employer-register" element={<EmployerForm />} />
 
         {/* Lazy-loaded route */}
         <Route

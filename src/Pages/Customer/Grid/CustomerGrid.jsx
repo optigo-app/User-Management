@@ -2,6 +2,7 @@ import React, {
   useState,
   useMemo,
   useEffect,
+  useCallback,
   memo,
   lazy,
   Suspense,
@@ -98,14 +99,26 @@ const employerFilterConfig = [
 
 function CustomerGrid() {
   const location = useLocation();
-  const custData = useMemo(() => initialData, []);
-  const leadData = useMemo(() => initialLeadData, []);
-  const [data, setData] = useState(custData);
+  const isEmployer = location.pathname === "/employer";
+  const { custData, leadData, employerData } = useMemo(() => ({
+    custData: initialData,
+    leadData: initialLeadData,
+    employerData: initialEmployerData
+  }), []);
+
+  const dataSource = useMemo(() => {
+    if (isEmployer) return employerData;
+    return custData;
+  }, [isEmployer, custData, employerData]);
+
+  const [data, setData] = useState(dataSource);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 20,
   });
-  const pageSizeOptions = [20, 25, 50, 100];
+
+  const pageSizeOptions = useMemo(() => [20, 25, 50, 100], []);
+
   const {
     filters,
     debouncedFilters,
@@ -113,7 +126,17 @@ function CustomerGrid() {
     clearAllFilters,
     isFiltering,
     hasActiveFilters,
-  } = useDebounceFilters({}, 100);
+  } = useDebounceFilters({}, 300);
+
+  const memoizedUpdateFilter = useCallback((key, value) => {
+    updateFilter(key, value);
+    setPaginationModel(prev => ({
+      ...prev,
+      page: 0
+    }));
+  }, [updateFilter]);
+
+  const actions = useCustomerActions(data, setData, memoizedUpdateFilter);
 
   const {
     handleAdd,
@@ -137,9 +160,10 @@ function CustomerGrid() {
     showSummary,
     dialogState,
     dialogPurityState,
-    custActive,
+    custActive = isEmployer ? 'employer' : 'customer',
     drawerleadOpen,
-    selectedRowsData,
+    selectedIds,
+    selectedRowsData = [],
     handleCloseLeadDrawer,
     setDialogPurityState,
     dialogAllSynchroze,
@@ -151,81 +175,68 @@ function CustomerGrid() {
     handleMakeLeadToCustomer,
     setSelectedIds,
     handleViewDocument,
-  } = useCustomerActions(data, setData, updateFilter);
+  } = actions;
 
   useEffect(() => {
-    if (custActive === "customer") {
+    if (isEmployer) {
+      setData(employerData);
+    } else if (custActive === "lead") {
+      setData(leadData);
+    } else {
       setData(custData);
     }
-    if (custActive === "lead") {
-      setData(leadData);
-    }
-    if (location?.pathname === "/employer") {
-      setData(initialEmployerData);
-    }
-  }, [custActive, location]);
+  }, [custActive, isEmployer, custData, leadData, employerData]);
 
-  const { filteredData, summaryData } =
-    useCustomerAndLeadData(data, debouncedFilters, hasActiveFilters, custActive);
-
-  useEffect(() => {
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [debouncedFilters]);
+  const { filteredData, summaryData } = useCustomerAndLeadData(data, debouncedFilters, hasActiveFilters, custActive);
 
   const columns = useMemo(
-    () =>
-      getCustomerColumns({
-        onToggleLogin,
-        onToggleActive,
-        handleDelete,
-        onEditUser,
-        onPolicyRatio,
-        onSynchronize,
-        onPolicyApply,
-        handleViewDocument,
-      }),
+    () => getCustomerColumns({
+      onToggleLogin,
+      onToggleActive,
+      handleDelete,
+      onEditUser,
+      onPolicyRatio,
+      onSynchronize,
+      onPolicyApply,
+      handleViewDocument,
+    }),
     [onToggleLogin, onToggleActive, handleDelete, onEditUser, onPolicyRatio, onSynchronize, onPolicyApply, handleViewDocument]
   );
 
   const leadColumns = useMemo(
-    () =>
-      getLeadColumns({
-        onToggleActive,
-        onEditUser,
-        handleDelete,
-        handleMakeLeadToCustomer,
-      }),
+    () => getLeadColumns({
+      onToggleActive,
+      onEditUser,
+      handleDelete,
+      handleMakeLeadToCustomer,
+    }),
     [onToggleActive, onEditUser, handleDelete, handleMakeLeadToCustomer]
   );
 
   const employerColumns = useMemo(
-    () =>
-      getEmployeeColumns({
-        onToggleActive,
-        onToggleLogin,
-        onToggleSupport,
-        onToggleRoaming,
-        onEditUser,
-        handleDelete,
-        handleMakeLeadToCustomer,
-      }),
+    () => getEmployeeColumns({
+      onToggleActive,
+      onToggleLogin,
+      onToggleSupport,
+      onToggleRoaming,
+      onEditUser,
+      handleDelete,
+      handleMakeLeadToCustomer,
+    }),
     [onToggleActive, onToggleLogin, onToggleSupport, onToggleRoaming, onEditUser, handleDelete, handleMakeLeadToCustomer]
   );
 
-  const isWide = useMediaQuery(`(min-width:${(custActive === "customer" ? 2425 : 1925)}px)`);
-  const columnsData = (() => {
-    if (location?.pathname === "/customers") {
-      return custActive === "customer" ? columns : leadColumns;
-    } else if (location?.pathname === "/employer") {
-      return employerColumns;
-    } else {
-      return columns;
-    }
-  })();
+  const columnsData = useMemo(() => {
+    if (isEmployer) return employerColumns;
+    return custActive === "customer" ? columns : leadColumns;
+  }, [isEmployer, custActive, columns, leadColumns, employerColumns]);
 
-  const menuItems = location?.pathname === "/customers" ? customerMenuItems : employerMenuItems;
-  const filterConfig = location?.pathname === "/employer" ? employerFilterConfig : customerFilterConfig;
+  const { menuItems, filterConfig } = useMemo(() => ({
+    menuItems: isEmployer ? employerMenuItems : customerMenuItems,
+    filterConfig: isEmployer ? employerFilterConfig : customerFilterConfig
+  }), [isEmployer]);
 
+  const isWide = useMediaQuery(`(min-width:${(isEmployer || custActive === "lead" ? 1925 : 2425)}px)`);
 
   return (
     <Box sx={{ width: "100%", height: "100vh", px: 2, bgcolor: "#fff" }}>
@@ -241,7 +252,7 @@ function CustomerGrid() {
           <ActionBar
             custActive={custActive}
             showSummary={false}
-            selectedRowsData={selectedRowsData}
+            selectedIds={selectedIds}
             onAdd={handleAdd}
             onExcel={() => handleExcel(filteredData)}
             onSynchronize={handleSynchronize}
@@ -250,7 +261,7 @@ function CustomerGrid() {
             onChangeCustStatus={onChangeCustStatus}
             handleShowSummary={handleShowSummary}
             filters={filters}
-            onFilterChange={updateFilter}
+            onFilterChange={memoizedUpdateFilter}
             menuItems={menuItems}
             filterConfig={filterConfig}
           />
@@ -266,7 +277,7 @@ function CustomerGrid() {
           loading={isFiltering}
           showSummary={showSummary}
           isWide={isWide}
-          setSelectedIds={setSelectedIds}
+          onSelectionModelChange={setSelectedIds}
         />
       </Suspense>
       <ConfirmationDialog

@@ -17,19 +17,56 @@ export function useCustomerActions(data, setData, updateFilter) {
   const [showSummary, setShowSummary] = useState(true);
   const [custActive, setCustActive] = useState("customer");
   const [selectedRowsData, setSelectedRowsData] = useState([]);
-  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [selectedIds, setSelectedIds] = useState([]);
+  console.log("selectedIds", selectedIds);
 
+  // Optimized wrapper function to handle the DataGrid selection format
+  const handleSetSelectedIds = useCallback((selection) => {
+    // If it's a simple array, use it directly
+    if (Array.isArray(selection)) {
+      setSelectedIds(selection);
+      return;
+    }
+    console.log("selection", selection);
+    
+    // If it's an object with type and ids, extract the ids quickly
+    if (selection?.type === 'include' && selection.ids) {
+      // Fast conversion - avoid Array.from for better performance
+      const idsArray = selection.ids instanceof Set 
+        ? [...selection.ids]
+        : Object.keys(selection.ids);
+      setSelectedIds(idsArray);
+    } else if (selection?.type === 'exclude' && selection.ids) {
+      // For exclude type, get all data IDs except the excluded ones
+      const excludedSet = selection.ids instanceof Set 
+        ? selection.ids
+        : new Set(Object.keys(selection.ids));
+      const idsArray = data.filter(row => !excludedSet.has(row.id)).map(row => row.id);
+      setSelectedIds(idsArray);
+    } else {
+      setSelectedIds([]);
+    }
+  }, [data]);
+
+  // Optimized useEffect - only recalculate when absolutely necessary
   useEffect(() => {
-    let selectedData = [];
-    if (!selectedIds || !data) return;
-    if (selectedIds?.type === "exclude") {
-      selectedData = data;
+    if (!selectedIds.length || !data?.length) {
+      setSelectedRowsData([]);
+      return;
     }
-    else if (selectedIds?.type === "include") {
-      selectedData = data?.filter((row) => selectedIds?.ids?.has(row.id));
+    
+    // Use a more efficient filter approach for large datasets
+    const selectedData = [];
+    const selectedSet = new Set(selectedIds);
+    
+    for (let i = 0; i < data.length && selectedData.length < selectedIds.length; i++) {
+      if (selectedSet.has(data[i].id)) {
+        selectedData.push(data[i]);
+      }
     }
+    
     setSelectedRowsData(selectedData);
-  }, [selectedIds, data]);
+  }, [selectedIds, data.length]);
 
   const handleAdd = useCallback(() => {
     debugger
@@ -190,6 +227,7 @@ export function useCustomerActions(data, setData, updateFilter) {
     dialogPurityState,
     custActive,
     drawerleadOpen,
+    selectedIds,
     selectedRowsData,
     handleCloseLeadDrawer,
     dialogSynchronizeState,
@@ -202,6 +240,6 @@ export function useCustomerActions(data, setData, updateFilter) {
     onChangeCustStatus,
     handleMakeLeadToCustomer,
     setSelectedRowsData,
-    setSelectedIds,
+    setSelectedIds: handleSetSelectedIds,
   };
 }

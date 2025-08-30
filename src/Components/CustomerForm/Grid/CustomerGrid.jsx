@@ -1,23 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { debounce } from "lodash";
-
-const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, setSelectedIds }) => {
-	const [tempSelectedIds, setTempSelectedIds] = useState([]);
-	const updateParent = useMemo(
-	  () => debounce((ids) => setSelectedIds(ids), 200),
-	  [setSelectedIds]
-	);
-  
-	const handleRowSelection = useCallback(
-	  (rowSelectionModel) => {
-		if (!rowSelectionModel) return;
-  
-		setTempSelectedIds(rowSelectionModel);
-		updateParent(rowSelectionModel);  
-	  },
-	  [updateParent]
-	);
+const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, onSelectionModelChange }) => {
 
 	return (
 		<DataGrid
@@ -38,7 +21,7 @@ const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel,
 			loading={false}
 			disableColumnMenu={true}
 			checkboxSelection={true}
-			onRowSelectionModelChange={handleRowSelection}
+			onRowSelectionModelChange={onSelectionModelChange}
 			density="standard"
 			sx={{
 				height: `calc(100vh - ${showSummary ? "300px" : "169px"})`,

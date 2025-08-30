@@ -2,88 +2,111 @@ import { useMemo } from "react";
 import { formatDate } from "../Utils/globalFuc";
 
 export function useCustomerAndLeadData(
-  data,
-  debouncedFilters,
-  hasActiveFilters,
+  data = [],
+  debouncedFilters = {},
+  hasActiveFilters = false,
   custActive = "customer"
 ) {
-  const preprocessedData = useMemo(() => {
-    return data?.map((item) => {
-      const lowered = {};
-      for (let key in item) {
-        lowered[key] =
-          typeof item[key] === "string" ? item[key].toLowerCase() : item[key];
-      }
-      return { ...item, _lowered: lowered };
-    });
-  }, [data]);
+  const { filteredData, summaryData } = useMemo(() => {
+    if (!data || !Array.isArray(data)) {
+      return { filteredData: [], summaryData: {} };
+    }
 
-  const filteredData = useMemo(() => {
-    if (!hasActiveFilters) return preprocessedData;
-    return preprocessedData.filter((item) =>
-      Object.entries(debouncedFilters).every(([key, value]) => {
-        console.log('value: ', value);
-        console.log('key: ', key);
-        if (!value) return true;
-        const filterVal = value.toString().toLowerCase().trim();
-        if (key === "globalSearch") {
-          return Object.entries(item._lowered).some(([fieldKey, val]) => {
-            if (!val) return false;
-            if (fieldKey === "joiningDate" || fieldKey === "dateOfBirth") {
-              const formattedDate = formatDate(val);
-              return formattedDate.includes(filterVal);
-            }
-            return val.toString().includes(filterVal);
-          });
-        } else if (key === "ecatName") {
-          return (item.ecatAdhocPackage)?.toLowerCase() === (value?.labelname)?.toLowerCase();
-        } else if (key === "status") {
-          return item.active === (value === "Active" ? true : false);
-        } else if (key === "users") {
-          return (item.customerName)?.toLowerCase() === (value?.labelname)?.toLowerCase();
-        } else if (key === "designation") {
-          return (item.designation)?.toLowerCase() === (value?.labelname)?.toLowerCase();
-        } else if (key === "department") {
-          return (item.department)?.toLowerCase() === (value?.labelname)?.toLowerCase();
-        } else if (key === "location") {
-          return (item.location)?.toLowerCase() === (value)?.toLowerCase();
-        } else if (key === "roaming") {
-          return (item.roaming)?.toLowerCase() === (value === "Roaming on" ? true : false)?.toLowerCase();
-        }
-        const itemValue = item._lowered[key];
-        if (itemValue == null) return false;
-        return itemValue.toString().includes(filterVal);
-      })
-    );
-  }, [debouncedFilters, hasActiveFilters, preprocessedData]);
+    // Pre-process data for faster searching if not already done
+    const processedData = data.map(item => {
+      if (item._searchText) return item;
 
-  const summaryData = useMemo(() => {
-    if (custActive === "customer") {
-      const totalCustomers = data?.length ?? 0;
-      const activeUsers = data?.filter((c) => c.status === "active").length ?? 0;
-      const premiumPackage =
-        data?.filter((c) => c.package === "premium").length ?? 0;
-      const policyDueSoon =
-        data?.filter((c) => c.policyDueDays <= 30).length ?? 0;
-      const inactiveUsers = totalCustomers - activeUsers;
+      const searchableValues = [
+        item.customerName,
+        item.email,
+        item.mobileNo,
+        item.city,
+        item.state,
+        item.country,
+        item.ecatAdhocPackage,
+        item.designation,
+        item.department,
+        item.location,
+        formatDate(item.joiningDate),
+        formatDate(item.dateOfBirth)
+      ];
+
       return {
-        totalCustomers,
+        ...item,
+        _searchText: searchableValues.join(' ').toLowerCase(),
+        _lowered: {
+          ecatAdhocPackage: String(item.ecatAdhocPackage || '').toLowerCase(),
+          customerName: String(item.customerName || '').toLowerCase(),
+          designation: String(item.designation || '').toLowerCase(),
+          department: String(item.department || '').toLowerCase(),
+          location: String(item.location || '').toLowerCase()
+        }
+      };
+    });
+
+    // Filter data if there are active filters
+    const filtered = hasActiveFilters
+      ? processedData.filter(item => {
+          return Object.entries(debouncedFilters).every(([key, value]) => {
+            if (!value) return true;
+            const filterVal = String(typeof value === 'object' ? value?.labelname : value).toLowerCase().trim();
+            
+            switch (key) {
+              case 'globalSearch':
+                return item._searchText.includes(filterVal);
+              
+              case 'status':
+                return item.active === (value === "Active");
+                
+              case 'ecatName':
+                return item._lowered.ecatAdhocPackage === filterVal;
+                
+              case 'users':
+                return item._lowered.customerName === filterVal;
+                
+              case 'designation':
+                return item._lowered.designation === filterVal;
+                
+              case 'department':
+                return item._lowered.department === filterVal;
+                
+              case 'location':
+                return item._lowered.location === filterVal;
+                
+              case 'roaming':
+                return item.roaming === (value === "Roaming on");
+                
+              default:
+                const itemValue = item[key];
+                return itemValue != null && String(itemValue).toLowerCase().includes(filterVal);
+            }
+          });
+        })
+      : processedData;
+
+    // Calculate summary data
+    let summary = {};
+    if (custActive === "customer") {
+      const total = filtered.length;
+      const activeUsers = filtered.filter(c => c.status === "active").length;
+      const premiumPackage = filtered.filter(c => c.package === "premium").length;
+      const policyDueSoon = filtered.filter(c => c.policyDueDays <= 30).length;
+      
+      summary = {
+        totalCustomers: total,
         activeUsers,
         premiumPackage,
         policyDueSoon,
-        inactiveUsers,
+        inactiveUsers: total - activeUsers,
       };
-    }
+    } else if (custActive === "lead") {
+      const totalLeads = filtered.length;
+      const verifiedLeads = filtered.filter(l => l.verified).length;
+      const rejectedLeads = filtered.filter(l => l.Reject === true).length;
+      const premiumLeads = filtered.filter(l => l.eCatalogPackage === "Premium").length;
+      const activeCities = new Set(filtered.map(l => l.city).filter(Boolean)).size;
 
-    if (custActive === "lead") {
-      const totalLeads = data?.length ?? 0;
-      const verifiedLeads = data?.filter((l) => l.verified).length ?? 0;
-      const rejectedLeads = data?.filter((l) => l.Reject === true).length ?? 0;
-      const premiumLeads =
-        data?.filter((l) => l.eCatalogPackage === "Premium").length ?? 0;
-      const activeCities = new Set(data?.map((l) => l.city)).size ?? 0;
-
-      return {
+      summary = {
         totalLeads,
         verifiedLeads,
         rejectedLeads,
@@ -92,12 +115,8 @@ export function useCustomerAndLeadData(
       };
     }
 
-    return {};
-  }, [data, custActive]);
+    return { filteredData: filtered, summaryData: summary };
+  }, [data, debouncedFilters, hasActiveFilters, custActive]);
 
-  return {
-    preprocessedData,
-    filteredData,
-    summaryData,
-  };
+  return { filteredData, summaryData };
 }

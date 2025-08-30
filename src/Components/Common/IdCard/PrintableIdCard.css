@@ -1,0 +1,254 @@
+/* Print-specific ID Card Styles */
+.printable-id-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.printable-id-card {
+  width: 85.6mm; /* Standard ID card width */
+  height: 53.98mm; /* Standard ID card height */
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  border: 2px solid #2c3e50 !important;
+  box-shadow: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.printable-id-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #2980b9, #1abc9c);
+}
+
+.printable-card-content {
+  padding: 8px !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-size: 8px !important;
+}
+
+.printable-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.printable-company-logo {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-radius: 4px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.printable-company-info {
+  flex: 1;
+}
+
+.printable-company-name {
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  font-size: 9px !important;
+  line-height: 1.1 !important;
+  margin-bottom: 2px !important;
+}
+
+.printable-company-address {
+  color: #7f8c8d !important;
+  font-size: 6px !important;
+  line-height: 1.2 !important;
+}
+
+.printable-header-divider {
+  margin: 4px 0 !important;
+  background-color: rgba(52, 152, 219, 0.3) !important;
+}
+
+.printable-employee-section {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  align-items: center;
+}
+
+.printable-employee-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.printable-avatar {
+  background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.printable-employee-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.printable-employee-name {
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+  font-size: 10px !important;
+  margin-bottom: 1px !important;
+}
+
+.printable-employee-position {
+  color: #3498db !important;
+  font-weight: 600 !important;
+  font-size: 7px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.printable-joining-info {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin: 2px 0;
+  color: #7f8c8d;
+}
+
+.printable-joining-info svg {
+  color: #3498db;
+}
+
+.printable-joining-info .MuiTypography-caption {
+  font-size: 6px !important;
+}
+
+.printable-employee-id {
+  background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600 !important;
+  font-size: 7px !important;
+  color: #2c3e50 !important;
+  align-self: flex-start;
+  border: 1px solid rgba(189, 195, 199, 0.5);
+}
+
+.printable-qr-section {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.printable-qr-code {
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #ecf0f1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.printable-qr-label {
+  font-weight: 600 !important;
+  color: #34495e !important;
+  font-size: 6px !important;
+}
+
+.printable-footer-divider {
+  margin: 4px 0 !important;
+  background-color: rgba(52, 152, 219, 0.3) !important;
+}
+
+.printable-card-footer {
+  margin-top: auto;
+}
+
+.printable-contact-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.printable-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #7f8c8d;
+}
+
+.printable-contact-item svg {
+  color: #3498db;
+}
+
+.printable-contact-item .MuiTypography-caption {
+  font-size: 6px !important;
+  font-weight: 500 !important;
+}
+
+.print-button-container {
+  margin-top: 20px;
+}
+
+.print-button {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  transition: all 0.3s ease;
+}
+
+.print-button:hover {
+  background: linear-gradient(135deg, #2980b9, #1f5f8b);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Print Media Queries */
+@media print {
+  .printable-id-card-container {
+    background: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .print-button-container {
+    display: none !important;
+  }
+  
+  .printable-id-card {
+    box-shadow: none !important;
+    border: 2px solid #2c3e50 !important;
+    margin: 0;
+    page-break-inside: avoid;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

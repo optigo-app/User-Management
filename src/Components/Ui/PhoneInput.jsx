@@ -65,7 +65,6 @@ const PhoneInput = ({
                                     value={countryCode || "+91"}
                                     onChange={handleCountryChange}
                                     className="country-select"
-                                    disableUnderline
                                     IconComponent={() => null}
                                     MenuProps={{
                                         PaperProps: {

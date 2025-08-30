@@ -1,5 +1,4 @@
-// src/Components/Step/CompanyStep.jsx
-import React from "react"; // No need for useState for companyType
+import React from "react";
 import { Box } from "@mui/material";
 import { Building2 } from "lucide-react";
 import { CollapsibleSection } from "../../Ui";
