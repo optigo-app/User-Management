@@ -22,6 +22,8 @@ export function useCustomerAndLeadData(
     if (!hasActiveFilters) return preprocessedData;
     return preprocessedData.filter((item) =>
       Object.entries(debouncedFilters).every(([key, value]) => {
+        console.log('value: ', value);
+        console.log('key: ', key);
         if (!value) return true;
         const filterVal = value.toString().toLowerCase().trim();
         if (key === "globalSearch") {
@@ -39,8 +41,15 @@ export function useCustomerAndLeadData(
           return item.active === (value === "Active" ? true : false);
         } else if (key === "users") {
           return (item.customerName)?.toLowerCase() === (value?.labelname)?.toLowerCase();
+        } else if (key === "designation") {
+          return (item.designation)?.toLowerCase() === (value?.labelname)?.toLowerCase();
+        } else if (key === "department") {
+          return (item.department)?.toLowerCase() === (value?.labelname)?.toLowerCase();
+        } else if (key === "location") {
+          return (item.location)?.toLowerCase() === (value)?.toLowerCase();
+        } else if (key === "roaming") {
+          return (item.roaming)?.toLowerCase() === (value === "Roaming on" ? true : false)?.toLowerCase();
         }
-
         const itemValue = item._lowered[key];
         if (itemValue == null) return false;
         return itemValue.toString().includes(filterVal);

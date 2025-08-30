@@ -56,10 +56,42 @@ const employerMenuItems = [
 ];
 
 const employerFilterConfig = [
-  { key: "designation", label: "Designation", type: "select", options: [{ id: 1, labelname: "Designation 1" }, { id: 2, labelname: "Designation 2" }] },
-  { key: "department", label: "Department", type: "select", options: [{ id: 1, labelname: "Dept 1" }, { id: 2, labelname: "Dept 2" }] },
+  {
+    key: "designation",
+    label: "Designation",
+    type: "select",
+    options: [
+      { id: 1, labelname: "HR Manager" },
+      { id: 2, labelname: "Recruitment Specialist" },
+      { id: 3, labelname: "Training & Development Manager" },
+      { id: 4, labelname: "Payroll Administrator" },
+      { id: 5, labelname: "Employee Relations Manager" },
+      { id: 6, labelname: "Compensation & Benefits Analyst" },
+      { id: 7, labelname: "HR Business Partner" },
+      { id: 8, labelname: "HR Assistant" },
+      { id: 9, labelname: "HR Coordinator" },
+      { id: 10, labelname: "Talent Acquisition Manager" },
+    ],
+  },
+  {
+    key: "department",
+    label: "Department",
+    type: "select",
+    options: [
+      { id: 1, labelname: "Human Resources" },
+      { id: 2, labelname: "Finance" },
+      { id: 3, labelname: "Marketing" },
+      { id: 4, labelname: "Sales" },
+      { id: 5, labelname: "Operations" },
+      { id: 6, labelname: "IT" },
+      { id: 7, labelname: "Legal" },
+      { id: 8, labelname: "Customer Support" },
+      { id: 9, labelname: "Product Management" },
+      { id: 10, labelname: "Research & Development" },
+    ],
+  },
   { key: "location", label: "Location", type: "text" },
-  { key: "status", label: "Status", type: "select", options: ["Active", "Deactive"] },
+  { key: "status", label: "Status", type: "select", options: ["Active", "Inactive"] },
   { key: "roamingStatus", label: "Roaming Status", type: "select", options: ["Roaming on", "Roaming off"] },
 ];
 
