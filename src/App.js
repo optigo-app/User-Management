@@ -5,6 +5,7 @@ import CenteredCircularLoader from "./Common/Loder/CustomLoder";
 import CustomerForm from "./Pages/Customer/Form/CustomerForm";
 import { Toaster } from "react-hot-toast";
 import NotFound from "./Common/NotFound";
+import TestIcardPrint from "./Pages/Test/TestIcardPrint";
 
 // Lazy load components
 const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
@@ -53,6 +54,7 @@ export default function App() {
       <Routes>
         <Route path="/customer-register" element={<CustomerForm />} />
         <Route path="/employer-register" element={<EmployerForm />} />
+        <Route path="/test-icard-print" element={<TestIcardPrint />} />
 
         {/* Lazy-loaded route */}
         <Route

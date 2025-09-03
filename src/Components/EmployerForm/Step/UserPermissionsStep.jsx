@@ -52,6 +52,26 @@ const UserPermissionsStep = ({ expandedSections, onToggleSection, formData, erro
                 ...formData,
                 mfgAccess: value
             })
+        } else if (permissionKey === "mfgLocation") {
+            handleUpdate({
+                ...formData,
+                mfgLocation: value
+            })
+        } else if (permissionKey === "accessPermission") {
+            handleUpdate({
+                ...formData,
+                accessPermission: value
+            })
+        } else if (permissionKey === "qcPermission") {
+            handleUpdate({
+                ...formData,
+                qcPermission: value
+            })
+        } else if (permissionKey === "quickAccess") {
+            handleUpdate({
+                ...formData,
+                quickAccess: value
+            })
         } else {
             const updatedPermissions = {
                 ...formData?.userPermissions,

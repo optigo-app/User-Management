@@ -1,78 +1,98 @@
 import React from 'react';
-import { 
-    Box, 
-    Paper, 
-    Typography, 
-    FormControlLabel, 
-    Checkbox
+import {
+    Box,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    useTheme
 } from '@mui/material';
-import { FileCheck } from 'lucide-react';
+import { ToggleSwitch } from '../../../Ui/ToggleSwitch';
 
-const QCPermissionComponent = ({ formData, onPermissionChange, color = "#ec4899" }) => {
-    const handleChange = (key, checked) => {
-        onPermissionChange(key, checked);
+const QCPermissionComponent = ({ formData, onPermissionChange }) => {
+    const theme = useTheme();
+
+    const handleChange = (statusKey, checked) => {
+        const currentQcPermission = formData?.qcPermission || {};
+        const updatedQcPermission = {
+            ...currentQcPermission,
+            [statusKey]: {
+                ...currentQcPermission[statusKey],
+                access: checked
+            }
+        };
+        onPermissionChange('qcPermission', updatedQcPermission);
     };
 
-    const getCheckboxValue = (key) => {
-        return formData?.userPermissions?.[key] || false;
+    const qcStatuses = [
+        { key: 'approved', label: 'Approved' },
+        { key: 'rejected', label: 'Rejected' },
+        { key: 'finalApproved', label: 'Final Approved' },
+        { key: 'finalRejected', label: 'Final Rejected' }
+    ];
+
+    const getCheckboxValue = (statusKey) => {
+        return formData?.qcPermission?.[statusKey]?.access || false;
     };
 
     return (
-        <Paper sx={{ 
-            p: 3, 
-            borderRadius: 2, 
-            border: '1px solid #e5e7eb',
-            bgcolor: '#fafafa'
-        }}>
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                p: 3,
-                borderRadius: 2,
-                border: '1px solid #e5e7eb',
-                bgcolor: 'white',
-                transition: 'all 0.2s ease',
-                '&:hover': {
-                    borderColor: color,
-                    boxShadow: `0 2px 8px ${color}20`,
-                    transform: 'translateY(-1px)'
-                }
-            }}>
-                <FileCheck 
-                    size={24} 
-                    color={getCheckboxValue('qcPermission') ? color : '#9ca3af'} 
-                    style={{ marginRight: '16px' }}
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={getCheckboxValue('qcPermission')}
-                            onChange={(e) => handleChange('qcPermission', e.target.checked)}
-                            sx={{
-                                color: '#9ca3af',
-                                '&.Mui-checked': {
-                                    color: color
-                                },
-                                '& .MuiSvgIcon-root': {
-                                    fontSize: 24
-                                }
-                            }}
-                        />
-                    }
-                    label={
-                        <Typography variant="body1" sx={{
-                            fontWeight: getCheckboxValue('qcPermission') ? 600 : 500,
-                            color: getCheckboxValue('qcPermission') ? '#374151' : '#6b7280',
-                            fontSize: '16px'
-                        }}>
-                            Enable QC Permission
-                        </Typography>
-                    }
-                    sx={{ margin: 0, flex: 1 }}
-                />
-            </Box>
-        </Paper>
+        <Box>
+            <Paper sx={{ borderRadius: 1, overflow: 'hidden' }}>
+                <TableContainer sx={{ maxHeight: 400 }}>
+                    <Table stickyHeader size="small">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ 
+                                    bgcolor: '#f8fafc', 
+                                    fontWeight: 600,
+                                    fontSize: '0.875rem',
+                                    color: theme.palette.primary.title,
+                                    borderBottom: '2px solid #e2e8f0'
+                                }}>
+                                    Status
+                                </TableCell>
+                                <TableCell sx={{ 
+                                    bgcolor: '#f8fafc', 
+                                    fontWeight: 600,
+                                    fontSize: '0.875rem',
+                                    color: theme.palette.primary.title,
+                                    borderBottom: '2px solid #e2e8f0',
+                                    width: 120
+                                }}>
+                                    Access
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {qcStatuses?.map((status) => (
+                                <TableRow key={status.key} sx={{ '&:hover': { bgcolor: '#f8fafc' } }}>
+                                    <TableCell sx={{ 
+                                        fontSize: '0.875rem',
+                                        color: theme.palette.primary.title,
+                                        py: 1.5
+                                    }}>
+                                        {status.label}
+                                    </TableCell>
+                                    <TableCell sx={{ py: 1.5 }}>
+                                        <ToggleSwitch
+                                            checked={getCheckboxValue(status.key)}
+                                            onChange={() => handleChange(status.key, !getCheckboxValue(status.key))}
+                                            activeColor={theme.palette.toggle.active}
+                                            inactiveColor={theme.palette.toggle.inactive}
+                                            width={32}
+                                            height={18}
+                                        />
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        </Box>
     );
 };
 

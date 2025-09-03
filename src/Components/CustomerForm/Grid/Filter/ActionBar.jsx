@@ -7,6 +7,7 @@ import ActionMenu from "./ActionMenu";
 import AdvancedFilterDialog from "./AdvancedFilterDialog";
 import FilterAutocomplete from "../../../../Common/FilterAutocomplete";
 import ShortcutCustDataUpdate from "../Modal/ShortcutCustDataUpdate";
+import { IdCardPreview } from "../../../Common/IdCard";
 
 const customerTabconfig = [
   {
@@ -101,6 +102,7 @@ const ActionBar = ({
   custActive,
   showSummary,
   selectedIds = [],
+  selectedRowsData = [],
   onAdd,
   onExcel,
   onSynchronize,
@@ -118,6 +120,8 @@ const ActionBar = ({
   const [openShortcutDialog, setOpenShortcutDialog] = useState(false);
   const [activeShortcutTab, setActiveShortcutTab] = useState(0);
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
+  const [openIdCardModal, setOpenIdCardModal] = useState(false);
+  console.log(selectedRowsData, openIdCardModal)
 
   const open = Boolean(anchorEl);
   
@@ -138,6 +142,14 @@ const ActionBar = ({
     }
     handleMenuClose();
   }, [menuItems, handleMenuClose]);
+
+  const handleIdCardClick = useCallback(() => {
+    setOpenIdCardModal(true);
+  }, []);
+
+  const handleIdCardClose = useCallback(() => {
+    setOpenIdCardModal(false);
+  }, []);
 
   // Memoize the search handler with debouncing
   const [searchTerm, setSearchTerm] = useState('');
@@ -204,6 +216,8 @@ const ActionBar = ({
             variant="outlined"
             startIcon={<IdCard size={20} />}
             size="medium"
+            onClick={handleIdCardClick}
+            // disabled={selectedIds.length !== 1}
           >
             ID Card
           </Button>
@@ -280,6 +294,15 @@ const ActionBar = ({
         tabsConfig={shortCuttabConfig}
       />
 
+      {/* {selectedRowsData.length > 0 && ( */}
+        <IdCardPreview
+          open={openIdCardModal}
+          onClose={handleIdCardClose}
+          selectedRowsData={selectedRowsData}
+          onDownload={() => console.log('Download ID Card')}
+          onPrint={() => console.log('Print ID Card')}
+        />
+      {/* )} */}
 
     </Box>
   );

@@ -12,6 +12,7 @@ const theme = createTheme({
             main: '#7367f0',
             contrastText: '#fff',
             light: '#868686',
+            extraLight: '#86868640',
             dark: '#6B7280',
             error: '#F87171',
             primaryGradient:
@@ -19,9 +20,9 @@ const theme = createTheme({
             secondaryGradient:
                 'linear-gradient(270deg, rgba(255, 165, 0, 0.7) 0%, #FFA500 100%)',
         },
-        toggle:{
-            active:"#7367f0",
-            inactive:"#868686a1"
+        toggle: {
+            active: "#7367f0",
+            inactive: "#868686a1"
         }
     },
     shape: {
@@ -137,7 +138,7 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     borderRadius: 8,
-                    boxShadow: '0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                     fontSize: '14px !important',
                 },
             },

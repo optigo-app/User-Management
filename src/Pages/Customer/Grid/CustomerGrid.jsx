@@ -253,6 +253,7 @@ function CustomerGrid() {
             custActive={custActive}
             showSummary={false}
             selectedIds={selectedIds}
+            selectedRowsData={selectedRowsData}
             onAdd={handleAdd}
             onExcel={() => handleExcel(filteredData)}
             onSynchronize={handleSynchronize}
