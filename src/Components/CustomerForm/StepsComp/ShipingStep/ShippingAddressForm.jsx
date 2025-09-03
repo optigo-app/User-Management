@@ -11,7 +11,7 @@ import {
     FormControlLabel,
 } from "@mui/material";
 import { Edit, Check } from "lucide-react";
-import { FormField, Input, Textarea, Select } from "../../../Ui";
+import { FormField } from "../../../Ui";
 import CustomInput from "../../../Ui/CustomInput";
 import { CustomTextArea } from "../../../Ui/CustomTextArea";
 import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
@@ -76,8 +76,13 @@ export default function ShippingAddressForm({
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="Country" required>
                             <CustomAutocomplete
-                                value={address.country}
-                                onChange={(e, newValue) => setAddress({ ...address, country: newValue })}
+                                value={[
+                                    { value: "us", label: "🇺🇸 United States" },
+                                    { value: "in", label: "🇮🇳 India" },
+                                    { value: "uk", label: "🇬🇧 United Kingdom" },
+                                    { value: "ca", label: "🇨🇦 Canada" },
+                                ].find(option => option.value === address.country) || null}
+                                onChange={(e, newValue) => setAddress({ ...address, country: newValue?.value || '' })}
                                 placeholder="Select country"
                                 options={[
                                     { value: "us", label: "🇺🇸 United States" },
@@ -85,6 +90,7 @@ export default function ShippingAddressForm({
                                     { value: "uk", label: "🇬🇧 United Kingdom" },
                                     { value: "ca", label: "🇨🇦 Canada" },
                                 ]}
+                                getOptionLabel={(option) => option.label}
                             />
                         </FormField>
                     </Grid>
@@ -92,8 +98,13 @@ export default function ShippingAddressForm({
                     <Grid size={{ xs: 12, sm: 6 }}>
                         <FormField label="State/Province" required>
                             <CustomAutocomplete
-                                value={address.state}
-                                onChange={(e, newValue) => setAddress({ ...address, state: newValue })}
+                                value={[
+                                    { value: "ca", label: "California" },
+                                    { value: "ny", label: "New York" },
+                                    { value: "tx", label: "Texas" },
+                                    { value: "fl", label: "Florida" },
+                                ].find(option => option.value === address.state) || null}
+                                onChange={(e, newValue) => setAddress({ ...address, state: newValue?.value || '' })}
                                 placeholder="Select state"
                                 options={[
                                     { value: "ca", label: "California" },
@@ -101,6 +112,7 @@ export default function ShippingAddressForm({
                                     { value: "tx", label: "Texas" },
                                     { value: "fl", label: "Florida" },
                                 ]}
+                                getOptionLabel={(option) => option.label}
                             />
                         </FormField>
                     </Grid>
@@ -147,7 +159,7 @@ export default function ShippingAddressForm({
                         </FormField>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <FormControlLabel
                             control={
                                 <Checkbox

@@ -3,15 +3,15 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
     typography: {
         fontFamily: '"Poppins", sans-serif',
-        color: '#6B7280',
+        color: '#424242',
     },
     palette: {
         primary: {
-            title: '#6B7280',
+            title: '#424242',
             subtitle: '#9CA3AF',
             main: '#7367f0',
             contrastText: '#fff',
-            light: '#e5e7eb',
+            light: '#868686',
             dark: '#6B7280',
             error: '#F87171',
             primaryGradient:
@@ -19,6 +19,10 @@ const theme = createTheme({
             secondaryGradient:
                 'linear-gradient(270deg, rgba(255, 165, 0, 0.7) 0%, #FFA500 100%)',
         },
+        toggle:{
+            active:"#7367f0",
+            inactive:"#868686a1"
+        }
     },
     shape: {
         borderRadius: 8,
@@ -43,16 +47,16 @@ const theme = createTheme({
                 },
                 input: {
                     fontFamily: '"Poppins", sans-serif !important',
-                    color: '#000000DE',
+                    color: '#424242',
                     fontSize: '14px !important',
                 },
                 select: {
                     fontFamily: '"Poppins", sans-serif !important',
-                    color: '#000000DE',
+                    color: '#424242',
                 },
                 textarea: {
                     fontFamily: '"Poppins", sans-serif !important',
-                    color: '#000000DE',
+                    color: '#424242',
                 },
                 'input::placeholder': {
                     fontFamily: '"Poppins", sans-serif !important',
@@ -80,6 +84,15 @@ const theme = createTheme({
                     background:
                         'linear-gradient(270deg, rgba(115, 103, 240, 0.7) 0%, #7367f0 100%)',
                     color: '#fff',
+                },
+                text: {
+                    color: '#6B7280',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    '&:hover': {
+                        backgroundColor: 'transparent',
+                        boxShadow: 'none',
+                    },
                 },
             },
         },

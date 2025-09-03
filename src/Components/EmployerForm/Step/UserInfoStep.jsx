@@ -1,9 +1,8 @@
 import React from 'react';
-import { User, IdCard, Users } from 'lucide-react';
+import { User, Users } from 'lucide-react';
 import { CollapsibleSection } from "../../Ui";
 import UserProfileForm from '../../CustomerForm/StepsComp/UserStep/UserProfileForm';
 import UserAccountInfoSection from '../../CustomerForm/StepsComp/UserStep/AccountInformation';
-import IdCardSection from '../StepsComp/UserStep/IdCardSection';
 import StaffFamilySection from '../StepsComp/UserStep/StaffFamilySection';
 import { useDispatch } from 'react-redux';
 import { updateStepData } from '../../../Redux/employerFormSlice';
@@ -60,24 +59,6 @@ export default function UserInfoStep({
                 />
             </CollapsibleSection>
 
-            {/* ID Card Info - Only for Employer */}
-            {formType === "employer" && (
-                <CollapsibleSection
-                    isOpen={expandedSections.idCardInfo}
-                    onToggle={() => onToggleSection('idCardInfo')}
-                    icon={IdCard}
-                    gradient="linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)"
-                    title="ID Card Information"
-                    subtitle="Employee identification and card details"
-                    fieldCount="6 fields"
-                >
-                    <IdCardSection
-                        formData={formData}
-                        errors={errors}
-                        onUpdate={handleUpdate}
-                    />
-                </CollapsibleSection>
-            )}
 
             {/* Staff/Family Info - Only for Employer */}
             {formType === "employer" && (

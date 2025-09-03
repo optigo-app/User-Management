@@ -1,12 +1,12 @@
 import { useState, useCallback, use, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { formatCustomer } from "./useCustomerFormat";
 
 export function useCustomerActions(data, setData, updateFilter) {
   const navigate = useNavigate();
-
+  const location = useLocation();
   // Dialog states
   const [dialogState, setDialogState] = useState({ open: false, selectedRow: null });
   const [dialogPurityState, setDialogPurityState] = useState({ open: false, selectedRow: null });
@@ -28,17 +28,17 @@ export function useCustomerActions(data, setData, updateFilter) {
       return;
     }
     console.log("selection", selection);
-    
+
     // If it's an object with type and ids, extract the ids quickly
     if (selection?.type === 'include' && selection.ids) {
       // Fast conversion - avoid Array.from for better performance
-      const idsArray = selection.ids instanceof Set 
+      const idsArray = selection.ids instanceof Set
         ? [...selection.ids]
         : Object.keys(selection.ids);
       setSelectedIds(idsArray);
     } else if (selection?.type === 'exclude' && selection.ids) {
       // For exclude type, get all data IDs except the excluded ones
-      const excludedSet = selection.ids instanceof Set 
+      const excludedSet = selection.ids instanceof Set
         ? selection.ids
         : new Set(Object.keys(selection.ids));
       const idsArray = data.filter(row => !excludedSet.has(row.id)).map(row => row.id);
@@ -48,31 +48,28 @@ export function useCustomerActions(data, setData, updateFilter) {
     }
   }, [data]);
 
-  // Optimized useEffect - only recalculate when absolutely necessary
   useEffect(() => {
     if (!selectedIds.length || !data?.length) {
       setSelectedRowsData([]);
       return;
     }
-    
-    // Use a more efficient filter approach for large datasets
     const selectedData = [];
     const selectedSet = new Set(selectedIds);
-    
     for (let i = 0; i < data.length && selectedData.length < selectedIds.length; i++) {
       if (selectedSet.has(data[i].id)) {
         selectedData.push(data[i]);
       }
     }
-    
     setSelectedRowsData(selectedData);
   }, [selectedIds, data.length]);
 
   const handleAdd = useCallback(() => {
     debugger
     const formattedData = formatCustomer({});
-    if (custActive == "customer") {
+    if (location?.pathname === "/customers") {
       navigate("/customer-register", { state: { data: formattedData, step: 1 } });
+    } else if (location?.pathname === "/employer") {
+      navigate("/employer-register", { state: { data: formattedData, step: 1 } });
     }
     else {
       setDrawerLeadOpen({ open: true, selectedRow: null });
