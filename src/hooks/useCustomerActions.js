@@ -132,9 +132,12 @@ export function useCustomerActions(data, setData, updateFilter) {
   }, []);
 
   const onEditUser = useCallback((row) => {
-    if (custActive == "customer") {
+    if (location?.pathname === "/customers") {
       const formattedData = formatCustomer(row);
       navigate(`/customer-register`, { state: { data: formattedData, step: 1 } });
+    } else if (location?.pathname == "/employer") {
+      const formattedData = formatCustomer(row);
+      navigate(`/employer-register`, { state: { data: formattedData, step: 1 } });
     }
     else {
       setDrawerLeadOpen({ open: true, selectedRow: row });

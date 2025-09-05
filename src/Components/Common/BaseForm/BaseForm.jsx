@@ -46,6 +46,10 @@ const defaultExpandedSections = {
   // Employer-specific sections
   idCardInfo: true,
   staffFamily: true,
+  maxTradeIn: true,
+  salaryPackage: true,
+  benefitsAllowances: true,
+  payrollSettings: true,
   appRights: true,
   userPermissions: true,
 };

@@ -21,7 +21,7 @@ const UserPermissionsStep = ({ expandedSections, onToggleSection, formData, erro
 
     const handleUpdate = (data) => {
         dispatch(updateStepData({
-            stepName: "step7",
+            stepName: "step8",
             formData: data
         }));
     };

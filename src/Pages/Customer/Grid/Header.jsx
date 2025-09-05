@@ -152,7 +152,7 @@ const Header = () => {
             subtitle: "Manage production units, resources, and manufacturing details."
         },
         "/employer": {
-            title: "Employer",
+            title: "Employees",
             subtitle: "Handle employee records, payroll, and organizational hierarchy."
         }
     };
@@ -162,7 +162,7 @@ const Header = () => {
         { path: "/customers", label: "Customer", icon: <UserRound size={20} /> },
         { path: "/suppliers", label: "Supplier", icon: <Truck size={20} /> },
         { path: "/manufactorys", label: "Manufactory", icon: <Factory size={20} /> },
-        { path: "/employer", label: "Employer", icon: <Briefcase size={20} /> }
+        { path: "/employer", label: "Employees", icon: <Briefcase size={20} /> }
     ];
 
     const current = headerData[path] || {

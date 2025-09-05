@@ -63,10 +63,10 @@ const Home = () => {
                             icon: <Briefcase size={48} />,
                             title: "Employee Management",
                             desc: "Manage employee records, payroll, and HR operations with ease.",
-                            link: "employees",
+                            link: "employer",
                         },
                     ]?.map((card, i) => (
-                        <Grid size={{xs: 12, sm: 6, md: 3}} key={i}>
+                        <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
                             <Paper elevation={3} className="management-card">
                                 <Box className="icon-wrapper">{card.icon}</Box>
                                 <Typography variant="h6" className="card-title">
@@ -90,21 +90,21 @@ const Home = () => {
                     Why Choose <span>Optigo</span>?
                 </Typography>
                 <Grid container spacing={4} justifyContent="center">
-                    <Grid size={{xs: 12, sm: 4}}>
+                    <Grid size={{ xs: 12, sm: 4 }}>
                         <Box className="why-card">
                             <Star size={40} />
                             <Typography variant="h6">Easy to Use</Typography>
                             <Typography>Intuitive UI that requires minimal training.</Typography>
                         </Box>
                     </Grid>
-                    <Grid size={{xs: 12, sm: 4}}>
+                    <Grid size={{ xs: 12, sm: 4 }}>
                         <Box className="why-card">
                             <ShieldCheck size={40} />
                             <Typography variant="h6">Secure & Reliable</Typography>
                             <Typography>Data protection and 99.9% uptime guaranteed.</Typography>
                         </Box>
                     </Grid>
-                    <Grid size={{xs: 12, sm: 4}}>
+                    <Grid size={{ xs: 12, sm: 4 }}>
                         <Box className="why-card">
                             <Clock size={40} />
                             <Typography variant="h6">Save Time</Typography>

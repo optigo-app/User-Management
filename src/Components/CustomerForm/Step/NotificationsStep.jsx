@@ -3,7 +3,7 @@ import NotificationComp from '../StepsComp/NotificationStep/NotificationComp'
 import { useDispatch } from 'react-redux';
 import { updateStepData } from '../../../Redux/customerFormSlice';
 
-const NotificationsStep = ({expandedSections, onToggleSection, formData, error}) => {
+const NotificationsStep = ({expandedSections, onToggleSection, formData, error, formType = "customer"}) => {
     const dispatch = useDispatch();
 
     const handleUpdate = (data) => {
@@ -20,7 +20,7 @@ const NotificationsStep = ({expandedSections, onToggleSection, formData, error})
             formData={formData}
             error={error}
             onUpdate={handleUpdate}
-
+            formType={formType}
         />
     </div>
   )

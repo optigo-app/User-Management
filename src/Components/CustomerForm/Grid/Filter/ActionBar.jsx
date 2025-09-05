@@ -85,7 +85,7 @@ const FilterInput = memo(({ filter, value, onChange }) => {
       </div>
     );
   }
-  
+
   return (
     <FilterAutocomplete
       key={filter.label}
@@ -124,12 +124,12 @@ const ActionBar = ({
   console.log(selectedRowsData, openIdCardModal)
 
   const open = Boolean(anchorEl);
-  
+
   // Memoize handlers
   const handleMenuClick = useCallback((event) => {
     setAnchorEl(event.currentTarget);
   }, []);
-  
+
   const handleMenuClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
@@ -154,28 +154,28 @@ const ActionBar = ({
   // Memoize the search handler with debouncing
   const [searchTerm, setSearchTerm] = useState('');
   const searchTimeoutRef = useRef();
-  
+
   const handleSearch = useCallback((value) => {
     setSearchTerm(value);
-    
+
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
-    
+
     searchTimeoutRef.current = setTimeout(() => {
       propOnSearch?.(value);
     }, 300);
   }, [propOnSearch]);
-  
+
   // Memoize filter change handler
   const handleFilterChange = useCallback((key, value) => {
     propOnFilterChange?.(key, value);
   }, [propOnFilterChange]);
-  
+
   // Memoize filter inputs
   const filterInputs = useMemo(() => {
     return filterConfig.map(filter => (
-      <FilterInput 
+      <FilterInput
         key={filter.key}
         filter={filter}
         value={filters[filter.key]}
@@ -183,7 +183,7 @@ const ActionBar = ({
       />
     ));
   }, [filterConfig, filters, handleFilterChange]);
-  
+
   // Clean up timeout on unmount
   useEffect(() => {
     return () => {
@@ -217,7 +217,7 @@ const ActionBar = ({
             startIcon={<IdCard size={20} />}
             size="medium"
             onClick={handleIdCardClick}
-            // disabled={selectedIds.length !== 1}
+            disabled={true}
           >
             ID Card
           </Button>
@@ -243,11 +243,11 @@ const ActionBar = ({
       <Box className="action-right">
         <div className="search-box">
           <Search size={18} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search..." 
+          <input
+            type="text"
+            placeholder="Search..."
             value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)} 
+            onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
 
@@ -295,13 +295,13 @@ const ActionBar = ({
       />
 
       {/* {selectedRowsData.length > 0 && ( */}
-        <IdCardPreview
-          open={openIdCardModal}
-          onClose={handleIdCardClose}
-          selectedRowsData={selectedRowsData}
-          onDownload={() => console.log('Download ID Card')}
-          onPrint={() => console.log('Print ID Card')}
-        />
+      <IdCardPreview
+        open={openIdCardModal}
+        onClose={handleIdCardClose}
+        selectedRowsData={selectedRowsData}
+        onDownload={() => console.log('Download ID Card')}
+        onPrint={() => console.log('Print ID Card')}
+      />
       {/* )} */}
 
     </Box>
@@ -320,22 +320,22 @@ const areEqual = (prevProps, nextProps) => {
   ) {
     return false;
   }
-  
+
   // Compare filters
   const prevFilters = prevProps.filters || {};
   const nextFilters = nextProps.filters || {};
-  
+
   const filterKeys = new Set([
     ...Object.keys(prevFilters),
     ...Object.keys(nextFilters)
   ]);
-  
+
   for (const key of filterKeys) {
     if (JSON.stringify(prevFilters[key]) !== JSON.stringify(nextFilters[key])) {
       return false;
     }
   }
-  
+
   return true;
 };
 

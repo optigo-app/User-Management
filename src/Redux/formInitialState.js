@@ -16,14 +16,6 @@ export const employerInitialState = {
   step4: {},
   step5: {},
   step6: {},
-  step7: {
-    bankingPer: {
-      location: {},
-      access: {}
-    },
-    atmBinding: {
-      users: {},
-      access: {}
-    }
-  },
+  step7: {},
+  step8: {},
 };

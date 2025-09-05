@@ -5,7 +5,7 @@ import { FormField, Input, InputWithIcon, Select } from "../../../Ui";
 import CustomInput from "../../../Ui/CustomInput";
 import CustomAutocomplete from "../../../Ui/ReusableAutocomplete";
 
-const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
+const UserAccountInfoSection = ({ formData, errors, onUpdate, formType = "customer" }) => {
     const [accountData, setAccountData] = useState({
         userEmail: "",
         userCode: "",
@@ -13,6 +13,8 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
         referenceBy: "",
         referenceUserCode: "",
         assignedBroker: "",
+        department: "",
+        designation: "",
     });
 
     useEffect(() => {
@@ -24,6 +26,8 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                 referenceBy: formData.referenceBy || "",
                 referenceUserCode: formData.referenceUserCode || "",
                 assignedBroker: formData.assignedBroker || "",
+                department: formData.department || "",
+                designation: formData.designation || "",
             });
         }
     }, [formData]);
@@ -146,6 +150,70 @@ const UserAccountInfoSection = ({ formData, errors, onUpdate }) => {
                     />
                 </FormField>
             </Grid>
+
+            {/* Department and Designation fields - Only for Employer */}
+            {formType === "employer" && (
+                <>
+                    <Grid item size={{ xs: 12, sm: 6, md: 4 }}>
+                        <FormField
+                            label="Department"
+                            tooltip="Employee's department within the organization"
+                        >
+                            <CustomAutocomplete
+                                placeholder="Select department"
+                                value={accountData.department}
+                                onChange={(e, newValue) => handleSelectChange("department", newValue)}
+                                options={[
+                                    { value: "hr", label: "Human Resources" },
+                                    { value: "finance", label: "Finance & Accounting" },
+                                    { value: "it", label: "Information Technology" },
+                                    { value: "sales", label: "Sales & Marketing" },
+                                    { value: "operations", label: "Operations" },
+                                    { value: "admin", label: "Administration" },
+                                    { value: "management", label: "Management" },
+                                    { value: "other", label: "Other" },
+                                ]}
+                            />
+                        </FormField>
+                    </Grid>
+
+                    <Grid item size={{ xs: 12, sm: 6, md: 4 }}>
+                        <FormField
+                            label="Designation"
+                            tooltip="Employee's job title or position"
+                        >
+                            <CustomAutocomplete
+                                placeholder="Select designation"
+                                value={accountData.designation}
+                                onChange={(e, newValue) => handleSelectChange("designation", newValue)}
+                                options={[
+                                    { value: "ceo", label: "Chief Executive Officer (CEO)" },
+                                    { value: "cto", label: "Chief Technology Officer (CTO)" },
+                                    { value: "cfo", label: "Chief Financial Officer (CFO)" },
+                                    { value: "manager", label: "Manager" },
+                                    { value: "senior_manager", label: "Senior Manager" },
+                                    { value: "assistant_manager", label: "Assistant Manager" },
+                                    { value: "team_lead", label: "Team Lead" },
+                                    { value: "senior_executive", label: "Senior Executive" },
+                                    { value: "executive", label: "Executive" },
+                                    { value: "junior_executive", label: "Junior Executive" },
+                                    { value: "analyst", label: "Analyst" },
+                                    { value: "senior_analyst", label: "Senior Analyst" },
+                                    { value: "associate", label: "Associate" },
+                                    { value: "senior_associate", label: "Senior Associate" },
+                                    { value: "specialist", label: "Specialist" },
+                                    { value: "coordinator", label: "Coordinator" },
+                                    { value: "supervisor", label: "Supervisor" },
+                                    { value: "officer", label: "Officer" },
+                                    { value: "assistant", label: "Assistant" },
+                                    { value: "intern", label: "Intern" },
+                                    { value: "other", label: "Other" },
+                                ]}
+                            />
+                        </FormField>
+                    </Grid>
+                </>
+            )}
         </Grid>
     );
 };

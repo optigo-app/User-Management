@@ -38,6 +38,7 @@ export default function UserInfoStep({
                     formData={formData}
                     errors={errors}
                     onUpdate={handleUpdate}
+                    formType="customer"
                 />
             </CollapsibleSection>
 

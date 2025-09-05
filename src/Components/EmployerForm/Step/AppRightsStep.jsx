@@ -11,7 +11,7 @@ const AppRightsStep = ({ expandedSections, onToggleSection, formData, errors }) 
 
     const handleUpdate = (data) => {
         dispatch(updateStepData({
-            stepName: "step6",
+            stepName: "step7",
             formData: data
         }));
     };

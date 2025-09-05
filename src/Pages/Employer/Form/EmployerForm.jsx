@@ -9,8 +9,9 @@ const EmployerStepComponents = {
   3: lazy(() => import("../../../Components/CustomerForm/Step/PreferencesStep")),
   4: lazy(() => import("../../../Components/CustomerForm/Step/DocumentsStep")),
   5: lazy(() => import("../../../Components/CustomerForm/Step/NotificationsStep")),
-  6: lazy(() => import("../../../Components/EmployerForm/Step/AppRightsStep")),
-  7: lazy(() => import("../../../Components/EmployerForm/Step/UserPermissionsStep")),
+  6: lazy(() => import("../../../Components/EmployerForm/Step/PackageInfoStep")),
+  7: lazy(() => import("../../../Components/EmployerForm/Step/AppRightsStep")),
+  8: lazy(() => import("../../../Components/EmployerForm/Step/UserPermissionsStep")),
 };
 
 // Employer-specific validation
@@ -31,10 +32,16 @@ const validateEmployerStep = (step, formData) => {
   }
 
   if (step === 6) {
-    if (!stepData.accessLevel) errors.accessLevel = "Access level is required.";
+    if (!stepData.baseSalary) errors.baseSalary = "Base salary is required.";
+    if (!stepData.salaryFrequency) errors.salaryFrequency = "Salary frequency is required.";
+    if (!stepData.payrollSchedule) errors.payrollSchedule = "Payroll schedule is required.";
   }
 
   if (step === 7) {
+    if (!stepData.accessLevel) errors.accessLevel = "Access level is required.";
+  }
+
+  if (step === 8) {
     if (!stepData.primaryRole) errors.primaryRole = "Primary role is required.";
     if (!stepData.department) errors.department = "Department is required.";
   }

@@ -1,4 +1,4 @@
-import { User, CreditCard, Settings, FileText, Bell, Shield, Lock } from "lucide-react";
+import { User, CreditCard, Settings, FileText, Bell, Shield, Lock, Package } from "lucide-react";
 
 export const employerSteps = [
   {
@@ -38,13 +38,20 @@ export const employerSteps = [
   },
   {
     id: 6,
+    title: "Package Info",
+    description: "Payroll packages and compensation details",
+    icon: Package,
+    fields: ["Salary Package", "Benefits", "Payroll Settings"]
+  },
+  {
+    id: 7,
     title: "App Rights",
     description: "Application access and system permissions",
     icon: Shield,
     fields: ["Module Access", "System Features", "Time Restrictions"]
   },
   {
-    id: 7,
+    id: 8,
     title: "User Permissions",
     description: "Role assignment and permission matrix",
     icon: Lock,

@@ -32,14 +32,28 @@ export const OptionGrid = ({
                 control={
                   <Checkbox
                     checked={isChecked}
-                    onChange={(e) => onChange(option.id, e.target.checked)}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      onChange(option.id, e.target.checked);
+                    }}
                   />
                 }
                 label={
-                  <Typography variant="body2" fontWeight="500">
+                  <Typography 
+                    variant="body2" 
+                    fontWeight="500"
+                    sx={{ cursor: "pointer", userSelect: "none" }}
+                  >
                     {option.icon} {option.label}
                   </Typography>
                 }
+                sx={{ 
+                  cursor: "pointer", 
+                  userSelect: "none",
+                  "& .MuiFormControlLabel-label": {
+                    cursor: "pointer"
+                  }
+                }}
               />
             </Paper>
           </Grid>

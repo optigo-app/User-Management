@@ -4,7 +4,7 @@ import SmsNotification from "./smsNotification";
 import EmaiNotification from "./emaiNotification";
 import NotificationPrefrence from "./notificationPrefrence";
 
-const NotificationComp = ({ expandedSections, onToggleSection, formData, error, onUpdate }) => {
+const NotificationComp = ({ expandedSections, onToggleSection, formData, error, onUpdate, formType = "customer" }) => {
     const theme = useTheme();
 
     const [emailAlerts, setEmailAlerts] = useState(
@@ -160,12 +160,15 @@ const NotificationComp = ({ expandedSections, onToggleSection, formData, error, 
                 error={errorMsg.mobile}
             />
 
-            <NotificationPrefrence
-                expandedSections={expandedSections}
-                onToggleSection={onToggleSection}
-                notificationPreferences={notificationPreferences}
-                handlePreferenceChange={handlePreferenceChange}
-            />
+            {/* Hide Notification Preferences for Employer forms */}
+            {formType !== "employer" && (
+                <NotificationPrefrence
+                    expandedSections={expandedSections}
+                    onToggleSection={onToggleSection}
+                    notificationPreferences={notificationPreferences}
+                    handlePreferenceChange={handlePreferenceChange}
+                />
+            )}
         </Box>
     );
 };
