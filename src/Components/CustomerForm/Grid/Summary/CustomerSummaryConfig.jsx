@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import CustomerSummary from './CustomerSummary';
-import {CheckCircle, Clock, TrendingUp, Users, XCircle } from 'lucide-react';
+import { CheckCircle, Clock, TrendingUp, Users, XCircle } from 'lucide-react';
 import { Box } from '@mui/material';
 
 const CustomerSummaryConfig = ({ showSummary, custActive, summaryData }) => {
@@ -20,6 +20,14 @@ const CustomerSummaryConfig = ({ showSummary, custActive, summaryData }) => {
                 { label: "Rejected Leads", value: summaryData.rejectedLeads, icon: <XCircle />, color: "red" },
                 { label: "Premium Leads", value: summaryData.premiumLeads, icon: <TrendingUp />, color: "purple" },
                 { label: "Active Cities", value: summaryData.activeCities, icon: <Clock />, color: "orange" },
+            ];
+        } else if (custActive === "manufacturer") {
+            return [
+                { label: "Total Manufacturers", value: summaryData.totalManufacturers, icon: <Users />, color: "blue" },
+                { label: "Active Manufacturers", value: summaryData.activeManufacturers, icon: <Users />, color: "green" },
+                { label: "Inactive Manufacturers", value: summaryData.inactiveManufacturers, icon: <XCircle />, color: "red" },
+                { label: "Roaming", value: summaryData.roaming, icon: <Users />, color: "blue" },
+                { label: "Melt Enabled", value: summaryData.meltEnabled, icon: <Users />, color: "blue" },
             ];
         }
         return [];

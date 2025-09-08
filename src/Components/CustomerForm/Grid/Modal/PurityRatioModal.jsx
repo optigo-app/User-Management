@@ -13,11 +13,15 @@ import {
   TableCell,
   IconButton,
   Box,
+  Select,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
 import "./PurityRatioModal.scss";
 import { CircleX } from "lucide-react";
 
 const PurityRatioModal = ({ open, onClose }) => {
+  const [selectedMetal, setSelectedMetal] = useState('Gold 24k');
   const [gold24Price, setGold24Price] = useState('');
   const [rows, setRows] = useState([
     { metal: "GOLD", purity: "18K", ratio: 75, price: 285 },
@@ -27,31 +31,37 @@ const PurityRatioModal = ({ open, onClose }) => {
     { metal: "GOLD", purity: "14K", ratio: 58, price: 220.4 },
     { metal: "GOLD", purity: "14.5k", ratio: 0, price: 0 },
     { metal: "GOLD", purity: "14.9K", ratio: 62, price: 235.6 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
-    { metal: "GOLD", purity: "14K", ratio: 60, price: 228 },
+    { metal: "SILVER", purity: "925", ratio: 92.5, price: 35.15 },
+    { metal: "SILVER", purity: "999", ratio: 99.9, price: 37.96 },
+    { metal: "PLATINUM", purity: "950", ratio: 95, price: 855 },
+    { metal: "PLATINUM", purity: "999", ratio: 99.9, price: 899.1 },
   ]);
+
+  const metalOptions = [
+    'Gold 24k',
+    'Gold 18k', 
+    'Gold 14k',
+    'Gold 10k',
+    'Silver 925',
+    'Silver 999',
+    'Platinum 950',
+    'Platinum 999'
+  ];
 
   // When ratio changes, recalc price
   const handleRatioChange = (index, value) => {
     const updated = [...rows];
     updated[index].ratio = Number(value);
-    updated[index].price = ((updated[index].ratio / 100) * gold24Price).toFixed(
-      2
-    );
+    
+    // Get base price for the metal type
+    let basePrice = gold24Price;
+    if (updated[index].metal === "SILVER") {
+      basePrice = gold24Price * 0.1;
+    } else if (updated[index].metal === "PLATINUM") {
+      basePrice = gold24Price * 2.3;
+    }
+    
+    updated[index].price = ((updated[index].ratio / 100) * basePrice).toFixed(2);
     setRows(updated);
   };
 
@@ -59,19 +69,42 @@ const PurityRatioModal = ({ open, onClose }) => {
   const handlePriceChange = (index, value) => {
     const updated = [...rows];
     updated[index].price = Number(value);
-    updated[index].ratio = gold24Price
-      ? ((updated[index].price / gold24Price) * 100).toFixed(2)
+    
+    // Get base price for the metal type
+    let basePrice = gold24Price;
+    if (updated[index].metal === "SILVER") {
+      basePrice = gold24Price * 0.1;
+    } else if (updated[index].metal === "PLATINUM") {
+      basePrice = gold24Price * 2.3;
+    }
+    
+    updated[index].ratio = basePrice
+      ? ((updated[index].price / basePrice) * 100).toFixed(2)
       : 0;
     setRows(updated);
   };
 
-  // Apply gold24Price to all rows
+  // Apply gold24Price to all metal types dynamically
   const handleApplyAll = () => {
     if (!gold24Price) return;
-    const updated = rows.map((r) => ({
-      ...r,
-      price: ((r.ratio / 100) * gold24Price).toFixed(2),
-    }));
+    
+    const updated = rows.map((r) => {
+      let basePrice = gold24Price;
+      
+      // Set base prices for different metal types
+      if (r.metal === "SILVER") {
+        basePrice = gold24Price * 0.1; // Silver is typically 10% of gold price
+      } else if (r.metal === "PLATINUM") {
+        basePrice = gold24Price * 2.3; // Platinum is typically 2.3x gold price
+      }
+      // GOLD uses the direct gold24Price
+      
+      return {
+        ...r,
+        price: ((r.ratio / 100) * basePrice).toFixed(2),
+      };
+    });
+    
     setRows(updated);
   };
 
@@ -94,15 +127,33 @@ const PurityRatioModal = ({ open, onClose }) => {
 
       <DialogContent dividers className="purity-modal__content">
         <Box className="purity-modal__inputBox">
-          <label>Gold 24k Price</label>
-          <TextField
-            placeholder="Gold 24k Price"
-            type="number"
-            variant="outlined"
-            size="small"
-            value={gold24Price}
-            onChange={(e) => setGold24Price(Number(e.target.value))}
-          />
+          <Box className="purity-modal__field">
+            <FormControl size="small" fullWidth>
+              <Select
+                value={selectedMetal}
+                onChange={(e) => setSelectedMetal(e.target.value)}
+                className="purity-modal__select"
+              >
+                {metalOptions.map((metal) => (
+                  <MenuItem key={metal} value={metal}>
+                    {metal}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          
+          <Box className="purity-modal__field">
+            <TextField
+              placeholder="Gold 24k Price"
+              type="number"
+              variant="outlined"
+              size="small"
+              value={gold24Price}
+              onChange={(e) => setGold24Price(Number(e.target.value))}
+            />
+          </Box>
+          
           <Button variant="contained" onClick={handleApplyAll}>
             Apply to All
           </Button>

@@ -9,6 +9,7 @@ import TestIcardPrint from "./Pages/Test/TestIcardPrint";
 
 // Lazy load components
 const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
+const ManufactureGrid = lazy(() => import("./Pages/Manufacture/Grid/ManufactureGrid"));
 const HomePage = lazy(() => import("./Pages/Home/HomePage"));
 const EmployerForm = lazy(() => import("./Pages/Employer/Form/EmployerForm"));
 
@@ -70,6 +71,14 @@ export default function App() {
           element={
             <Suspense fallback={<CenteredCircularLoader />}>
               <CustomerGrid />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/manufacturer"
+          element={
+            <Suspense fallback={<CenteredCircularLoader />}>
+              <ManufactureGrid />
             </Suspense>
           }
         />

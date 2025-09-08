@@ -1,4 +1,4 @@
-.purity-modal {
+.brands-modal {
   &__title {
     display: flex;
     justify-content: space-between;
@@ -39,13 +39,6 @@
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border: 1px solid #e3f2fd;
-  }
-
-  &__field {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
 
     label {
       font-weight: 600;
@@ -54,7 +47,7 @@
       font-size: 0.95rem;
     }
 
-    .MuiTextField-root, .MuiFormControl-root {
+    .MuiTextField-root {
       flex: 1;
       
       .MuiOutlinedInput-root {
@@ -69,32 +62,6 @@
           border-width: 2px;
         }
       }
-    }
-  }
-
-  &__select {
-    .MuiSelect-select {
-      padding: 8px 12px;
-      font-size: 14px;
-      color: #7367f0;
-      font-weight: 600;
-    }
-    
-    .MuiOutlinedInput-root {
-      border-radius: 8px;
-      
-      &:hover .MuiOutlinedInput-notchedOutline {
-        border-color: #7367f0;
-      }
-      
-      &.Mui-focused .MuiOutlinedInput-notchedOutline {
-        border-color: #7367f0;
-        border-width: 2px;
-      }
-    }
-    
-    .MuiSelect-icon {
-      color: #7367f0;
     }
   }
 
@@ -132,36 +99,23 @@
         border-bottom: 1px solid #e0e7ff;
         text-align: center;
         font-size: 14px;
-        &:nth-child(2) {
+        
+        &:first-child {
+          font-weight: 600;
+          color: #7367f0;
+          font-size: 14px;
+        }
+        
+        &:nth-child(2), &:nth-child(3) {
           font-weight: 500;
           color: #424242;
           font-size: 14px;
         }
-
-        .MuiTextField-root {
-          .MuiInputBase-input {
-            width: 100px;
-            padding: 8px 12px;
-            font-size: 14px;
-            text-align: center;
-            color: #424242;
-          }
-          
-          .MuiOutlinedInput-root {
-            border-radius: 6px;
-            
-            &:hover .MuiOutlinedInput-notchedOutline {
-              border-color: #7367f0;
-            }
-            
-            &.Mui-focused .MuiOutlinedInput-notchedOutline {
-              border-color: #7367f0;
-              border-width: 2px;
-            }
-          }
+        
+        &:nth-child(4) {
+          font-size: 14px;
         }
       }
     }
   }
-
 }

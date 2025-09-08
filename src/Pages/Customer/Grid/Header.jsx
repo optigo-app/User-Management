@@ -147,8 +147,8 @@ const Header = () => {
             title: "Supplier",
             subtitle: "Track suppliers, contracts, and procurement processes efficiently."
         },
-        "/manufactorys": {
-            title: "Manufactory",
+        "/manufacturer": {
+            title: "Manufacturer",
             subtitle: "Manage production units, resources, and manufacturing details."
         },
         "/employer": {
@@ -161,7 +161,7 @@ const Header = () => {
     const navButtons = [
         { path: "/customers", label: "Customer", icon: <UserRound size={20} /> },
         { path: "/suppliers", label: "Supplier", icon: <Truck size={20} /> },
-        { path: "/manufactorys", label: "Manufactory", icon: <Factory size={20} /> },
+        { path: "/manufacturer", label: "Manufacturer", icon: <Factory size={20} /> },
         { path: "/employer", label: "Employees", icon: <Briefcase size={20} /> }
     ];
 

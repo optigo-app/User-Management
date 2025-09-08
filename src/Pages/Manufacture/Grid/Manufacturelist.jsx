@@ -1,0 +1,139 @@
+import { Trash2, Pencil, CirclePlus } from "lucide-react";
+import { Box, IconButton } from "@mui/material";
+import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
+
+export const getManufacturerColumns = ({
+    onEditManufacturer,
+    handleDelete,
+    onToggleActive,
+    onToggleRoaming,
+    onToggleMelt,
+    onToggleLogin,
+    onPolicyRatio,
+    onBrandsModal
+}) => {
+    return [
+        {
+            field: "sr",
+            headerName: "Sr#",
+            width: 60,
+            renderCell: (params) =>
+                params?.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
+        },
+        { field: "userId", headerName: "User ID", width: 200 },
+        { field: "code", headerName: "Code", width: 150 },
+        { field: "firstName", headerName: "First Name", width: 150 },
+        { field: "middleName", headerName: "Middle Name", width: 150 },
+        { field: "lastName", headerName: "Last Name", width: 150 },
+        { field: "firmName", headerName: "Firm Name", width: 160 },
+        {
+            field: "purityRatio",
+            headerName: "Purity Ratio",
+            width: 113,
+            renderCell: (params) => (
+                <IconButton onClick={() => onPolicyRatio(params?.row)}>
+                    <CirclePlus
+                        size={18}
+                        color="gray"
+                    />
+                </IconButton>
+            ),
+        },
+        {
+            field: "brands",
+            headerName: "Brand(s)",
+            width: 100,
+            renderCell: (params) => (
+                <IconButton onClick={() => onBrandsModal(params?.row)}>
+                    <CirclePlus
+                        size={18}
+                        color="gray"
+                    />
+                </IconButton>
+            ),
+        },
+        {
+            field: "active",
+            headerName: "Active",
+            width: 100,
+            renderCell: (params) => (
+                <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                    <ToggleSwitch
+                        checked={params?.value}
+                        onChange={() => onToggleActive(params?.row)}
+                        activeColor="#2196f3"
+                        inactiveColor="#f44336"
+                    />
+                </div>
+            ),
+        },
+        {
+            field: "roaming",
+            headerName: "Roaming",
+            width: 100,
+            renderCell: (params) => (
+                <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                    <ToggleSwitch
+                        checked={params?.value}
+                        onChange={() => onToggleRoaming(params?.row)}
+                        activeColor="#2196f3"
+                        inactiveColor="#9e9e9e"
+                    />
+                </div>
+            ),
+        },
+        {
+            field: "melt",
+            headerName: "Melt",
+            width: 100,
+            renderCell: (params) => (
+                <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                    <ToggleSwitch
+                        checked={params?.value}
+                        onChange={() => onToggleMelt(params?.row)}
+                        activeColor="#ff5722"
+                        inactiveColor="#9e9e9e"
+                    />
+                </div>
+            ),
+        },
+        {
+            field: "login",
+            headerName: "Login",
+            width: 100,
+            renderCell: (params) => (
+                <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                    <ToggleSwitch
+                        checked={params?.value}
+                        onChange={() => onToggleLogin(params?.row)}
+                        activeColor="#4caf50"
+                        inactiveColor="#9e9e9e"
+                    />
+                </div>
+            ),
+        },
+
+        // Edit
+        {
+            field: "edit",
+            headerName: "Edit",
+            width: 100,
+            renderCell: (params) => (
+                <IconButton onClick={() => onEditManufacturer(params?.row)}>
+                    <Pencil size={18} color="gray" />
+                </IconButton>
+            ),
+        },
+        // Delete
+        {
+            field: "delete",
+            headerName: "Delete",
+            width: 100,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params?.row)}>
+                    <Trash2 size={18} color="gray" />
+                </IconButton>
+            ),
+        },
+    ];
+};
