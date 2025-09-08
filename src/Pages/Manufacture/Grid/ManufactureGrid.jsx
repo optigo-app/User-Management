@@ -10,7 +10,7 @@ import React, {
 import initialManufactureData from "../../../Data/manufacture.json";
 import { getManufacturerColumns } from "./Manufacturelist";
 import { Box, useMediaQuery } from "@mui/material";
-import { useDebounceFilters } from "../../../hooks/useDebounceFilters";
+import { useAdvancedFilters } from "../../../hooks/useAdvancedFilters";
 import ConfirmationDialog from "../../../Common/ConfirmationDialog/ConfirmationDialog";
 import CenteredCircularLoader from "../../../Common/Loder/CustomLoder";
 import { useManufactureActions } from "../../../hooks/useManufactureActions";
@@ -20,6 +20,7 @@ import Header from "../../Customer/Grid/Header";
 import PurityRatioModal from "../../../Components/CustomerForm/Grid/Modal/PurityRatioModal";
 import BrandsModal from "../../../Components/ManufactureForm/Modal/BrandsModal";
 import CustomerSummaryConfig from "../../../Components/CustomerForm/Grid/Summary/CustomerSummaryConfig";
+import LoadingOverlay from "../../../Components/CustomerForm/Grid/LoadingOverlay";
 
 // Lazy imports
 const CustomerDataGrid = lazy(() =>
@@ -37,20 +38,23 @@ const manufactureMenuItems = [
   { label: "Update Permissions", icon: "Shield", color: "#ff9800" },
 ];
 
-// filters for manufacturers
-const manufactureFilterConfig = [
+// Main filters for manufacturers (displayed in action bar)
+const manufactureMainFilterConfig = [
   { key: "active", label: "Status", type: "select", options: ["Active", "Inactive"] },
   { key: "roaming", label: "Roaming", type: "select", options: ["Enabled", "Disabled"] },
+  { key: "notification", label: "Notifications", type: "select", options: [{ id: 1, labelname: "Notification 1" }, { id: 2, labelname: "Notification 2" }] },
+];
+
+// Advanced filters for manufacturers (displayed in advanced filter dialog)
+const manufactureAdvancedFilterConfig = [
   { key: "melt", label: "Melt", type: "select", options: ["Enabled", "Disabled"] },
   { key: "login", label: "Login", type: "select", options: ["Enabled", "Disabled"] },
-  { key: "firmName", label: "Firm Name", type: "text" },
   { key: "purityRatio", label: "Purity Ratio", type: "text" },
+  { key: "brand", label: "Brand", type: "text" },
+  { key: "createdDate", label: "Created Date", type: "text" },
 ];
 
 function ManufactureGrid() {
-  const location = useLocation();
-  const isManufacture = location.pathname === "/manufacture";
-
   const { manufactureData } = useMemo(() => ({
     manufactureData: initialManufactureData,
   }), []);
@@ -64,23 +68,61 @@ function ManufactureGrid() {
   const pageSizeOptions = useMemo(() => [20, 25, 50, 100], []);
 
   const {
-    filters,
+    // Main filters
+    mainFilters,
+    updateMainFilter,
+    clearMainFilters,
+    hasMainFilters,
+    
+    // Advanced filters
+    advancedFilters,
+    applyAdvancedFilters,
+    clearAdvancedFilters,
+    hasAdvancedFilters,
+    
+    // Combined filters
+    allFilters,
     debouncedFilters,
-    updateFilter,
     clearAllFilters,
+    
+    // Individual filter management
+    clearFilter,
+    
+    // Filter chips
+    getFilterChips,
+    
+    // Status
     isFiltering,
     hasActiveFilters,
-  } = useDebounceFilters({}, 300);
+  } = useAdvancedFilters({}, 300);
 
-  const memoizedUpdateFilter = useCallback((key, value) => {
-    updateFilter(key, value);
+  const memoizedUpdateMainFilter = useCallback((key, value) => {
+    updateMainFilter(key, value);
     setPaginationModel(prev => ({
       ...prev,
       page: 0
     }));
-  }, [updateFilter]);
+  }, [updateMainFilter]);
 
-  const actions = useManufactureActions(data, setData, memoizedUpdateFilter);
+  const handleAdvancedFilterApply = useCallback((filterValues) => {
+    applyAdvancedFilters(filterValues);
+    setPaginationModel(prev => ({
+      ...prev,
+      page: 0
+    }));
+  }, [applyAdvancedFilters]);
+
+  const handleFilterRemove = useCallback((key) => {
+    clearFilter(key);
+    setPaginationModel(prev => ({
+      ...prev,
+      page: 0
+    }));
+  }, [clearFilter]);
+
+  const filterChips = useMemo(() => getFilterChips(), [getFilterChips]);
+
+  const actions = useManufactureActions(data, setData, memoizedUpdateMainFilter);
 
   const {
     handleAdd,
@@ -157,27 +199,40 @@ function ManufactureGrid() {
             onSynchronize={handleSynchronize}
             onChangeCustStatus={onChangeCustStatus}
             handleShowSummary={handleShowSummary}
-            filters={filters}
-            onFilterChange={memoizedUpdateFilter}
+            filters={mainFilters}
+            onFilterChange={memoizedUpdateMainFilter}
             menuItems={manufactureMenuItems}
-            filterConfig={manufactureFilterConfig}
+            filterConfig={manufactureMainFilterConfig}
+            // Advanced filter props
+            advancedFilterConfig={manufactureAdvancedFilterConfig}
+            advancedFilters={advancedFilters}
+            onAdvancedFilterApply={handleAdvancedFilterApply}
+            onAdvancedFilterClear={clearAdvancedFilters}
+            onFilterRemove={handleFilterRemove}
+            filterChips={filterChips}
           />
         </Suspense>
       </Box>
 
-      <Suspense fallback={<CenteredCircularLoader />}>
-        <CustomerDataGrid
-          deliveryData={filteredData}
-          columns={columns}
-          paginationModel={paginationModel}
-          setPaginationModel={setPaginationModel}
-          pageSizeOptions={pageSizeOptions}
-          loading={isFiltering}
-          showSummary={showSummary}
-          isWide={isWide}
-          onSelectionModelChange={setSelectedIds}
+      <Box sx={{ position: 'relative' }}>
+        <Suspense fallback={<CenteredCircularLoader />}>
+          <CustomerDataGrid
+            deliveryData={filteredData}
+            columns={columns}
+            paginationModel={paginationModel}
+            setPaginationModel={setPaginationModel}
+            pageSizeOptions={pageSizeOptions}
+            loading={false}
+            showSummary={showSummary}
+            isWide={isWide}
+            onSelectionModelChange={setSelectedIds}
+          />
+        </Suspense>
+        <LoadingOverlay 
+          isVisible={isFiltering} 
+          message="Applying filters..." 
         />
-      </Suspense>
+      </Box>
 
       <ConfirmationDialog
         open={dialogState.open}

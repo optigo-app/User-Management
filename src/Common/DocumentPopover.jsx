@@ -69,8 +69,8 @@ const DocumentCell = ({ row }) => {
                 >
                     Available Documents
                 </Typography>
-                <Divider />
-                {documents.map((doc, i) => (
+                <Divider sx={{ mb: 1 }} />
+                {documents?.map((doc, i) => (
                     <MenuItem
                         key={i}
                         onClick={() => handleSelectDocument(doc)}

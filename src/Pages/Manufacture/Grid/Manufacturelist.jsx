@@ -1,6 +1,7 @@
 import { Trash2, Pencil, CirclePlus } from "lucide-react";
 import { Box, IconButton } from "@mui/material";
 import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
+import DocumentCell from "../../../Common/DocumentPopover";
 
 export const getManufacturerColumns = ({
     onEditManufacturer,
@@ -29,7 +30,7 @@ export const getManufacturerColumns = ({
         {
             field: "purityRatio",
             headerName: "Purity Ratio",
-            width: 113,
+            width: 103,
             renderCell: (params) => (
                 <IconButton onClick={() => onPolicyRatio(params?.row)}>
                     <CirclePlus
@@ -42,7 +43,7 @@ export const getManufacturerColumns = ({
         {
             field: "brands",
             headerName: "Brand(s)",
-            width: 100,
+            width: 90,
             renderCell: (params) => (
                 <IconButton onClick={() => onBrandsModal(params?.row)}>
                     <CirclePlus
@@ -51,6 +52,12 @@ export const getManufacturerColumns = ({
                     />
                 </IconButton>
             ),
+        },
+        {
+            field: "document",
+            headerName: "Document",
+            width: 80,
+            renderCell: (params) => <DocumentCell row={params.row} />,
         },
         {
             field: "active",
@@ -85,7 +92,7 @@ export const getManufacturerColumns = ({
         {
             field: "melt",
             headerName: "Melt",
-            width: 100,
+            width: 80,
             renderCell: (params) => (
                 <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
                     <ToggleSwitch
@@ -117,7 +124,7 @@ export const getManufacturerColumns = ({
         {
             field: "edit",
             headerName: "Edit",
-            width: 100,
+            width: 80,
             renderCell: (params) => (
                 <IconButton onClick={() => onEditManufacturer(params?.row)}>
                     <Pencil size={18} color="gray" />
@@ -128,7 +135,7 @@ export const getManufacturerColumns = ({
         {
             field: "delete",
             headerName: "Delete",
-            width: 100,
+            width: 80,
             renderCell: (params) => (
                 <IconButton onClick={() => handleDelete(params?.row)}>
                     <Trash2 size={18} color="gray" />

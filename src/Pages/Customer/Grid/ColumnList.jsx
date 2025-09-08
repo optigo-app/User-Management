@@ -1,6 +1,6 @@
-import { Trash2, BookText, Pencil, CirclePlus, Settings } from "lucide-react";
+import { Trash2, Pencil, CirclePlus, Settings } from "lucide-react";
 import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
-import { Button, IconButton, Typography } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { formatDate } from "../../../Utils/globalFuc";
 import FieldPopover from "../../../Common/FieldPopover";
 import DocumentCell from "../../../Common/DocumentPopover";

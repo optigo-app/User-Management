@@ -1,11 +1,12 @@
 import React, { memo, useState, useCallback, useMemo, useRef, useEffect } from "react";
 import "./ActionBar.scss";
-import { Box, Button, IconButton, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, ToggleButton, ToggleButtonGroup, Tooltip, CircularProgress } from "@mui/material";
 import { Plus, Search, FileSpreadsheet, RefreshCw, Archive, Maximize, Minimize, Filter, IdCard } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import ActionMenu from "./ActionMenu";
 import AdvancedFilterDialog from "./AdvancedFilterDialog";
 import FilterAutocomplete from "../../../../Common/FilterAutocomplete";
+import FilterChips from "./FilterChips";
 import ShortcutCustDataUpdate from "../Modal/ShortcutCustDataUpdate";
 import { IdCardPreview } from "../../../Common/IdCard";
 
@@ -114,6 +115,14 @@ const ActionBar = ({
   onFilterChange: propOnFilterChange,
   menuItems = [],
   filterConfig = [],
+  // Advanced filter props
+  advancedFilterConfig = [],
+  advancedFilters = {},
+  onAdvancedFilterApply,
+  onAdvancedFilterClear,
+  onFilterRemove,
+  filterChips = [],
+  isFiltering = false,
 }) => {
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -196,92 +205,107 @@ const ActionBar = ({
   const shortCuttabConfig = location.pathname === "/customers" ? customerTabconfig : employerTabConfig;
 
   return (
-    <Box className="action-bar">
-      <Box className="action-left">
-        <Button variant="contained" color="primary" startIcon={<Plus size={18} />} onClick={onAdd}>
-          Add
-        </Button>
-
-        {location.pathname === "/customers" && (
-          <Box className="cust_toogleBtn">
-            <ToggleButtonGroup className="toggle-group" value={custActive} exclusive size="small" onChange={onChangeCustStatus}>
-              <ToggleButton className="toggle-button" value="customer">Customer</ToggleButton>
-              <ToggleButton className="toggle-button" value="lead">Lead</ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-        )}
-
-        {location.pathname === "/employer" && (
-          <Button
-            variant="outlined"
-            startIcon={<IdCard size={20} />}
-            size="medium"
-            onClick={handleIdCardClick}
-            disabled={true}
-          >
-            ID Card
+    <>
+      <Box className="action-bar">
+        <Box className="action-left">
+          <Button variant="contained" color="primary" startIcon={<Plus size={18} />} onClick={onAdd}>
+            Add
           </Button>
-        )}
 
-        <Box className="additional-filters">
-          {filterInputs}
+          {location.pathname === "/customers" && (
+            <Box className="cust_toogleBtn">
+              <ToggleButtonGroup className="toggle-group" value={custActive} exclusive size="small" onChange={onChangeCustStatus}>
+                <ToggleButton className="toggle-button" value="customer">Customer</ToggleButton>
+                <ToggleButton className="toggle-button" value="lead">Lead</ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+          )}
 
-          {selectedIds?.length > 0 && menuItems.length > 0 && (
-            <Button variant="contained" endIcon={<Plus size={20} />} onClick={handleMenuClick}>
-              Actions
+          {location.pathname === "/employer" && (
+            <Button
+              variant="outlined"
+              startIcon={<IdCard size={20} />}
+              size="medium"
+              onClick={handleIdCardClick}
+              disabled={true}
+            >
+              ID Card
             </Button>
           )}
 
-          <Tooltip title="More Filters">
-            <IconButton onClick={() => setOpenFilterDrawer(!openFilterDrawer)}>
-              <Filter size={20} />
+          <Box className="additional-filters">
+            {filterInputs}
+
+            {selectedIds?.length > 0 && menuItems.length > 0 && (
+              <Button variant="contained" endIcon={<Plus size={20} />} onClick={handleMenuClick}>
+                Actions
+              </Button>
+            )}
+
+            <Tooltip title="Advanced Filters">
+              <IconButton onClick={() => setOpenFilterDrawer(!openFilterDrawer)}>
+                <Filter size={20} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
+
+        <Box className="action-right">
+          <div className="search-box">
+            <Search size={18} className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
+
+          <Tooltip title="Export to Excel">
+            <IconButton onClick={onExcel} className="icon-btn excel">
+              <FileSpreadsheet size={20} />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Synchronize">
+            <IconButton onClick={onSynchronize} className="icon-btn sync">
+              <RefreshCw size={20} />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Archive">
+            <IconButton onClick={onArchive} className="icon-btn archive">
+              <Archive size={20} />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={showSummary ? "Hide Summary" : "Show Summary"}>
+            <IconButton onClick={handleShowSummary}>
+              {showSummary ? <Minimize size={20} /> : <Maximize size={20} />}
             </IconButton>
           </Tooltip>
         </Box>
       </Box>
 
-      <Box className="action-right">
-        <div className="search-box">
-          <Search size={18} className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-        </div>
-
-        <Tooltip title="Export to Excel">
-          <IconButton onClick={onExcel} className="icon-btn excel">
-            <FileSpreadsheet size={20} />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title="Synchronize">
-          <IconButton onClick={onSynchronize} className="icon-btn sync">
-            <RefreshCw size={20} />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title="Archive">
-          <IconButton onClick={onArchive} className="icon-btn archive">
-            <Archive size={20} />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title={showSummary ? "Hide Summary" : "Show Summary"}>
-          <IconButton onClick={handleShowSummary}>
-            {showSummary ? <Minimize size={20} /> : <Maximize size={20} />}
-          </IconButton>
-        </Tooltip>
-      </Box>
+      {/* Filter Chips Display */}
+      <FilterChips
+        filterChips={filterChips}
+        onRemoveFilter={onFilterRemove}
+        onClearAll={() => {
+          onAdvancedFilterClear?.();
+          // Also clear main filters if needed
+          propOnFilterChange && Object.keys(filters).forEach(key => propOnFilterChange(key, ''));
+        }}
+        showClearAll={filterChips.length > 0}
+      />
 
       <AdvancedFilterDialog
         open={openFilterDrawer}
         onClose={() => setOpenFilterDrawer(false)}
-        filtersList={filterConfig}
-        criteriaOptions={filterConfig.reduce((acc, f) => ({ ...acc, [f.label]: f.options }), {})}
-        onApply={(values) => console.log("Filters applied:", values)}
+        filtersList={advancedFilterConfig}
+        currentAdvancedFilters={advancedFilters}
+        onApply={onAdvancedFilterApply}
+        onClearAdvanced={onAdvancedFilterClear}
       />
 
       <ActionMenu anchorEl={anchorEl} open={open} onClose={handleMenuClose} menuItems={menuItems} onItemClick={handleMenuItemClick} />
@@ -294,7 +318,6 @@ const ActionBar = ({
         tabsConfig={shortCuttabConfig}
       />
 
-      {/* {selectedRowsData.length > 0 && ( */}
       <IdCardPreview
         open={openIdCardModal}
         onClose={handleIdCardClose}
@@ -302,9 +325,7 @@ const ActionBar = ({
         onDownload={() => console.log('Download ID Card')}
         onPrint={() => console.log('Print ID Card')}
       />
-      {/* )} */}
-
-    </Box>
+    </>
   );
 };
 
@@ -316,7 +337,8 @@ const areEqual = (prevProps, nextProps) => {
     prevProps.showSummary !== nextProps.showSummary ||
     prevProps.selectedIds?.length !== nextProps.selectedIds?.length ||
     prevProps.menuItems?.length !== nextProps.menuItems?.length ||
-    prevProps.filterConfig?.length !== nextProps.filterConfig?.length
+    prevProps.filterConfig?.length !== nextProps.filterConfig?.length ||
+    prevProps.filterChips?.length !== nextProps.filterChips?.length
   ) {
     return false;
   }
@@ -332,6 +354,21 @@ const areEqual = (prevProps, nextProps) => {
 
   for (const key of filterKeys) {
     if (JSON.stringify(prevFilters[key]) !== JSON.stringify(nextFilters[key])) {
+      return false;
+    }
+  }
+
+  // Compare advanced filters
+  const prevAdvancedFilters = prevProps.advancedFilters || {};
+  const nextAdvancedFilters = nextProps.advancedFilters || {};
+
+  const advancedFilterKeys = new Set([
+    ...Object.keys(prevAdvancedFilters),
+    ...Object.keys(nextAdvancedFilters)
+  ]);
+
+  for (const key of advancedFilterKeys) {
+    if (JSON.stringify(prevAdvancedFilters[key]) !== JSON.stringify(nextAdvancedFilters[key])) {
       return false;
     }
   }

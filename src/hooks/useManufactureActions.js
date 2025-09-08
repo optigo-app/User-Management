@@ -7,35 +7,43 @@ import { formatCustomer } from "./useCustomerFormat";
 
 export const useManufactureActions = (data, setData, updateFilter) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [custActive, setCustActive] = useState("manufacturer");
+  const custActive = "manufacturer"
   const [dialogState, setDialogState] = useState({ open: false, selectedRow: null });
   const [dialogArchiveState, setDialogArchiveState] = useState({ open: false, selectedRow: null });
   const [dialogAllSynchroze, setDialogAllSynchronize] = useState({ open: false, selectedRow: null })
   const [dialogPurityState, setDialogPurityState] = useState({ open: false, selectedRow: null });
   const [dialogBrandsState, setDialogBrandsState] = useState({ open: false, selectedRow: null });
-  const [showSummary, setShowSummary] = useState(false);
+  
+  // Initialize showSummary from localStorage with fallback to true
+  const [showSummary, setShowSummaryState] = useState(() => {
+    const saved = localStorage.getItem('manufacturer-showSummary');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  // Wrapper function to update both state and localStorage
+  const setShowSummary = useCallback((value) => {
+    setShowSummaryState(prevState => {
+      const newValue = typeof value === 'function' ? value(prevState) : value;
+      localStorage.setItem('manufacturer-showSummary', JSON.stringify(newValue));
+      return newValue;
+    });
+  }, []);
+  
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
 
-  // Optimized wrapper function to handle the DataGrid selection format
   const handleSetSelectedIds = useCallback((selection) => {
-    // If it's a simple array, use it directly
     if (Array.isArray(selection)) {
       setSelectedIds(selection);
       return;
     }
     console.log("selection", selection);
-
-    // If it's an object with type and ids, extract the ids quickly
     if (selection?.type === 'include' && selection.ids) {
-      // Fast conversion - avoid Array.from for better performance
       const idsArray = selection.ids instanceof Set
         ? [...selection.ids]
         : Object.keys(selection.ids);
       setSelectedIds(idsArray);
     } else if (selection?.type === 'exclude' && selection.ids) {
-      // For exclude type, get all data IDs except the excluded ones
       const excludedSet = selection.ids instanceof Set
         ? selection.ids
         : new Set(Object.keys(selection.ids));
@@ -62,8 +70,8 @@ export const useManufactureActions = (data, setData, updateFilter) => {
   }, [selectedIds, data.length]);
 
   const handleAdd = useCallback(() => {
-    console.log("Navigate to manufacture form");
-    toast.success("Navigate to manufacture form");
+    const formattedData = formatCustomer({});
+    navigate("/manufacturer-register", { state: { data: formattedData, step: 1 } });
   }, []);
 
   const onToggleActive = useCallback((row) => {

@@ -19,6 +19,7 @@ import FormFooter from "../../CustomerForm/Home/form-footer";
 
 import * as customerFormActions from "../../../Redux/customerFormSlice";
 import * as employerFormActions from "../../../Redux/employerFormSlice";
+import * as manufacturerFormActions from "../../../Redux/manufacturerFormSlice";
 
 const defaultExpandedSections = {
   accountInfo: true,
@@ -68,9 +69,19 @@ export default function BaseForm({
   const { currentStep, data: formData, errors } = useSelector(
     (state) => state[sliceSelector]
   );
-  console.log('employerFormData: ', formData);
+  console.log(`${formType}Form (${sliceSelector}):`, formData);
   // Get the correct actions based on slice selector
-  const actions = sliceSelector === "employerForm" ? employerFormActions : customerFormActions;
+  const getActions = () => {
+    switch (sliceSelector) {
+      case "employerForm":
+        return employerFormActions;
+      case "manufacturerForm":
+        return manufacturerFormActions;
+      default:
+        return customerFormActions;
+    }
+  };
+  const actions = getActions();
 
   const [expandedSections, setExpandedSections] = useState(defaultExpandedSections);
   const [isAutoSaving, setIsAutoSaving] = useState(false);

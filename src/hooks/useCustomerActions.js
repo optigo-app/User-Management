@@ -14,30 +14,35 @@ export function useCustomerActions(data, setData, updateFilter) {
   const [dialogArchiveState, setDialogArchiveState] = useState({ open: false, selectedRow: null });
   const [dialogAllSynchroze, setDialogAllSynchronize] = useState({ open: false, selectedRow: null })
   const [drawerleadOpen, setDrawerLeadOpen] = useState({ open: false, selectedRow: null });
-  const [showSummary, setShowSummary] = useState(true);
+  // Initialize showSummary from localStorage with fallback to true
+  const [showSummary, setShowSummaryState] = useState(() => {
+    const saved = localStorage.getItem('customer-showSummary');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  // Wrapper function to update both state and localStorage
+  const setShowSummary = useCallback((value) => {
+    setShowSummaryState(prevState => {
+      const newValue = typeof value === 'function' ? value(prevState) : value;
+      localStorage.setItem('customer-showSummary', JSON.stringify(newValue));
+      return newValue;
+    });
+  }, []);
   const [custActive, setCustActive] = useState("customer");
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
-  console.log("selectedIds", selectedIds);
 
-  // Optimized wrapper function to handle the DataGrid selection format
   const handleSetSelectedIds = useCallback((selection) => {
-    // If it's a simple array, use it directly
     if (Array.isArray(selection)) {
       setSelectedIds(selection);
       return;
     }
-    console.log("selection", selection);
-
-    // If it's an object with type and ids, extract the ids quickly
     if (selection?.type === 'include' && selection.ids) {
-      // Fast conversion - avoid Array.from for better performance
       const idsArray = selection.ids instanceof Set
         ? [...selection.ids]
         : Object.keys(selection.ids);
       setSelectedIds(idsArray);
     } else if (selection?.type === 'exclude' && selection.ids) {
-      // For exclude type, get all data IDs except the excluded ones
       const excludedSet = selection.ids instanceof Set
         ? selection.ids
         : new Set(Object.keys(selection.ids));
@@ -64,7 +69,6 @@ export function useCustomerActions(data, setData, updateFilter) {
   }, [selectedIds, data.length]);
 
   const handleAdd = useCallback(() => {
-    debugger
     const formattedData = formatCustomer({});
     if (location?.pathname === "/customers") {
       navigate("/customer-register", { state: { data: formattedData, step: 1 } });

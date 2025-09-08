@@ -8,8 +8,14 @@ import { useLocation } from "react-router-dom";
 export const FormHeaderSection = ({ isAutoSaving, lastSaved }) => {
   const theme = useTheme();
   const location = useLocation();
-  const titile = location?.pathname === "/customer-register" ? "Customer" : location?.pathname === "/employer-register" ? "Employee" : "Customer";
-  const steps = location?.pathname === "/customer-register" ? 8 : location?.pathname === "/employer-register" ? 8 : 8;
+  const pathMap = {
+    "/customer-register": { title: "Customer", steps: 8 },
+    "/employer-register": { title: "Employee", steps: 8 },
+    "/manufacturer-register": { title: "Manufacture", steps: 6 },
+  };
+
+  const { title, steps } = pathMap[location?.pathname] || { title: "Customer", steps: 8 };
+
   return (
     <Box textAlign="center" sx={{ gap: 6 }}>
       <Stack
@@ -43,7 +49,7 @@ export const FormHeaderSection = ({ isAutoSaving, lastSaved }) => {
               fontSize: { xs: "2rem", md: "3rem" },
             }}
           >
-            {titile} Registration
+            {title} Registration
           </Typography>
           <Typography
             variant="subtitle1"
@@ -53,7 +59,7 @@ export const FormHeaderSection = ({ isAutoSaving, lastSaved }) => {
               fontSize: "1.125rem",
             }}
           >
-            Create a comprehensive {titile} profile in {steps} easy steps
+            Create a comprehensive {title} profile in {steps} easy steps
           </Typography>
         </Box>
       </Stack>

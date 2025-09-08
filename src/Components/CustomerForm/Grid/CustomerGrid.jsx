@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, onSelectionModelChange }) => {
+const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, onSelectionModelChange, loading = false }) => {
 
 	return (
 		<DataGrid
@@ -18,7 +18,7 @@ const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel,
 			disableSelectionOnClick
 			disableRowSelectionOnClick
 			rowHeight={50}
-			loading={false}
+			loading={loading}
 			disableColumnMenu={true}
 			checkboxSelection={true}
 			onRowSelectionModelChange={onSelectionModelChange}

@@ -12,7 +12,7 @@ import initialLeadData from "../../../Data/leadData.json";
 import initialEmployerData from "../../../Data/employerData.json";
 import { getCustomerColumns } from "./ColumnList";
 import { Box, useMediaQuery } from "@mui/material";
-import { useDebounceFilters } from "../../../hooks/useDebounceFilters";
+import { useAdvancedFilters } from "../../../hooks/useAdvancedFilters";
 import ConfirmationDialog from "../../../Common/ConfirmationDialog/ConfirmationDialog";
 import PurityRatioModal from "../../../Components/CustomerForm/Grid/Modal/PurityRatioModal";
 import CenteredCircularLoader from "../../../Common/Loder/CustomLoder";
@@ -24,6 +24,7 @@ import CustomerSummaryConfig from "../../../Components/CustomerForm/Grid/Summary
 import Header from "./Header";
 import { useLocation } from "react-router-dom";
 import { getEmployeeColumns } from "../../Employer/Grid/EmpList";
+import LoadingOverlay from "../../../Components/CustomerForm/Grid/LoadingOverlay";
 
 // Lazy imports
 const CustomerDataGrid = lazy(() =>
@@ -42,12 +43,20 @@ const customerMenuItems = [
   { label: "Customer Status", icon: "Info", color: "#f44336" },
 ];
 
-// filters for customers
-const customerFilterConfig = [
+// Main filters for customers (displayed in action bar)
+const customerMainFilterConfig = [
   { key: "status", label: "Status", type: "select", options: ["Active", "Deactive"] },
   { key: "ecatName", label: "Ecat Name", type: "select", options: [{ id: 1, labelname: "Intelligent Frozen Chicken" }, { id: 2, labelname: "Rustic Cotton Cheese" }] },
   { key: "users", label: "Users", type: "select", options: [{ id: 1, labelname: "Miss Timmy Murazik" }, { id: 2, labelname: "Wesley Bradtke I" }] },
   { key: "notification", label: "Notifications", type: "select", options: [{ id: 1, labelname: "Notification 1" }, { id: 2, labelname: "Notification 2" }] },
+];
+
+// Advanced filters for customers (displayed in advanced filter dialog)
+const customerAdvancedFilterConfig = [
+  { key: "customerType", label: "Customer Type", type: "select", options: [{ id: 1, labelname: "Retail" }, { id: 2, labelname: "Wholesale" }] },
+  { key: "salesRep", label: "Sales Rep", type: "text" },
+  { key: "createdDate", label: "Created Date", type: "text" },
+  { key: "lastOrderDate", label: "Last Order Date", type: "date" },
 ];
 
 const employerMenuItems = [
@@ -56,7 +65,8 @@ const employerMenuItems = [
   { label: "Update Status", icon: "Info", color: "#f44336" },
 ];
 
-const employerFilterConfig = [
+// Main filters for employers (displayed in action bar)
+const employerMainFilterConfig = [
   {
     key: "designation",
     label: "Designation",
@@ -67,13 +77,13 @@ const employerFilterConfig = [
       { id: 3, labelname: "Training & Development Manager" },
       { id: 4, labelname: "Payroll Administrator" },
       { id: 5, labelname: "Employee Relations Manager" },
-      { id: 6, labelname: "Compensation & Benefits Analyst" },
-      { id: 7, labelname: "HR Business Partner" },
-      { id: 8, labelname: "HR Assistant" },
-      { id: 9, labelname: "HR Coordinator" },
-      { id: 10, labelname: "Talent Acquisition Manager" },
     ],
   },
+  { key: "status", label: "Status", type: "select", options: ["Active", "Inactive"] },
+];
+
+// Advanced filters for employers (displayed in advanced filter dialog)
+const employerAdvancedFilterConfig = [
   {
     key: "department",
     label: "Department",
@@ -92,8 +102,10 @@ const employerFilterConfig = [
     ],
   },
   { key: "location", label: "Location", type: "text" },
-  { key: "status", label: "Status", type: "select", options: ["Active", "Inactive"] },
   { key: "roamingStatus", label: "Roaming Status", type: "select", options: ["Roaming on", "Roaming off"] },
+  { key: "joiningDate", label: "Joining Date", type: "text" },
+  { key: "experience", label: "Experience", type: "text" },
+  { key: "salary", label: "Salary Range", type: "text" },
 ];
 
 
@@ -120,23 +132,61 @@ function CustomerGrid() {
   const pageSizeOptions = useMemo(() => [20, 25, 50, 100], []);
 
   const {
-    filters,
+    // Main filters
+    mainFilters,
+    updateMainFilter,
+    clearMainFilters,
+    hasMainFilters,
+
+    // Advanced filters
+    advancedFilters,
+    applyAdvancedFilters,
+    clearAdvancedFilters,
+    hasAdvancedFilters,
+
+    // Combined filters
+    allFilters,
     debouncedFilters,
-    updateFilter,
     clearAllFilters,
+
+    // Individual filter management
+    clearFilter,
+
+    // Filter chips
+    getFilterChips,
+
+    // Status
     isFiltering,
     hasActiveFilters,
-  } = useDebounceFilters({}, 300);
+  } = useAdvancedFilters({}, 300);
 
-  const memoizedUpdateFilter = useCallback((key, value) => {
-    updateFilter(key, value);
+  const memoizedUpdateMainFilter = useCallback((key, value) => {
+    updateMainFilter(key, value);
     setPaginationModel(prev => ({
       ...prev,
       page: 0
     }));
-  }, [updateFilter]);
+  }, [updateMainFilter]);
 
-  const actions = useCustomerActions(data, setData, memoizedUpdateFilter);
+  const handleAdvancedFilterApply = useCallback((filterValues) => {
+    applyAdvancedFilters(filterValues);
+    setPaginationModel(prev => ({
+      ...prev,
+      page: 0
+    }));
+  }, [applyAdvancedFilters]);
+
+  const handleFilterRemove = useCallback((key) => {
+    clearFilter(key);
+    setPaginationModel(prev => ({
+      ...prev,
+      page: 0
+    }));
+  }, [clearFilter]);
+
+  const filterChips = useMemo(() => getFilterChips(), [getFilterChips]);
+
+  const actions = useCustomerActions(data, setData, memoizedUpdateMainFilter);
 
   const {
     handleAdd,
@@ -231,9 +281,10 @@ function CustomerGrid() {
     return custActive === "customer" ? columns : leadColumns;
   }, [isEmployer, custActive, columns, leadColumns, employerColumns]);
 
-  const { menuItems, filterConfig } = useMemo(() => ({
+  const { menuItems, mainFilterConfig, advancedFilterConfig } = useMemo(() => ({
     menuItems: isEmployer ? employerMenuItems : customerMenuItems,
-    filterConfig: isEmployer ? employerFilterConfig : customerFilterConfig
+    mainFilterConfig: isEmployer ? employerMainFilterConfig : customerMainFilterConfig,
+    advancedFilterConfig: isEmployer ? employerAdvancedFilterConfig : customerAdvancedFilterConfig
   }), [isEmployer]);
 
   const isWide = useMediaQuery(`(min-width:${(isEmployer || custActive === "lead" ? 1925 : 2425)}px)`);
@@ -261,26 +312,40 @@ function CustomerGrid() {
             onArchive={handleArchive}
             onChangeCustStatus={onChangeCustStatus}
             handleShowSummary={handleShowSummary}
-            filters={filters}
-            onFilterChange={memoizedUpdateFilter}
+            filters={mainFilters}
+            onFilterChange={memoizedUpdateMainFilter}
             menuItems={menuItems}
-            filterConfig={filterConfig}
+            filterConfig={mainFilterConfig}
+            // Advanced filter props
+            advancedFilterConfig={advancedFilterConfig}
+            advancedFilters={advancedFilters}
+            onAdvancedFilterApply={handleAdvancedFilterApply}
+            onAdvancedFilterClear={clearAdvancedFilters}
+            onFilterRemove={handleFilterRemove}
+            filterChips={filterChips}
+            isFiltering={isFiltering}
           />
         </Suspense>
       </Box>
-      <Suspense fallback={<CenteredCircularLoader />}>
-        <CustomerDataGrid
-          deliveryData={filteredData}
-          columns={columnsData}
-          paginationModel={paginationModel}
-          setPaginationModel={setPaginationModel}
-          pageSizeOptions={pageSizeOptions}
-          loading={isFiltering}
-          showSummary={showSummary}
-          isWide={isWide}
-          onSelectionModelChange={setSelectedIds}
+      <Box sx={{ position: 'relative' }}>
+        <Suspense fallback={<CenteredCircularLoader />}>
+          <CustomerDataGrid
+            deliveryData={filteredData}
+            columns={columnsData}
+            paginationModel={paginationModel}
+            setPaginationModel={setPaginationModel}
+            pageSizeOptions={pageSizeOptions}
+            loading={false}
+            showSummary={showSummary}
+            isWide={isWide}
+            onSelectionModelChange={setSelectedIds}
+          />
+        </Suspense>
+        <LoadingOverlay 
+          isVisible={isFiltering} 
+          message="Applying filters..." 
         />
-      </Suspense>
+      </Box>
       <ConfirmationDialog
         open={dialogState.open}
         onClose={handleCloseDialog}
