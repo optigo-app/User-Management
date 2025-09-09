@@ -1,6 +1,15 @@
 import React from "react";
 import { Box, ButtonBase, Typography, LinearProgress, useTheme } from "@mui/material";
-import { CheckCircle2, Check } from "lucide-react";
+import { CheckCircle2, Check, Building2, User, CreditCard, Bell, Package } from "lucide-react";
+
+// Icon mapping for string-based icon names
+const iconMap = {
+  Business: Building2,
+  Person: User,
+  AccountBalance: CreditCard,
+  Notifications: Bell,
+  Inventory: Package,
+};
 
 export default function Steppers({ steps, currentStep, completedSteps, onStepClick }) {
   const theme = useTheme();
@@ -18,7 +27,7 @@ export default function Steppers({ steps, currentStep, completedSteps, onStepCli
         }}
       >
         {steps.map((step, index) => {
-          const Icon = step.icon;
+          const Icon = typeof step.icon === 'string' ? iconMap[step.icon] || Building2 : step.icon;
           const isActive = currentStep === step.id;
           const isCompleted = completedSteps.includes(step.id);
           const isPast = currentStep > step.id;

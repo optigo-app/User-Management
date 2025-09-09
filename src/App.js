@@ -6,13 +6,15 @@ import CustomerForm from "./Pages/Customer/Form/CustomerForm";
 import { Toaster } from "react-hot-toast";
 import NotFound from "./Common/NotFound";
 import TestIcardPrint from "./Pages/Test/TestIcardPrint";
-import ManufacturerForm from "./Pages/Manufacturer/Form/ManufacturerForm";
 
 // Lazy load components
 const CustomerGrid = lazy(() => import("./Pages/Customer/Grid/CustomerGrid"));
 const ManufactureGrid = lazy(() => import("./Pages/Manufacture/Grid/ManufactureGrid"));
+const SupplierGrid = lazy(() => import("./Pages/Supplier/Grid/SupplierGrid"));
 const HomePage = lazy(() => import("./Pages/Home/HomePage"));
 const EmployerForm = lazy(() => import("./Pages/Employer/Form/EmployerForm"));
+const ManufacturerForm = lazy(() => import("./Pages/Manufacturer/Form/ManufacturerForm"));
+const SupplierForm = lazy(() => import("./Pages/Supplier/Form/SupplierForm"));
 
 export default function App() {
   return (
@@ -24,6 +26,7 @@ export default function App() {
             borderRadius: "8px",
             padding: "5px 10px",
             color: "#fff",
+            fontSize: "14px",
             fontWeight: 500,
           },
           success: {
@@ -57,6 +60,7 @@ export default function App() {
         <Route path="/customer-register" element={<CustomerForm />} />
         <Route path="/employer-register" element={<EmployerForm />} />
         <Route path="/manufacturer-register" element={<ManufacturerForm />} />
+        <Route path="/supplier-register" element={<SupplierForm />} />
         <Route path="/test-icard-print" element={<TestIcardPrint />} />
 
         {/* Lazy-loaded route */}
@@ -81,6 +85,14 @@ export default function App() {
           element={
             <Suspense fallback={<CenteredCircularLoader />}>
               <ManufactureGrid />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/suppliers"
+          element={
+            <Suspense fallback={<CenteredCircularLoader />}>
+              <SupplierGrid />
             </Suspense>
           }
         />

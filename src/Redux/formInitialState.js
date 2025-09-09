@@ -28,3 +28,11 @@ export const manufacturerInitialState = {
   step5: {},
   step6: {},
 };
+
+export const supplierInitialState = {
+  step1: {},
+  step2: {},
+  step3: {},
+  step4: {},
+  step5: {},
+};

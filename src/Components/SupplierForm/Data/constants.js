@@ -1,0 +1,42 @@
+export const supplierSteps = [
+  {
+    id: 1,
+    title: "Company",
+    description: "Enter supplier company details and business information",
+    icon: "Business",
+    isCompleted: false,
+    isActive: true,
+  },
+  {
+    id: 2,
+    title: "User Info", 
+    description: "Add primary contact person details and credentials",
+    icon: "Person",
+    isCompleted: false,
+    isActive: false,
+  },
+  {
+    id: 3,
+    title: "Banking",
+    description: "Configure banking information and payment methods",
+    icon: "AccountBalance",
+    isCompleted: false,
+    isActive: false,
+  },
+  {
+    id: 4,
+    title: "Notifications",
+    description: "Set up notification preferences and communication settings",
+    icon: "Notifications",
+    isCompleted: false,
+    isActive: false,
+  },
+  {
+    id: 5,
+    title: "Packages",
+    description: "Select service packages and subscription plans",
+    icon: "Inventory",
+    isCompleted: false,
+    isActive: false,
+  },
+];

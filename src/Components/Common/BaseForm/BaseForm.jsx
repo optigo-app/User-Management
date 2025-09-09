@@ -20,6 +20,7 @@ import FormFooter from "../../CustomerForm/Home/form-footer";
 import * as customerFormActions from "../../../Redux/customerFormSlice";
 import * as employerFormActions from "../../../Redux/employerFormSlice";
 import * as manufacturerFormActions from "../../../Redux/manufacturerFormSlice";
+import * as supplierFormActions from "../../../Redux/supplierFormSlice";
 
 const defaultExpandedSections = {
   accountInfo: true,
@@ -77,6 +78,8 @@ export default function BaseForm({
         return employerFormActions;
       case "manufacturerForm":
         return manufacturerFormActions;
+      case "supplierForm":
+        return supplierFormActions;
       default:
         return customerFormActions;
     }

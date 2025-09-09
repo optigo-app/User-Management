@@ -29,6 +29,14 @@ const CustomerSummaryConfig = ({ showSummary, custActive, summaryData }) => {
                 { label: "Roaming", value: summaryData.roaming, icon: <Users />, color: "blue" },
                 { label: "Melt Enabled", value: summaryData.meltEnabled, icon: <Users />, color: "blue" },
             ];
+        }else if (custActive === "supplier"){
+            return [
+                { label: "Total Suppliers", value: summaryData.totalSuppliers, icon: <Users />, color: "blue" },
+                { label: "Active Suppliers", value: summaryData.activeSuppliers, icon: <Users />, color: "green" },
+                { label: "Inactive Suppliers", value: summaryData.inactiveSuppliers, icon: <XCircle />, color: "red" },
+                { label: "Roaming", value: summaryData.roamingEnabled, icon: <Users />, color: "blue" },
+                { label: "Melt Enabled", value: summaryData.meltEnabled, icon: <Users />, color: "blue" },
+            ];
         }
         return [];
     }, [custActive, summaryData]);

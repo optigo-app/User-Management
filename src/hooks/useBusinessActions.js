@@ -2,21 +2,21 @@ import { useState, useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatCustomer } from "./useCustomerFormat";
 
-export const useManufactureActions = (data, setData, updateFilter) => {
+export const useBusinessActions = (data, setData, updateFilter, businessType, registerRoute) => {
   const navigate = useNavigate();
-  const custActive = "manufacturer"
+  const custActive = businessType;
   const [dialogState, setDialogState] = useState({ open: false, selectedRow: null });
   const [dialogArchiveState, setDialogArchiveState] = useState({ open: false, selectedRow: null });
-  const [dialogAllSynchroze, setDialogAllSynchronize] = useState({ open: false, selectedRow: null })
+  const [dialogAllSynchroze, setDialogAllSynchronize] = useState({ open: false, selectedRow: null });
   const [dialogPurityState, setDialogPurityState] = useState({ open: false, selectedRow: null });
   const [dialogBrandsState, setDialogBrandsState] = useState({ open: false, selectedRow: null });
-  
+
   // Initialize showSummary from localStorage with fallback to true
   const [showSummary, setShowSummaryState] = useState(() => {
-    const saved = localStorage.getItem('manufacturer-showSummary');
+    const saved = localStorage.getItem(`${businessType}-showSummary`);
     return saved !== null ? JSON.parse(saved) : true;
   });
 
@@ -24,11 +24,11 @@ export const useManufactureActions = (data, setData, updateFilter) => {
   const setShowSummary = useCallback((value) => {
     setShowSummaryState(prevState => {
       const newValue = typeof value === 'function' ? value(prevState) : value;
-      localStorage.setItem('manufacturer-showSummary', JSON.stringify(newValue));
+      localStorage.setItem(`${businessType}-showSummary`, JSON.stringify(newValue));
       return newValue;
     });
-  }, []);
-  
+  }, [businessType]);
+
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -71,8 +71,8 @@ export const useManufactureActions = (data, setData, updateFilter) => {
 
   const handleAdd = useCallback(() => {
     const formattedData = formatCustomer({});
-    navigate("/manufacturer-register", { state: { data: formattedData, step: 1 } });
-  }, []);
+    navigate(registerRoute, { state: { data: formattedData, step: 1 } });
+  }, [navigate, registerRoute]);
 
   const onToggleActive = useCallback((row) => {
     setData(prevData =>
@@ -80,8 +80,9 @@ export const useManufactureActions = (data, setData, updateFilter) => {
         item.id === row.id ? { ...item, active: !item.active } : item
       )
     );
-    toast.success(`Manufacturer ${row.active ? 'deactivated' : 'activated'} successfully`);
-  }, [setData]);
+    const capitalizedType = businessType.charAt(0).toUpperCase() + businessType.slice(1);
+    toast.success(`${capitalizedType} ${row.active ? 'deactivated' : 'activated'} successfully`);
+  }, [setData, businessType]);
 
   const onToggleRoaming = useCallback((row) => {
     setData(prevData =>
@@ -118,8 +119,9 @@ export const useManufactureActions = (data, setData, updateFilter) => {
     const { selectedRow } = dialogState;
     setData(prevData => prevData.filter(item => item.id !== selectedRow.id));
     setDialogState({ open: false, selectedRow: {} });
-    toast.success(`Manufacturer ${selectedRow.firmName} deleted successfully`);
-  }, [dialogState, setData]);
+    const capitalizedType = businessType.charAt(0).toUpperCase() + businessType.slice(1);
+    toast.success(`${capitalizedType} ${selectedRow.firmName} deleted successfully`);
+  }, [dialogState, setData, businessType]);
 
   const handleCloseDialog = useCallback(() => {
     setDialogState({ open: false, selectedRow: {} });
@@ -127,8 +129,8 @@ export const useManufactureActions = (data, setData, updateFilter) => {
 
   const onEditUser = useCallback((row) => {
     const formattedData = formatCustomer(row);
-    navigate(`/manufacturer-register`, { state: { data: formattedData, step: 1 } });
-  }, [navigate, custActive]);
+    navigate(registerRoute, { state: { data: formattedData, step: 1 } });
+  }, [navigate, registerRoute]);
 
   const onSearch = useCallback((searchTerm) => {
     updateFilter('search', searchTerm);
@@ -136,7 +138,7 @@ export const useManufactureActions = (data, setData, updateFilter) => {
 
   const handleShowSummary = useCallback(() => {
     setShowSummary(prev => !prev);
-  }, []);
+  }, [setShowSummary]);
 
   const handleExcel = useCallback((data) => {
     if (!data || data.length === 0) {
@@ -145,21 +147,23 @@ export const useManufactureActions = (data, setData, updateFilter) => {
     }
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Manufacturers");
+    const capitalizedType = businessType.charAt(0).toUpperCase() + businessType.slice(1) + 's';
+    XLSX.utils.book_append_sheet(workbook, worksheet, capitalizedType);
     const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
     const blob = new Blob([excelBuffer], {
       type: "application/octet-stream",
     });
-    saveAs(blob, `manufacturers_${new Date().toISOString().slice(0, 10)}.xlsx`);
-  }, []);
+    saveAs(blob, `${capitalizedType}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  }, [businessType]);
 
   const handleArchive = useCallback(() => {
     if (selectedIds.length === 0) {
-      toast.error("Please select manufacturers to archive");
+      const capitalizedType = businessType.charAt(0).toUpperCase() + businessType.slice(1) + 's';
+      toast.error(`Please select ${capitalizedType} to archive`);
       return;
     }
     setDialogArchiveState({ open: true });
-  }, [selectedIds]);
+  }, [selectedIds, businessType]);
 
   const handleCloseArchiveDialog = useCallback(() => {
     setDialogArchiveState({ open: false });
@@ -175,7 +179,8 @@ export const useManufactureActions = (data, setData, updateFilter) => {
 
   const onChangeCustStatus = useCallback((status) => {
     if (selectedIds.length === 0) {
-      toast.error("Please select manufacturers to update status");
+      const capitalizedType = businessType.charAt(0).toUpperCase() + businessType.slice(1) + 's';
+      toast.error(`Please select ${capitalizedType} to update status`);
       return;
     }
 
@@ -187,9 +192,11 @@ export const useManufactureActions = (data, setData, updateFilter) => {
       )
     );
 
-    toast.success(`${selectedIds.length} manufacturer(s) status updated to ${status}`);
+    const capitalizedType = businessType.charAt(0).toUpperCase() + businessType.slice(1);
+    const pluralType = selectedIds.length > 1 ? `${capitalizedType}s` : capitalizedType;
+    toast.success(`${selectedIds.length} ${pluralType.toLowerCase()} status updated to ${status}`);
     setSelectedIds([]);
-  }, [selectedIds, setData]);
+  }, [selectedIds, setData, businessType]);
 
   const handleViewDocument = useCallback((row) => {
     // View document - placeholder for now

@@ -1,6 +1,11 @@
 import React from "react";
 import { Box, Typography, Paper, Stack } from "@mui/material";
-import { User as UserIcon } from "lucide-react";
+import {
+  User as UserIcon,
+  BriefcaseBusiness,
+  Factory,
+  Truck
+} from "lucide-react";
 import { useTheme } from "@mui/material/styles";
 import { AutoSaveIndicator } from "./AutoSaveIndicator";
 import { useLocation } from "react-router-dom";
@@ -8,13 +13,35 @@ import { useLocation } from "react-router-dom";
 export const FormHeaderSection = ({ isAutoSaving, lastSaved }) => {
   const theme = useTheme();
   const location = useLocation();
+
   const pathMap = {
-    "/customer-register": { title: "Customer", steps: 8 },
-    "/employer-register": { title: "Employee", steps: 8 },
-    "/manufacturer-register": { title: "Manufacture", steps: 6 },
+    "/customer-register": {
+      title: "Customer",
+      steps: 8,
+      icon: <UserIcon size={40} color="#fff" />
+    },
+    "/employer-register": {
+      title: "Employee",
+      steps: 8,
+      icon: <BriefcaseBusiness size={40} color="#fff" />
+    },
+    "/manufacturer-register": {
+      title: "Manufacture",
+      steps: 6,
+      icon: <Factory size={40} color="#fff" />
+    },
+    "/supplier-register": {
+      title: "Supplier",
+      steps: 5,
+      icon: <Truck size={40} color="#fff" />
+    },
   };
 
-  const { title, steps } = pathMap[location?.pathname] || { title: "Customer", steps: 8 };
+  const { title, steps, icon } = pathMap[location?.pathname] || {
+    title: "Customer",
+    steps: 8,
+    icon: <UserIcon size={40} color="#fff" />
+  };
 
   return (
     <Box textAlign="center" sx={{ gap: 6 }}>
@@ -36,7 +63,7 @@ export const FormHeaderSection = ({ isAutoSaving, lastSaved }) => {
             justifyContent: "center",
           }}
         >
-          <UserIcon size={40} color="#fff" />
+          {icon}
         </Paper>
 
         {/* Title & Subtitle */}

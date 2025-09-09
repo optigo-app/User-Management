@@ -1,6 +1,15 @@
 import React from "react";
 import { Box, Typography, Chip, Button, Alert } from "@mui/material";
-import { Clock, HelpCircle, Info, Settings } from "lucide-react";
+import { Clock, HelpCircle, Info, Settings, Building2, User, CreditCard, Bell, Package } from "lucide-react";
+
+// Icon mapping for string-based icon names
+const iconMap = {
+  Business: Building2,
+  Person: User,
+  AccountBalance: CreditCard,
+  Notifications: Bell,
+  Inventory: Package,
+};
 
 export const FormHeader = ({
   currentStepInfo,
@@ -8,7 +17,9 @@ export const FormHeader = ({
   showHelp,
   onToggleHelp,
 }) => {
-  const Icon = currentStepInfo?.icon || Settings;
+  const Icon = typeof currentStepInfo?.icon === 'string' 
+    ? iconMap[currentStepInfo.icon] || Settings 
+    : currentStepInfo?.icon || Settings;
 
   return (
     <Box
