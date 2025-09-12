@@ -14,7 +14,7 @@ import { useBusinessActions } from "../../../hooks/useBusinessActions";
 import { useBusinessData } from "../../../hooks/useBusinessData";
 import Header from "../../../Pages/Customer/Grid/Header";
 import PurityRatioModal from "../../CustomerForm/Grid/Modal/PurityRatioModal";
-import BrandsModal from "../../ManufactureForm/Modal/BrandsModal";
+import BrandsModal from "../../ManufacturerForm/Modal/BrandsModal";
 import CustomerSummaryConfig from "../../CustomerForm/Grid/Summary/CustomerSummaryConfig";
 import LoadingOverlay from "../../CustomerForm/Grid/LoadingOverlay";
 

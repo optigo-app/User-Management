@@ -2,6 +2,7 @@ import { Trash2, Pencil, CirclePlus } from "lucide-react";
 import { Box, IconButton } from "@mui/material";
 import { ToggleSwitch } from "../../../Components/Ui/ToggleSwitch";
 import DocumentCell from "../../../Common/DocumentPopover";
+import PricePolicyCell from "../../../Common/PricePolicyPopover";
 
 export const getManufacturerColumns = ({
     onEditManufacturer,
@@ -58,6 +59,12 @@ export const getManufacturerColumns = ({
             headerName: "Document",
             width: 80,
             renderCell: (params) => <DocumentCell row={params.row} />,
+        },
+        {
+            field: "pricePolicy",
+            headerName: "Price Policy",
+            width: 100,
+            renderCell: (params) => <PricePolicyCell row={params.row} />,
         },
         {
             field: "active",

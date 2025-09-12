@@ -10,6 +10,7 @@ const ManufacturerStepComponents = {
   4: lazy(() => import("../../../Components/CustomerForm/Step/DocumentsStep")),
   5: lazy(() => import("../../../Components/ManufacturerForm/Step/NotificationsStep")),
   6: lazy(() => import("../../../Components/ManufacturerForm/Step/PackagesStep")),
+  7: lazy(() => import("../../../Components/ManufacturerForm/Step/ShippingStep")),
 };
 
 // Manufacturer-specific validation

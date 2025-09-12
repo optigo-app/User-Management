@@ -1,4 +1,4 @@
-import { Building2, User, CreditCard, FileText, Bell, Package } from "lucide-react";
+import { Building2, User, CreditCard, FileText, Bell, Package, Truck } from "lucide-react";
 
 export const manufacturerSteps = [
   {
@@ -42,5 +42,12 @@ export const manufacturerSteps = [
     description: "Manufacturing packages and pricing",
     icon: Package,
     fields: ["Manufacturing Plans", "Pricing", "Terms & Conditions"]
+  },
+  {
+    id: 7,
+    title: "Shipping",
+    description: "Shipping address information",
+    icon: Truck,
+    fields: ["Shipping Address"]
   }
 ];

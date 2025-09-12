@@ -19,7 +19,7 @@ const manufacturerFormSlice = createSlice({
       state.errors = action.payload;
     },
     nextStep: (state) => {
-      if (state.currentStep < 6) {
+      if (state.currentStep < 7) {
         state.currentStep += 1;
       }
     },

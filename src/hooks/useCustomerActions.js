@@ -70,15 +70,21 @@ export function useCustomerActions(data, setData, updateFilter) {
 
   const handleAdd = useCallback(() => {
     const formattedData = formatCustomer({});
-    if (location?.pathname === "/customers") {
-      navigate("/customer-register", { state: { data: formattedData, step: 1 } });
-    } else if (location?.pathname === "/employer") {
-      navigate("/employer-register", { state: { data: formattedData, step: 1 } });
-    }
-    else {
-      setDrawerLeadOpen({ open: true, selectedRow: null });
-    }
-  }, [custActive]);
+    const pathMap = {
+      "/customers": () => {
+        if (custActive === "lead") {
+          setDrawerLeadOpen({ open: true, selectedRow: null });
+        } else {
+          navigate("/customer-register", { state: { data: formattedData, step: 1 } });
+        }
+      },
+      "/employer": () => {
+        navigate("/employer-register", { state: { data: formattedData, step: 1 } });
+      },
+    };
+    pathMap[location?.pathname]?.();
+  }, [custActive, location?.pathname, navigate, setDrawerLeadOpen]);
+
 
   const handleCloseLeadDrawer = useCallback(() => {
     setDrawerLeadOpen(false);
@@ -135,18 +141,32 @@ export function useCustomerActions(data, setData, updateFilter) {
     setDialogState({ open: false, selectedRow: null });
   }, []);
 
-  const onEditUser = useCallback((row) => {
-    if (location?.pathname === "/customers") {
+  const onEditUser = useCallback(
+    (row) => {
       const formattedData = formatCustomer(row);
-      navigate(`/customer-register`, { state: { data: formattedData, step: 1 } });
-    } else if (location?.pathname == "/employer") {
-      const formattedData = formatCustomer(row);
-      navigate(`/employer-register`, { state: { data: formattedData, step: 1 } });
-    }
-    else {
-      setDrawerLeadOpen({ open: true, selectedRow: row });
-    }
-  }, [navigate, custActive]);
+      const pathMap = {
+        "/customers": () => {
+          if (custActive === "lead") {
+            setDrawerLeadOpen({ open: true, selectedRow: row });
+          } else {
+            navigate("/customer-register", {
+              state: { data: formattedData, step: 1 },
+            });
+          }
+        },
+        "/employer": () => {
+          navigate("/employer-register", {
+            state: { data: formattedData, step: 1 },
+          });
+        },
+        default: () => {
+          setDrawerLeadOpen({ open: true, selectedRow: row });
+        },
+      };
+      (pathMap[location?.pathname] || pathMap.default)();
+    },
+    [navigate, location?.pathname, custActive, setDrawerLeadOpen]
+  );
 
   const handleMakeLeadToCustomer = useCallback((row) => {
     const formattedData = formatCustomer(row);

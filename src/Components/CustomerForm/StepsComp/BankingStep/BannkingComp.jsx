@@ -143,16 +143,11 @@ const BankingComp = ({ formData, errors, onUpdate }) => {
                         </Grid>
                         <Grid item size={{ xs: 12, sm: 6 }}>
                             <FormField label="Account Type" error={!!errors?.[`accountType${index}`]}>
-                                <CustomAutocomplete
-                                    placeholder="Select account type"
-                                    options={[
-                                        { value: "savings", label: "💰 Savings Account" },
-                                        { value: "current", label: "🏢 Current/Checking Account" },
-                                        { value: "cc", label: "💳 Cash Credit Account" },
-                                        { value: "od", label: "📊 Overdraft Account" },
-                                    ]}
+                                <CustomInput
+                                    placeholder="e.g., Savings, Current, Cash Credit"
                                     value={account.accountType}
-                                    onChange={(e, newValue) => handleSelectChange(index, "accountType", newValue)}
+                                    onChange={(e) => setAccounts((prev) => prev.map((acc, i) => (i === index ? { ...acc, accountType: e.target.value } : acc)))}
+                                    onBlur={(e) => handleInputBlur(index, "accountType", e.target.value)}
                                 />
                             </FormField>
                         </Grid>

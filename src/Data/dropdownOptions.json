@@ -1,0 +1,120 @@
+{
+  "manufacturers": [
+    "Manufacturer A", "Manufacturer B", "Manufacturer C", "Manufacturer D", "Manufacturer E",
+    "Manufacturer F", "Manufacturer G", "Manufacturer H", "Manufacturer I", "Manufacturer J",
+    "Manufacturer K", "Manufacturer L", "Manufacturer M", "Manufacturer N", "Manufacturer O",
+    "Manufacturer P", "Manufacturer Q", "Manufacturer R", "Manufacturer S", "Manufacturer T",
+    "Manufacturer U", "Manufacturer V", "Manufacturer W", "Manufacturer X", "Manufacturer Y",
+    "Manufacturer Z", "Manufacturer AA", "Manufacturer BB", "Manufacturer CC", "Manufacturer DD",
+    "Manufacturer EE", "Manufacturer FF", "Manufacturer GG", "Manufacturer HH", "Manufacturer II",
+    "Manufacturer JJ", "Manufacturer KK", "Manufacturer LL", "Manufacturer MM", "Manufacturer NN"
+  ],
+  "brands": [
+    "Brand A", "Brand B", "Brand C", "Brand D", "Brand E", "Brand F", "Brand G", "Brand H",
+    "Brand I", "Brand J", "Brand K", "Brand L", "Brand M", "Brand N", "Brand O", "Brand P",
+    "Brand Q", "Brand R", "Brand S", "Brand T", "Brand U", "Brand V", "Brand W", "Brand X",
+    "Brand Y", "Brand Z", "Brand AA", "Brand BB", "Brand CC", "Brand DD", "Brand EE", "Brand FF",
+    "Brand GG", "Brand HH", "Brand II", "Brand JJ", "Brand KK", "Brand LL", "Brand MM", "Brand NN"
+  ],
+  "productTypes": [
+    "Ring", "Necklace", "Earrings", "Bracelet", "Pendant", "Chain", "Anklet", "Brooch",
+    "Cufflinks", "Tie Pin", "Watch", "Bangle", "Charm", "Locket", "Nose Ring", "Toe Ring",
+    "Hair Pin", "Tiara", "Crown", "Armlet", "Choker", "Collar", "Torque", "Signet Ring",
+    "Wedding Ring", "Engagement Ring", "Eternity Ring", "Cocktail Ring", "Statement Ring", "Band Ring",
+    "Stud Earrings", "Drop Earrings", "Hoop Earrings", "Chandelier Earrings", "Clip Earrings", "Huggie Earrings",
+    "Tennis Bracelet", "Charm Bracelet", "Cuff Bracelet", "Link Bracelet"
+  ],
+  "collections": [
+    "Spring Collection", "Summer Collection", "Autumn Collection", "Winter Collection", "Bridal Collection",
+    "Vintage Collection", "Modern Collection", "Classic Collection", "Contemporary Collection", "Traditional Collection",
+    "Ethnic Collection", "Fusion Collection", "Minimalist Collection", "Luxury Collection", "Premium Collection",
+    "Designer Collection", "Artisan Collection", "Heritage Collection", "Royal Collection", "Elite Collection",
+    "Signature Collection", "Limited Edition", "Exclusive Collection", "Seasonal Collection", "Festival Collection",
+    "Wedding Collection", "Anniversary Collection", "Birthday Collection", "Valentine Collection", "Christmas Collection",
+    "Diwali Collection", "Eid Collection", "New Year Collection", "Mother's Day Collection", "Father's Day Collection",
+    "Graduation Collection", "Corporate Collection", "Casual Collection", "Formal Collection", "Party Collection"
+  ],
+  "categories": [
+    "Jewelry", "Watches", "Accessories", "Precious Jewelry", "Fashion Jewelry", "Fine Jewelry",
+    "Costume Jewelry", "Antique Jewelry", "Vintage Jewelry", "Designer Jewelry", "Handmade Jewelry",
+    "Machine Made Jewelry", "Gold Jewelry", "Silver Jewelry", "Platinum Jewelry", "Diamond Jewelry",
+    "Gemstone Jewelry", "Pearl Jewelry", "Crystal Jewelry", "Beaded Jewelry", "Wire Jewelry",
+    "Enamel Jewelry", "Filigree Jewelry", "Kundan Jewelry", "Meenakari Jewelry", "Temple Jewelry",
+    "Tribal Jewelry", "Contemporary Jewelry", "Traditional Jewelry", "Bridal Jewelry", "Men's Jewelry",
+    "Women's Jewelry", "Children's Jewelry", "Unisex Jewelry", "Religious Jewelry", "Spiritual Jewelry",
+    "Fashion Accessories", "Luxury Accessories", "Premium Accessories", "Casual Accessories", "Formal Accessories"
+  ],
+  "styles": [
+    "Modern", "Classic", "Vintage", "Contemporary", "Traditional", "Ethnic", "Fusion", "Minimalist",
+    "Bohemian", "Gothic", "Art Deco", "Victorian", "Edwardian", "Georgian", "Renaissance", "Baroque",
+    "Rococo", "Neoclassical", "Art Nouveau", "Mid-Century", "Industrial", "Rustic", "Shabby Chic",
+    "Scandinavian", "Mediterranean", "Oriental", "Western", "Indian", "Arabic", "European", "American",
+    "Asian", "African", "Celtic", "Nordic", "Tribal", "Geometric", "Floral", "Abstract", "Organic"
+  ],
+  "makeTypes": [
+    "Handmade", "Machine Made", "Hand Crafted", "Cast", "Forged", "Stamped", "Engraved", "Etched",
+    "Embossed", "Filigree", "Granulation", "Repoussé", "Chasing", "Wire Work", "Chain Mail", "Soldered",
+    "Welded", "Riveted", "Screwed", "Glued", "Woven", "Braided", "Twisted", "Coiled", "Hammered",
+    "Polished", "Brushed", "Sandblasted", "Oxidized", "Plated", "Gilded", "Enameled", "Lacquered",
+    "Painted", "Inlaid", "Mosaic", "Carved", "Molded", "3D Printed", "Laser Cut"
+  ],
+  "metalTypes": [
+    "Gold", "Silver", "Platinum", "Palladium", "Rhodium", "White Gold", "Rose Gold", "Yellow Gold",
+    "Green Gold", "Black Gold", "Sterling Silver", "Fine Silver", "Argentium Silver", "Copper", "Brass",
+    "Bronze", "Pewter", "Titanium", "Stainless Steel", "Aluminum", "Nickel", "Zinc", "Tin", "Lead",
+    "Iron", "Steel", "Alloy", "Mixed Metal", "Bi-Metal", "Tri-Metal", "Plated Metal", "Filled Metal",
+    "Vermeil", "Gold Filled", "Silver Filled", "Rolled Gold", "Gold Plated", "Silver Plated", "Rhodium Plated", "Nickel Free"
+  ],
+  "labourSets": [
+    "Set A", "Set B", "Set C", "Set D", "Set E", "Set F", "Set G", "Set H", "Set I", "Set J",
+    "Set K", "Set L", "Set M", "Set N", "Set O", "Set P", "Set Q", "Set R", "Set S", "Set T",
+    "Set U", "Set V", "Set W", "Set X", "Set Y", "Set Z", "Premium Set", "Standard Set", "Basic Set",
+    "Deluxe Set", "Economy Set", "Luxury Set", "Professional Set", "Expert Set", "Master Set",
+    "Artisan Set", "Craftsman Set", "Specialist Set", "Advanced Set", "Beginner Set"
+  ],
+  "lessPolicies": [
+    "Policy 1", "Policy 2", "Policy 3", "Policy 4", "Policy 5", "Policy 6", "Policy 7", "Policy 8",
+    "Policy 9", "Policy 10", "Standard Policy", "Premium Policy", "Basic Policy", "Advanced Policy",
+    "Custom Policy", "Special Policy", "Regular Policy", "Seasonal Policy", "Promotional Policy",
+    "Discount Policy", "Bulk Policy", "Wholesale Policy", "Retail Policy", "Corporate Policy",
+    "VIP Policy", "Member Policy", "Guest Policy", "New Customer Policy", "Returning Customer Policy",
+    "Loyalty Policy", "Referral Policy", "Festival Policy", "Holiday Policy", "Weekend Policy",
+    "Weekday Policy", "Morning Policy", "Evening Policy", "Night Policy", "Emergency Policy", "Express Policy"
+  ],
+  "wastagePercentages": [
+    "0.5%", "1%", "1.5%", "2%", "2.5%", "3%", "3.5%", "4%", "4.5%", "5%",
+    "5.5%", "6%", "6.5%", "7%", "7.5%", "8%", "8.5%", "9%", "9.5%", "10%",
+    "10.5%", "11%", "11.5%", "12%", "12.5%", "13%", "13.5%", "14%", "14.5%", "15%",
+    "15.5%", "16%", "16.5%", "17%", "17.5%", "18%", "18.5%", "19%", "19.5%", "20%"
+  ],
+  "makingCharges": [
+    "$10", "$15", "$20", "$25", "$30", "$35", "$40", "$45", "$50", "$55",
+    "$60", "$65", "$70", "$75", "$80", "$85", "$90", "$95", "$100", "$110",
+    "$120", "$130", "$140", "$150", "$160", "$170", "$180", "$190", "$200", "$220",
+    "$240", "$260", "$280", "$300", "$320", "$340", "$360", "$380", "$400", "$450"
+  ],
+  "metalLossPercentages": [
+    "0.1%", "0.2%", "0.3%", "0.4%", "0.5%", "0.6%", "0.7%", "0.8%", "0.9%", "1.0%",
+    "1.1%", "1.2%", "1.3%", "1.4%", "1.5%", "1.6%", "1.7%", "1.8%", "1.9%", "2.0%",
+    "2.1%", "2.2%", "2.3%", "2.4%", "2.5%", "2.6%", "2.7%", "2.8%", "2.9%", "3.0%",
+    "3.1%", "3.2%", "3.3%", "3.4%", "3.5%", "3.6%", "3.7%", "3.8%", "3.9%", "4.0%"
+  ],
+  "discountPercentages": [
+    "5%", "7%", "10%", "12%", "15%", "17%", "20%", "22%", "25%", "27%",
+    "30%", "32%", "35%", "37%", "40%", "42%", "45%", "47%", "50%", "52%",
+    "55%", "57%", "60%", "62%", "65%", "67%", "70%", "72%", "75%", "77%",
+    "80%", "82%", "85%", "87%", "90%", "92%", "95%", "97%", "99%", "100%"
+  ],
+  "weightRanges": [
+    "0-1g", "1-2g", "2-3g", "3-4g", "4-5g", "5-6g", "6-7g", "7-8g", "8-9g", "9-10g",
+    "10-15g", "15-20g", "20-25g", "25-30g", "30-35g", "35-40g", "40-45g", "45-50g", "50-60g", "60-70g",
+    "70-80g", "80-90g", "90-100g", "100-120g", "120-140g", "140-160g", "160-180g", "180-200g", "200-250g", "250-300g",
+    "300-350g", "350-400g", "400-450g", "450-500g", "500-600g", "600-700g", "700-800g", "800-900g", "900-1000g", "1000g+"
+  ],
+  "weightRangeOn": [
+    "Product", "SKU", "Category", "Brand", "Collection", "Style", "Material", "Size", "Weight", "Volume",
+    "Dimension", "Type", "Model", "Series", "Variant", "Version", "Grade", "Quality", "Purity", "Karat",
+    "Carat", "Gauge", "Thickness", "Width", "Length", "Height", "Diameter", "Circumference", "Perimeter", "Area",
+    "Surface", "Finish", "Texture", "Pattern", "Design", "Shape", "Form", "Structure", "Composition", "Configuration"
+  ]
+}

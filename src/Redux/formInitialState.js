@@ -27,6 +27,7 @@ export const manufacturerInitialState = {
   step4: {},
   step5: {},
   step6: {},
+  step7: {},
 };
 
 export const supplierInitialState = {

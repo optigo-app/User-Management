@@ -83,14 +83,14 @@ const LeadFromDrawer = ({ open, editData, onClose }) => {
                 companyAddress: "",
                 mobiles: [""],
             });
-        }else{
+        } else {
             onClose();
         }
     };
 
     return (
         <Drawer anchor="right" open={open} onClose={onClose}>
-            <Box sx={{ width: 550, display: "flex", flexDirection: "column", height: "100%" }}>
+            <Box sx={{ width: 620, display: "flex", flexDirection: "column", height: "100%" }}>
                 {/* Header */}
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2, borderBottom: "1px solid #e5e7eb" }}>
                     <Typography variant="h6">New Lead</Typography>

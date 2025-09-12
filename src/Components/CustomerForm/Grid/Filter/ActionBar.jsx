@@ -109,6 +109,8 @@ const ActionBar = ({
   onSynchronize,
   onSearch: propOnSearch,
   onArchive,
+  showSynchronize = true,
+  showArchive = true,
   onChangeCustStatus,
   handleShowSummary,
   filters = {},
@@ -267,17 +269,21 @@ const ActionBar = ({
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Synchronize">
-            <IconButton onClick={onSynchronize} className="icon-btn sync">
-              <RefreshCw size={20} />
-            </IconButton>
-          </Tooltip>
+          {showSynchronize && (
+            <Tooltip title="Synchronize">
+              <IconButton onClick={onSynchronize} className="icon-btn sync">
+                <RefreshCw size={20} />
+              </IconButton>
+            </Tooltip>
+          )}
 
-          <Tooltip title="Archive">
-            <IconButton onClick={onArchive} className="icon-btn archive">
-              <Archive size={20} />
-            </IconButton>
-          </Tooltip>
+          {showArchive && (
+            <Tooltip title="Archive">
+              <IconButton onClick={onArchive} className="icon-btn archive">
+                <Archive size={20} />
+              </IconButton>
+            </Tooltip>
+          )}
 
           <Tooltip title={showSummary ? "Hide Summary" : "Show Summary"}>
             <IconButton onClick={handleShowSummary}>

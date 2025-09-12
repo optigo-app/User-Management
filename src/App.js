@@ -13,8 +13,9 @@ const ManufactureGrid = lazy(() => import("./Pages/Manufacture/Grid/ManufactureG
 const SupplierGrid = lazy(() => import("./Pages/Supplier/Grid/SupplierGrid"));
 const HomePage = lazy(() => import("./Pages/Home/HomePage"));
 const EmployerForm = lazy(() => import("./Pages/Employer/Form/EmployerForm"));
-const ManufacturerForm = lazy(() => import("./Pages/Manufacturer/Form/ManufacturerForm"));
+const ManufacturerForm = lazy(() => import("./Pages/Manufacture/Form/ManufacturerForm"));
 const SupplierForm = lazy(() => import("./Pages/Supplier/Form/SupplierForm"));
+const AdvancedPricePolicyGrid = lazy(() => import("./Pages/PricePolicy/Grid/AdvancedPricePolicyGrid"));
 
 export default function App() {
   return (
@@ -101,6 +102,14 @@ export default function App() {
           element={
             <Suspense fallback={<CenteredCircularLoader />}>
               <HomePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/price-policy"
+          element={
+            <Suspense fallback={<CenteredCircularLoader />}>
+              <AdvancedPricePolicyGrid />
             </Suspense>
           }
         />

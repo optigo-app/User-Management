@@ -9,11 +9,12 @@ const BusinessStepComponents = {
   4: lazy(() => import("../../CustomerForm/Step/DocumentsStep")),
   5: lazy(() => import("../../CustomerForm/Step/NotificationsStep")),
   6: lazy(() => import("../../CustomerForm/Step/PackagesStep")),
+  7: lazy(() => import("../../ManufacturerForm/Step/ShippingStep")),
 };
 
 // Supplier-specific step components
 const SupplierStepComponents = {
-  5: lazy(() => import("../../SupplierForm/Step/SupplierPackagesStep")), // Supplier-specific packages step
+  5: lazy(() => import("../../SupplierForm/Step/SupplierPackagesStep")),
 };
 
 // Common validation logic for business forms
@@ -83,24 +84,28 @@ const validateBusinessStep = (step, formData, formType) => {
     }
   }
 
+  if (step === 7) {
+    if (formType === "manufacturer") {
+      if (!stepData.addresses || stepData.addresses.length === 0) {
+        errors.addresses = "At least one shipping address is required.";
+      }
+    }
+  }
+
   return errors;
 };
 
 const BusinessForm = ({ formType, steps, sliceSelector }) => {
-  // Filter step components based on form type
   const getStepComponents = () => {
     if (formType === "supplier") {
-      // Supplier doesn't have documents step, so we skip step 4
       return {
-        1: BusinessStepComponents[1], // Company
-        2: BusinessStepComponents[2], // User Info
-        3: BusinessStepComponents[3], // Banking
-        4: BusinessStepComponents[5], // Notifications (mapped to step 5 component)
-        5: SupplierStepComponents[5], // Supplier-specific packages step (shipping address only)
+        1: BusinessStepComponents[1], 
+        2: BusinessStepComponents[2], 
+        3: BusinessStepComponents[3],
+        4: BusinessStepComponents[5], 
+        5: SupplierStepComponents[5], 
       };
     }
-    
-    // Manufacturer has all steps
     return BusinessStepComponents;
   };
 

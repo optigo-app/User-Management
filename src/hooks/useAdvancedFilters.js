@@ -36,21 +36,18 @@ export const useAdvancedFilters = (initialFilters = {}, delay = 300) => {
   const debounceRef = useRef(null);
   const prevFiltersRef = useRef(initialFilters);
   const allFilters = useMemo(() => ({ ...mainFilters, ...advancedFilters }), [mainFilters, advancedFilters]);
+  
   useEffect(() => {
     if (areFiltersEqual(allFilters, prevFiltersRef.current)) {
       return;
     }
-
     prevFiltersRef.current = allFilters;
-
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
-
     debounceRef.current = setTimeout(() => {
       setDebouncedFilters({ ...allFilters });
     }, delay);
-
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);

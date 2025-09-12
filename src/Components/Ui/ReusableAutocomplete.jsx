@@ -11,6 +11,8 @@ const CustomAutocomplete = ({
     disabled = false,
     freeSolo = false,
     size = "small",
+    height = 45,
+    minWidth = 120,
     fullWidth = true,
     getOptionLabel = (option) => option.label || option,
     renderOption,
@@ -34,7 +36,8 @@ const CustomAutocomplete = ({
             {...props}
             sx={{
                 '& .MuiOutlinedInput-root': {
-                    height: 45,
+                    height: height,
+                    minWidth: minWidth
                 }
             }}
             renderInput={(params) => (

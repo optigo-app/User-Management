@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, onSelectionModelChange, loading = false }) => {
+const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel, setPaginationModel, pageSizeOptions, isWide, onSelectionModelChange, loading = false, highlightedRowId, getRowClassName }) => {
 
 	return (
 		<DataGrid
@@ -22,6 +22,7 @@ const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel,
 			disableColumnMenu={true}
 			checkboxSelection={true}
 			onRowSelectionModelChange={onSelectionModelChange}
+			getRowClassName={getRowClassName}
 			density="standard"
 			sx={{
 				height: `calc(100vh - ${showSummary ? "300px" : "169px"})`,
@@ -35,11 +36,38 @@ const CustomerDataGrid = ({ showSummary, deliveryData, columns, paginationModel,
 					alignItems: "center",
 					height: '45px !important',
 					minHeight: '45px !important',
+					transition: 'background-color 0.3s ease',
+				},
+				'& .highlighted-row': {
+					backgroundColor: '#e3f2fd !important',
+					animation: 'highlightFade 2s ease-in-out',
+				},
+				'@keyframes highlightFade': {
+					'0%': { backgroundColor: '#4caf50' },
+					'50%': { backgroundColor: '#81c784' },
+					'100%': { backgroundColor: '#e3f2fd' },
+				},
+				'& .MuiDataGrid-editInputCell .MuiSelect-select': {
+					maxHeight: '200px',
+					overflowY: 'auto',
+				},
+				'& .MuiPaper-root .MuiList-root': {
+					maxHeight: '200px',
+					overflowY: 'auto',
+				},
+				'& .MuiPopover-paper': {
+					maxHeight: '250px',
+					overflowY: 'auto',
+				},
+				'& .MuiMenu-paper': {
+					maxHeight: '200px',
+					overflowY: 'auto',
 				},
 				"& .MuiDataGrid-cell": {
 					fontSize: "13px",
 					display: "flex",
 					alignItems: "center",
+					height:'45px'
 				},
 				"& .MuiTablePagination-root": {
 					overflow: "visible",
